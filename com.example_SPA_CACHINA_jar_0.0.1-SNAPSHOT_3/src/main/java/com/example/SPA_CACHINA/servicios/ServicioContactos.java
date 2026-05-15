@@ -1,0 +1,40 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.example.SPA_CACHINA.servicios;
+
+import com.example.SPA_CACHINA.entidades.Contactos;
+import com.example.SPA_CACHINA.repositorios.ContactosDAO;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+/**
+ *
+ * @author David
+ */
+@Service
+public class ServicioContactos {
+    // Dave
+
+    @Autowired
+    private ContactosDAO contactosDAO;
+
+    public List<Contactos> getList() {
+        return contactosDAO.findAll();
+    }
+
+    public Contactos save(Contactos contactos) {
+        return contactosDAO.save(contactos);
+    }
+
+    public Contactos get(Long id) {
+        return contactosDAO.findById(id).orElse(null);
+    }
+
+    public void delete(Long id) {
+        contactosDAO.deleteById(id);
+    }
+
+}

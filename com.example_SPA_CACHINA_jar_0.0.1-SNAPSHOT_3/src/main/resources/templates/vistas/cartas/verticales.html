@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+
+    <body th:fragment="cartas_verticales(platosPorCategoria)"> 
+
+        <div class="container">
+            <div th:each="entry : ${platosPorCategoria}" >
+                <!-- /CARD 1-->
+                <div th:if="${!entry.key.equals('trios y duos')}" class="container my-4">
+                    <h2 id="section-title" class="mb-3 fade-slide-in" th:text="${entry.key}"></h2>
+                    <hr class="border border-primary w-100">
+                        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+                            <div class="col" th:each="platos : ${entry.value}" th:if="${platos.categoria != 'trios y duos'}">
+                                <!-- /CARD plato-->
+                                <div class="card h-100 bg-light border-0 shadow-sm fade-slide-in">
+                                    <img th:src="@{/imagen/{id}(id=${platos.idplato})}" alt="${platos.nombre}" class="card-img-top rounded-circle p-2 img-fluid">
+                                        <div class="card-body d-flex flex-column justify-content-between">
+                                            <h5 class="card-title text-primary" th:text="${platos.nombre}"></h5>
+                                            <p class="card-text text-muted" th:text="${platos.descripcion}"></p> 
+                                            <div class="mt-auto d-flex flex-column justify-content-between">   
+                                                <p class="card-text text-muted">S/. <small class="text-muted" th:text="${platos.precio}"></small></p>
+                                                <button type="button" 
+                                                        class="btn btn-outline-primary mt-auto" 
+                                                        th:attr="data-bs-target='#modal-' + ${platos.idplato}" 
+                                                        data-bs-toggle="modal">
+                                                    Ordenar</button>
+                                            </div>
+                                        </div> 
+                                </div>
+
+                                <!-- /CARD modal-->
+                                <div class="modal fade" th:id="'modal-' + ${platos.idplato}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title text-center w-100" id="exampleModalLabel"  th:text="${platos.nombre}"></h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <!-- Imagen del plato -->
+                                                        <img th:src="@{/imagen/{id}(id=${platos.idplato})}" alt="${platos.nombre}" class="img-fluid rounded">
+                                                    </div>
+                                                    <div class="col-md-6 d-flex flex-column justify-content-between">
+                                                        <!-- Descripción y opciones -->
+                                                        <div>
+                                                            <p th:text="${platos.descripcion}"></p>
+                                                            <h4>S/. <span th:text="${platos.precio}"></span></h4>
+                                                            <div class="mb-3">
+                                                                <label for="comentarios" class="form-label">Comentarios</label>
+                                                                <textarea class="form-control text-muted" id="comentarios" rows="3" placeholder="Opcional"></textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div>
+                                                            <div class="d-flex align-items-center mb-3">
+                                                                <label for="cantidad" class="form-label me-2">Cantidad</label>
+                                                                <input type="number" id="cantidad" class="form-control" value="1" min="1" max="10" style="width: 70px;">
+                                                            </div>
+
+                                                            <button type="button" class="btn btn-danger w-100" id="addToCart"
+                                                                    th:data-id="${platos.idplato}"
+                                                                    th:data-nombre="${platos.nombre}"
+                                                                    th:data-precio="${platos.precio}"
+                                                                    th:data-imagen="@{/imagen/{id}(id=${platos.idplato})}" >
+                                                                Agregar S/. <span th:text="${platos.precio}"></span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- casilla Videos -->
+        <div class="bg-custom">
+            <div class="container-fluid" id="galeria">
+                <!-- Horizontal Videos -->
+                <div class="row  fade-slide-in">
+                    <h2 id="section-title" class="text-primary text-center mt-4">Conoce más de la cevicheria</h2>
+                    <hr class="border border-primary w-100">
+                        <div class="col-lg-12 mt-1">
+                            <div class="card p-2 bg-light border-0 shadow-sm">
+                                <div class="row g-0">
+                                    <div class="col-md-6">
+                                        <div class="video-container">
+                                            <video src="videos/Reportaje.mp4" class="p-2 img-fluid rounded-start w-100 h-100" controls></video>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="card-body">
+                                            <h5 class="card-title text-primary">Reportaje a la cevichería "La Cachina Fish"</h5>
+                                            <p class="card-text text-muted">La Cachina Fish es el lugar donde el ceviche alcanza su máxima expresión. Con un menú repleto de platos frescos y auténticos, cada bocado revela la pasión y dedicación de su cocina. Disfruta de un viaje gastronómico que celebra la riqueza del mar en un ambiente acogedor y vibrante.</p>
+                                            <p class="card-text"><small class="text-muted">Extraído del canal Viva TV</small></p>
+                                            <a href="https://youtu.be/kUSCzclQt00?si=L9rujVZlvw2R3cpJ" target="_blank">
+                                                <button type="button" class="btn btn-outline-primary">
+                                                    Mirar ahora
+                                                </button>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+                <div class="row  fade-slide-in">
+                    <div class="col-lg-12 mt-3 mb-3">
+                        <div class="card p-2 bg-light border-0 shadow-sm">
+                            <div class="row g-0">
+                                <div class="col-md-6">
+                                    <div class="card-body">
+                                        <h5 class="card-title text-primary">La Cachina fish</h5>
+                                        <p class="card-text text-muted">Explora La Cachina Fish y observa cómo el equipo prepara sus platos con pasión y precisión. Desde la selección de ingredientes frescos hasta el servicio en su acogedor establecimiento, cada detalle cuenta. ¡Descubre el secreto detrás de su ceviche excepcional!</p>
+                                        <p class="card-text"><small class="text-muted">Video extraído de Youtube</small></p>
+                                        <a href="https://youtu.be/dqkgASUpZ48?si=Ei3K7vC-ipAoppyk" target="_blank">
+                                            <button type="button" class="btn btn-outline-primary">
+                                                Mirar ahora
+                                            </button>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="video-container">
+                                        <video src="videos/La Cachina Fish.mp4" class="p-2 img-fluid rounded-start w-100 h-100" controls></video>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </body>
+</html>

@@ -1,0 +1,262 @@
+
+
+/* Pantalla de carga */
+#loader {
+    position: fixed;
+    z-index: 99999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #1e90ff; /* Color de fondo de la pantalla de carga */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/*CARROUSEL ESTILOS*/
+.carousel-inner img {
+    object-fit: cover;
+    height: 470px;
+}
+
+.card-img-top {
+    object-fit: cover;
+    height: 180px;
+}
+
+/*HORIZONTAL TAMAÑOS*/
+.card-img-top-2 {
+    object-fit: cover;
+    width: 100%;
+    height: 340px; /* Allow the image to fill its container */
+}
+
+.card-img-top-3 {
+    object-fit: cover;
+    width: 100%;
+    height: 340px; /* Allow the image to fill its container */
+}
+
+
+@media (max-width: 1200px) {
+    .card-img-top-2, .card-img-top-3  {
+        height: 100%; /* Let the image resize naturally on smaller screens */
+    }
+}
+
+@media (max-width: 700px) {
+    .card-img-top-2, .card-img-top-3  {
+        height: 285px; /* Let the image resize naturally on smaller screens */
+    }
+}
+
+.container-all {
+    margin-top: 20px;
+}
+.footer {
+    background-color: #0277bd;
+    color: #ffffff;
+    padding: 1rem 0;
+}
+.bg-custom-2,.bg-custom{
+    background-color: #e0f7fa;
+}
+.bg-custom-3{
+    background-color: #0277bd;
+}
+.video-container {
+    position: relative;
+    width: 100%;
+    padding-top: 40%; /* Proporción de aspecto 16:9 */
+
+}
+.video-container video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ajusta el video para cubrir el área del contenedor */
+}
+.btn-outline-warning {
+    border-color: #00838f;
+    color: #00838f;
+}
+
+.btn-outline-warning:hover {
+    background-color: #00838f;
+    color: #ffffff;
+}
+/* Estilo para asegurar que el texto en los enlaces sea blanco */
+.navbar-light .navbar-nav .nav-link {
+    color: #ffffff;
+}
+.navbar-light .navbar-nav .nav-link:hover {
+    color: #cfd8dc; /* Blanco ligeramente más oscuro en hover */
+}
+
+.bg-custom{
+    background-color: rgb(215, 230, 235);
+}
+
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 rgba(255, 255, 255, 0.4);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 rgba(255, 255, 255, 0.4);
+    }
+}
+.bg-primary {
+    background: linear-gradient(135deg, #1e90ff, #00bfff); /* Degradado azul vibrante */
+}
+.rounded-pill {
+    border-radius: 50rem; /* Bordes redondeados más pronunciados */
+}
+
+
+#backToTopBtn {
+    position: fixed;
+    bottom: 10px; /* Más cerca de la parte inferior */
+    right: 10px;  /* Más cerca de la derecha */
+    z-index: 100; /* Encima de todo el contenido */
+    background-color: transparent; /* Sin fondo, para mostrar solo la imagen del camarón */
+    border: none;
+    cursor: pointer;
+}
+
+#backToTopBtn img {
+    width: 60px; /* Tamaño de la imagen del camarón */
+    transition: transform 0.3s ease;
+}
+
+#backToTopBtn:hover img {
+    transform: scale(1.1); /* Efecto de zoom al pasar el mouse */
+}
+
+/* Animación de rotación */
+@keyframes rotate360 {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Clase que se activa al hacer clic */
+.rotate {
+    animation: rotate360 0.50s ease-in-out;
+}
+
+
+/* Estilos del modal */
+.modal-content {
+    border-radius: 20px;
+    background: #fff;
+    border: 2px solid #0096ff; /* Color azul vibrante para el borde */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Sombra más suave */
+}
+
+.modal-header {
+    background-color: #0096ff; /* Azul vibrante para el encabezado */
+    color: #fff;
+    border-bottom: 2px solid #007acc; /* Azul más oscuro para el borde inferior */
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+.modal-title {
+    font-family: 'Pacifico', cursive;
+    font-size: 2rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); /* Sombra sutil */
+}
+
+.btn-close {
+    filter: invert(1); /* Icono de cerrar blanco */
+}
+
+.modal-body {
+    background-color: #f0f8ff; /* Fondo azul claro para el cuerpo del modal */
+    color: #333;
+    padding: 2rem;
+}
+
+.modal-body img {
+    border-radius: 15px; /* Bordes redondeados para la imagen */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 100%; /* Imagen completa en el contenedor */
+    object-fit: cover; /* Mantener proporciones sin distorsión */
+}
+
+.modal-body p {
+    font-size: 1.2rem;
+    color: #555; /* Gris oscuro para la descripción */
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.modal-body h4 {
+    font-size: 1.8rem;
+    color: #ff8c00; /* Color naranja para el precio */
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.btn-danger {
+    background-color: #ff8c00; /* Naranja suave */
+    border-color: #ff8c00;
+    transition: background-color 0.3s, border-color 0.3s, transform 0.3s;
+}
+
+.btn-danger:hover {
+    background-color: #ff6f00; /* Naranja más oscuro en hover */
+    border-color: #ff6f00;
+    transform: scale(1.05); /* Efecto de zoom en hover */
+}
+
+.form-control {
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    box-shadow: none; /* Sin sombra para campos de entrada */
+}
+
+.form-label {
+    font-weight: bold;
+    color: #0096ff; /* Azul para las etiquetas de los campos */
+}
+
+#loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8);
+    z-index: 9999; /* Asegúrate de que esté encima de otros elementos */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loading-content {
+    text-align: center;
+}
+

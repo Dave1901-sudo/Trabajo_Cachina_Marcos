@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Libro de Reclamaciones</title>
+    <link rel="icon" href="imagenes/Logo.jpg" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="/Style/Style_reclamaciones.css">
+    <link rel="stylesheet" href="/Style/Style_carrousel.css">
+    <style>
+            .spinner {
+                width: 150px; /* Tamaño de la imagen del camarón */
+                height: 150px;
+                background-image: url('imagenes/vecteezy_shrimp-png-clipart_27738778.png');
+                background-size: contain;
+                background-repeat: no-repeat;
+                animation: spin 1s linear infinite;
+            }
+    </style>        
+</head>
+
+<body class="d-flex flex-column min-vh-100 bg-custom-2">
+
+    <!-- Navbar -->
+    <div th:replace="~{vistas/navbar::encabezado}"></div>
+
+    <!-- Reclamaciones -->
+    <div class="container my-5" style="max-width: 90%;">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card shadow-lg" style="background-color: #ffffff; color: #0277bd;">
+                    <div class="row g-0">
+                        <div class="col-md-4 bg-light text-dark d-flex flex-column justify-content-center align-items-center p-4"
+                            style="border-right: 3px solid #0277bd;">
+                            <h5 class="text card-title fs-4 mb-3" style="color: #0277bd;"
+                                th:text="#{formulario.presentacion.4}">Información</h5>
+                            <hr class="border border-warning w-100">
+                            <p class="card-text text-dark fs-6 text-center"
+                               th:text="#{formulario.presentacion.3}">
+                                Completa el formulario para registrar tu reclamación. Nos comprometemos a revisar tu
+                                caso y ofrecerte una respuesta adecuada.
+                            </p>
+                            <i class="text bi bi-info-circle-fill fs-2" style="color: #0277bd;"></i>
+                        </div>
+                        <div class="col-md-8 p-5" style="background-color: #f5f5f5;">
+                            <h5 class="text style fs-3 mb-4"
+                                th:text="#{formulario.presentacion.2}">Libro de Reclamaciones</h5>
+                            <hr class="text-dark">
+                            <p class="fs-5 mb-4" style="color: #000000;"
+                               th:text="#{formulario.presentacion.1}">Completa los siguientes campos para registrar
+                                tu reclamación:</p>
+                                <form th:action="@{/registrarReclamaciones}" method="post" th:object="${reclamaciones}">
+                                                            <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+                                <i class="bi bi-exclamation-triangle-fill"></i> 
+                                <span th:text="${errorMessage}"></span>
+                            </div>
+                                    <!-- Identificación del Consumidor Reclamante -->
+                                <fieldset class="border p-3 mb-4" style="border-color: #0277bd;">
+                                    <legend class="w-auto fs-5" style="color: #000000;" th:text="#{formulario.entrada}">
+                                        Identificación del Consumidor Reclamante
+                                    </legend>
+                                    <div class="mb-3">
+                                        <input type="text" class="form-control form-control-lg"
+                                            style="background-color: #ffffff; color: #000000; border-color: #0277bd;"
+                                            th:placeholder="#{formulario.nombre.holder}"
+                                             name="nombreCompleto" th:field="*{nombre_Completo}" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <input type="text" class="form-control form-control-lg"
+                                            style="background-color: #ffffff; color: #000000; border-color: #0277bd;"
+                                            th:placeholder="#{formulario.domicilio.holder}" 
+                                            name="domicilio" th:field="*{domicilio}" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <input type="text" pattern="[0-9]{8,15}" inputmode="numeric" class="form-control form-control-lg"
+                                            style="background-color: #ffffff; color: #000000; border-color: #0277bd;"
+                                            th:placeholder="#{formulario.dni.holder}" 
+                                            name="dniCe" th:field="*{dni_Ce}" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <input type="tel" pattern="[0-9]{9,15}" inputmode="numeric" class="form-control form-control-lg"
+                                            style="background-color: #ffffff; color: #000000; border-color: #0277bd;"
+                                            th:placeholder="#{formulario.numero.holder}"
+                                            name="telefono" th:field="*{telefono}" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <input type="email" class="form-control form-control-lg"
+                                            style="background-color: #ffffff; color: #000000; border-color: #0277bd;"
+                                            th:placeholder="#{formulario.correo.holder}"
+                                            name="correoElectronico" th:field="*{correo_Electronico}" required>
+                                    </div>
+                                </fieldset>
+
+                                <!-- Identificación del Bien Contratado -->
+                                <fieldset class="border p-3 mb-4" style="border-color: #0277bd;">
+                                    <legend class="w-auto fs-5" style="color: #000000;"
+                                     th:text="#{formulario.segunda.entrada}">
+                                        Identificación del Bien Contratado
+                                    </legend>
+                                    <div class="mb-3">
+                                        <select class="form-select form-select-lg"
+                                            style="background-color: #ffffff;  color: #000000; border-color: #0277bd;"
+                                            name="tipoBien" th:field="*{tipo_Bien}"
+                                            required>
+                                            <option value="" th:text="#{formulario.segunda.tipobien}"  
+                                                    disabled selected>Tipo de Bien</option>
+                                            <option th:text="#{formulario.segunda.tipobien.a}" 
+                                                    value="Servicio">Servicio</option>
+                                            <option th:text="#{formulario.segunda.tipobien.b}" 
+                                                value="Producto">Producto</option>
+                                            <option th:text="#{formulario.segunda.tipobien.c}" 
+                                                value="Otro">Otro</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <input type="number" class="form-control form-control-lg"
+                                            style="background-color: #ffffff; color: #000000; border-color: #0277bd;"
+                                            th:placeholder="#{formulario.Monto.holder}"
+                                             name="montoReclamado" th:field="*{monto_Reclamado}" 
+                                             required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <textarea class="form-control form-control-lg"
+                                            style="background-color: #ffffff; color: #000000; border-color: #0277bd;"
+                                            rows="3" 
+                                            th:placeholder="#{formulario.descripcion.holder}"
+                                             name="descripcionBien" th:field="*{descripcion_Bien}" 
+                                            required>                  
+                                        </textarea>
+                                    </div>
+                                </fieldset>
+
+                                <!-- Detalle de la Reclamación y Pedido del Consumidor -->
+                                <fieldset class="border p-3 mb-4" style="border-color: #0277bd;">
+                                    <legend class="w-auto fs-5" style="color: #000000;"
+                                            th:text="#{formulario.tercero.entrada}" 
+                                            >Detalle de la Reclamación y
+                                        Pedido del Consumidor</legend>
+                                    <div class="mb-3">
+                                        <select class="form-select form-select-lg"
+                                            style="background-color: #ffffff; color: #000000; border-color: #0277bd;"
+                                            name="tipoReclamacion" th:field="*{tipo_Reclamacion}" required>
+                                            <option value="" th:text="#{formulario.tercero.tipoproblema}" 
+                                                    disabled selected>Tipo de Reclamación</option>
+                                            <option th:text="#{formulario.tercero.tipoproblema.a}"
+                                                value="Reclamo">Reclamo</option>
+                                            <option th:text="#{formulario.tercero.tipoproblema.b}"
+                                                value="Queja">Queja</option>
+                                            <option th:text="#{formulario.tercero.tipoproblema.c}"
+                                                value="Otro">Otro</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <textarea class="form-control form-control-lg"
+                                            style="background-color: #ffffff; color: #000000; border-color: #0277bd;"
+                                            rows="4" 
+                                            th:placeholder="#{formulario.detalle.holder}"
+                                            name="detalleReclamacion" th:field="*{detalle_Reclamacion}" 
+                                            required></textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <textarea class="form-control form-control-lg"
+                                            style="background-color: #ffffff; color: #000000; border-color: #0277bd;"
+                                            rows="4" 
+                                            th:placeholder="#{formulario.detallepedido.holder}"
+                                            name="detallePedido" th:field="*{detalle_Pedido}" 
+                                            required>
+                                        </textarea>
+                                    </div>
+                                </fieldset>
+                                <div class="text-end">
+                                    <button type="submit" th:value="#{formulario.enviar}" 
+                                           th:text="#{formulario.enviar.text}" class="btn btn-custom btn-lg custom-btn">Enviar
+                                        Reclamación</button>
+                                    <button th:if="${isAdmin}" type="button" th:text="#{formulario.ver.reclamaciones.text}" onclick="window.location.href='/formResultadoReclamaciones'" class="btn btn-custom btn-lg custom-btn">
+                                        Ver reclamaciones
+                                    </button>
+                                </div>
+                            </form>
+                        <div>
+                            <a th:href="@{/reclamaciones(lang='en')}" th:text="#{idioma.ingles}">Inglés</a>
+                            <a th:href="@{/reclamaciones(lang='es')}" th:text="#{idioma.castellano}">Castellano</a>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <div th:replace="~{vistas/footer::footer}"></div>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+        <script src="/js/funtion_ex.js"></script>
+        <script>
+            // Función para ocultar la pantalla de carga y mostrar el contenido
+            window.onload = function () {
+                document.getElementById('loader').style.display = 'none'; // Oculta el loader
+                document.body.style.visibility = 'visible'; // Muestra el contenido de la página
+                document.body.style.opacity = '1'; // Transición suave para mostrar el contenido
+            };
+        </script>        
+</body>
+
+</html>

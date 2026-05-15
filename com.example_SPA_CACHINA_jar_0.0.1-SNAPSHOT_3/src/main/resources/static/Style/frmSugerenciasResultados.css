@@ -1,0 +1,95 @@
+body {
+    background: linear-gradient(to right, #e0f7fa, #80deea); /* Fondo degradado */
+    color: #333;
+}
+
+.sugerencia-title {
+    color: #1e88e5;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    animation: fadeInDown 0.5s;
+    font-size: 2rem; /* Título más grande */
+    letter-spacing: 1.5px;
+}
+
+.cevicheria-container-transparent {
+    background-color: rgba(255, 255, 255, 0.8); /* Fondo blanco semitransparente */
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 30px; /* Espacio debajo del contenedor */
+}
+
+.cevicheria-card {
+    border: 5px solid #1e88e5;
+    border-radius: 15px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 10px 20px rgba(0, 30, 60, 0.1);
+    background: white;
+    padding: 20px; /* Espacio dentro de la tarjeta */
+}
+
+.cevicheria-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 15px 30px rgba(0, 30, 60, 0.2);
+}
+
+.sugerencia-info-label {
+    font-weight: bold;
+    color: #ff9800;
+    font-size: 1.1rem; /* Tamaño de texto más grande */
+}
+
+.sugerencia-info-value {
+    color: #2c3e50;
+    font-size: 1.1rem;
+    margin-left: 10px;
+}
+
+.cevicheria-btn-custom {
+    background-color: #1e88e5; /* Color del botón actualizado */
+    color: white;
+    padding: 12px 30px; /* Espaciado dentro del botón */
+    border-radius: 25px;
+    font-size: 1.1rem;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.cevicheria-btn-custom:hover {
+    background-color: #1565c0;
+    transform: translateY(-2px);
+}
+
+.cevicheria-btn-edit {
+    border-color: #1e88e5;
+    color: #1e88e5;
+    transition: background-color 0.3s ease;
+}
+
+.cevicheria-btn-edit:hover {
+    background-color: #bbdefb;
+    color: #0d47a1;
+}
+
+.cevicheria-btn-delete {
+    border-color: #d32f2f;
+    color: #d32f2f;
+    transition: background-color 0.3s ease;
+}
+
+.cevicheria-btn-delete:hover {
+    background-color: #ef9a9a;
+    color: #b71c1c;
+}
+
+.sugerencia-footer {
+    margin-top: 20px;
+    text-align: center;
+    color: #555;
+    padding: 10px 0;
+    font-size: 0.9rem;
+}
+
+.card-body hr {
+    border: 1px solid #1e88e5; /* Color de la línea */
+    width: 80%; /* Ajuste del ancho */
+    margin: 20px auto; /* Centrando la línea */
+}

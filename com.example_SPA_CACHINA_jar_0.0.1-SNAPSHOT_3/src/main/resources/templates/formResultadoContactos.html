@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Resultado del Registro</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link rel="stylesheet" href="/Style/Style_carrousel.css">
+    <link rel="stylesheet" href="/Style/formresultadocontactos.css">
+    <style>
+        .spinner {
+            width: 150px; /* Tamaño de la imagen del camarón */
+            height: 150px;
+            background-image: url('imagenes/vecteezy_shrimp-png-clipart_27738778.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            animation: spin 1s linear infinite;
+        }
+    </style>
+</head>
+<body style="visibility: hidden; opacity: 0; transition: opacity 0.3s;">
+    <!-- Navbar -->
+    <div th:replace="~{vistas/navbar::encabezado}"></div>
+
+    <div class="container my-5">
+        <h1 class="cevicheria-title text-center mb-4 mt-4">Información del Contacto</h1>
+        <div class="text-center mb-4">
+            <a href="/contactos" class="btn btn-agregar-contacto cevicheria-btn-custom">Agregar Contacto</a>
+        </div>
+
+        <div class="cevicheria-container-transparent p-4">
+            <div class="row" id="listaContactosContainer">
+                <!-- Las tarjetas se insertarán aquí desde JavaScript -->
+            </div>
+        </div>
+
+        <div class="text-center">
+            <a href="/contactos" class="btn btn-volver cevicheria-btn-custom text-decoration-none mt-3">Volver</a>
+        </div>
+
+        <footer class="cevicheria-footer mt-3">
+            <p>© 2024 Cevichería - San Juan de Lurigancho</p>
+        </footer>
+    </div>
+
+    <div th:replace="~{vistas/footer::footer}"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Función para ocultar la pantalla de carga y mostrar el contenido
+        window.onload = function () {
+            document.getElementById('loader').style.display = 'none'; // Oculta el loader
+            document.body.style.visibility = 'visible'; // Muestra el contenido de la página
+            document.body.style.opacity = '1'; // Transición suave para mostrar el contenido
+        };
+
+        // Recuperar los datos de sessionStorage
+        const data = JSON.parse(sessionStorage.getItem('listaContactos'));
+
+        if (data) {
+            const container = document.getElementById('listaContactosContainer');
+            container.innerHTML = ''; // Limpiar el contenedor antes de agregar nuevos elementos
+
+            data.forEach(contacto => {
+                // Crear estructura HTML para cada contacto
+                const div = document.createElement('div');
+                div.classList.add('col-md-6', 'col-lg-4', 'mb-4');
+                div.innerHTML = `
+                    <div class="card cevicheria-card animate__animated animate__fadeIn h-100">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title cevicheria-info-label">Id: 
+                                <span class="cevicheria-info-value">${contacto.idcontactos}</span>
+                            </h5>
+                            <p class="card-text">
+                                <strong>Nombre:</strong>
+                                <span class="cevicheria-info-value">${contacto.nombre}</span>
+                            </p>
+                            <p class="card-text">
+                                <strong>Correo:</strong>
+                                <span class="cevicheria-info-value">${contacto.correo}</span>
+                            </p>
+                            <p class="card-text mb-4">
+                                <strong>Mensaje:</strong>
+                                <span class="cevicheria-info-value">${contacto.mensaje}</span>
+                            </p>
+                            <div class="card-footer container-all d-flex justify-content-between mt-auto">
+                                <a href="/getEdit/${contacto.idcontactos}" class="btn btn-outline-primary btn-sm cevicheria-btn-edit">Editar</a>
+                                <a href="/delete?id=${contacto.idcontactos}" class="btn btn-outline-danger btn-sm cevicheria-btn-delete">Eliminar</a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        } else {
+            console.error("No hay datos en sessionStorage");
+        }
+    </script>
+    <script>
+    // Función para eliminar un contacto
+        function deleteContact(id) {
+            // Realiza la solicitud de eliminación
+            fetch(`/delete?id=${id}`, {
+                method: "GET" // Aunque en el backend sea un GET, sigue la convención del controlador
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Si la eliminación es exitosa, llama a la API para obtener la lista actualizada de contactos
+                    return fetch("/getListJSON");
+                } else {
+                    alert("Hubo un error al eliminar el contacto");
+                    throw new Error("Error al eliminar el contacto");
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Error al obtener la lista de contactos");
+                }
+                return response.json(); // Obtiene la nueva lista de contactos
+            })
+            .then(data => {
+                // Actualiza el sessionStorage con la nueva lista de contactos
+                sessionStorage.setItem('listaContactos', JSON.stringify(data));
+                // Redirige a la página de resultado
+                window.location.href = "/formResultadoContactos"; 
+            })
+            .catch(error => console.error("Error:", error));
+        }
+
+        // Agrega el evento al botón de eliminación en el HTML
+        document.querySelectorAll('.cevicheria-btn-delete').forEach(button => {
+            button.addEventListener('click', function(event) {
+                event.preventDefault(); // Evita la acción predeterminada del enlace
+                const contactoId = this.getAttribute('href').split('=')[1]; // Obtiene el id del contacto
+                deleteContact(contactoId); // Llama a la función para eliminar el contacto
+            });
+        });
+
+    </script>
+</body>
+</html>

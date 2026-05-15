@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>Inicio</title>
+        <link rel="icon" href="imagenes/Logo.jpg" type="image/x-icon"/>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"/>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css"/>
+        <link rel="stylesheet" href="/Style/Style_carrousel.css"/>
+        <style>
+            .spinner {
+                width: 150px; /* Tamaño de la imagen del camarón */
+                height: 150px;
+                background-image: url('imagenes/vecteezy_shrimp-png-clipart_27738778.png');
+                background-size: contain;
+                background-repeat: no-repeat;
+                animation: spin 1s linear infinite;
+            }
+            /* Color personalizado naranja para el modal */
+            .bg-orange {
+                background-color: #ffa500 !important;
+            }
+
+            /* Botones con color personalizado */
+            .btn-orange {
+                background-color: #ffa500;
+                border-color: #ffa500;
+                color: white;
+            }
+
+            .btn-orange:hover {
+                background-color: #ff8c00;
+                border-color: #ff8c00;
+            }
+
+            /* Ítems de la lista en el carrito */
+            #cartItems .list-group-item {
+                border: 1px solid #0077b6; /* Azul profundo */
+                border-radius: 5px;
+                margin-bottom: 10px;
+                background: white;
+                color: #333;
+            }
+
+            #cartItems .list-group-item:hover {
+                background-color: #f6e6cc; /* Naranja */
+                color: #0077b6;
+                border-color: #ffa500;
+            }
+
+            /* Total del precio */
+            #totalPrice {
+                font-size: 1.2rem;
+                color: #0077b6; /* Azul profundo */
+                text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+            }
+
+            /* Botón 'Cerrar' */
+            #cartModal .btn-secondary {
+                background-color: #0077b6;
+                color: white;
+                border: none;
+            }
+
+            #cartModal .btn-secondary:hover {
+                background-color: #005f86;
+            }
+
+            /* Estilo del header y footer */
+            #cartModal .modal-header {
+                border-bottom: 2px solid #0077b6; /* Azul profundo */
+            }
+
+            #cartModal .modal-footer {
+                border-top: 2px solid #0077b6;
+            }
+            #cartModal .modal-dialog {
+                transform: translateY(20px); /* Comienza ligeramente desplazado hacia abajo */
+                transition: transform 0.6s ease-out; /* Transición suave */
+            }
+            #cartModal.show .modal-dialog {
+                transform: translateY(0); /* Se mueve hacia su posición original */
+            }
+            /* HR animado */
+            .animated-hr {
+                border: 0;
+                height: 2px;
+                background: linear-gradient(90deg, #f9a825, #3a3a8c);
+                animation: hrAnimation 1.5s ease-out infinite;
+            }
+
+            @keyframes hrAnimation {
+                0% {
+                    width: 0%;
+                }
+                50% {
+                    width: 50%;
+                }
+                100% {
+                    width: 100%;
+                }
+            }
+            /* Personalización de la barra de desplazamiento */
+            .list-group::-webkit-scrollbar {
+                width: 6px; /* Ancho de la barra */
+            }
+            .list-group::-webkit-scrollbar-thumb {
+                background-color: #fecd7b; /* Color del control */
+                border-radius: 4px; /* Redondear bordes */
+            }
+            .list-group::-webkit-scrollbar-thumb:hover {
+                background-color: #7bccfe; /* Color al pasar el mouse */
+            }
+            .list-group::-webkit-scrollbar-track {
+                background: #f8f9fa; /* Fondo del track */
+            }
+            #confirmOrderModal .modal-dialog {
+                transform: translateY(20px); /* Comienza desde abajo */
+                transition: transform 0.6s ease-out; /* Transición lenta */
+            }
+            #confirmOrderModal.show .modal-dialog {
+                transform: translateY(0); /* Se mueve hacia su posición original */
+            }
+            /* Estilo para los elementos que aparecerán gradualmente */
+            .fade-slide-in {
+                opacity: 0;
+                transform: translateY(40px); /* Comienza ligeramente abajo */
+                transition: opacity 1.5s ease, transform 1.5s ease; /* Transición de desvanecimiento y deslizamiento */
+            }
+
+            .fade-slide-in.visible {
+                opacity: 1;
+                transform: translateY(0); /* Mueve al lugar original */
+            }
+            /* Estilo único para el banner de bienvenida */
+            .welcome-banner {
+                background: linear-gradient(135deg, #00bfff, #ff6347); /* Degradado azul celeste a naranja */
+                color: white;
+                text-align: center;
+                padding: 30px 15px;
+                border-radius: 10px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            }
+
+            .welcome-banner h3 {
+                font-size: 2.5rem;
+                font-weight: bold;
+                margin-bottom: 10px;
+            }
+
+            .welcome-banner p {
+                font-size: 1.25rem;
+            }
+
+            /* Estilo único para los mensajes informativos */
+            .info-message {
+                background-color: rgba(255, 255, 255, 0.9);
+                padding: 15px;
+                border-radius: 5px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                text-align: center;
+                margin-top: 20px;
+            }
+
+            .info-message a {
+                color: #ff6347; /* Naranja */
+                text-decoration: none;
+                font-weight: bold;
+            }
+
+            .info-message a:hover {
+                text-decoration: underline;
+            }
+        </style>
+    </head>
+    <body class="bg-custom-2">
+         <!-- Navbar -->
+        <div th:replace="~{vistas/navbar::encabezado}"></div>
+         <!-- Anuncio -->
+        <div class="container-fluid welcome-banner fade-slide-in">
+            <h3>Bienvenido a Cevichería Cachina Fish</h3>
+            <p>Tu lugar para disfrutar de los mejores ceviches y mariscos frescos. ¡Bienvenido a tu cevichería favorita!</p>
+        </div>
+
+        <div class="container mt-4 fade-slide-in">
+            <!-- Mensaje de estado del usuario -->
+            <main>
+                <div th:if="${currentUser == null}" class="info-message">
+                    <p>Debes <a href="/login">iniciar sesión</a> o <a href="/register">registrarte</a> para interactuar con el contenido.</p>
+                </div>
+                <div th:if="${currentUser != null}" class="info-message">
+                    <p>¡Estás listo para interactuar con el contenido! Disfruta de nuestros servicios exclusivos.</p>
+                </div>
+            </main>
+        </div>
+        <!-- Modales -->
+        <div  th:replace="~{vistas/modales/modales::modalContainer}"></div>
+        <!-- Carousel -->
+        <div  th:replace="~{vistas/carrousel::carrousel}"> </div>
+        <!-- Cartas horizontales -->
+        <div  th:replace="~{vistas/cartas/horizontales::cartas_horizontales(platosPorCategoria=${platosPorCategoria})}"></div>
+        <!-- Cartas verticales-->
+        <div  th:replace="~{vistas/cartas/verticales::cartas_verticales(platosPorCategoria=${platosPorCategoria})}"></div>
+        <!-- Formulario Reservas-->
+        <div  th:replace="~{vistas/reserva::reserva}"></div>
+        <!-- Modal del carrito -->
+        <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content border-0">
+                    <div class="modal-header bg-orange text-white border-bottom-0">
+                        <h5 class="modal-title" id="cartModalLabel">Carrito de Compras</h5>
+                        <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body bg-light p-4">
+                        <ul id="cartItems" class="list-group overflow-auto p-3" style="max-height: 520px;">
+                            <!-- Aquí se mostrarán los platos agregados al carrito -->
+                        </ul>
+                        <hr class="my-4 animated-hr">
+                            <div class="mt-3">
+                                <span id="totalPrice" class="fw-bold text-primary">Total: S/. 0.00</span>
+                            </div>
+                    </div>
+                    <div class="modal-footer bg-primary text-white border-top-0">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="button" id="realizarPedidoBtn" class="btn btn-orange">Realizar pedido</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal de Confirmación -->
+        <div class="modal fade" id="confirmOrderModal" tabindex="-1" aria-labelledby="confirmOrderModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmOrderModalLabel">Completa tu información</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="confirmOrderForm">
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Correo electrónico</label>
+                                <input type="email" class="form-control" id="email" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">Número de teléfono</label>
+                                <input type="tel" class="form-control" id="phone" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="direccion" class="form-label">Dirección</label>
+                                <input type="text" class="form-control" id="direccion" required>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary" id="sendOrder">Enviar Pedido</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal de Carga -->
+        <div class="modal fade" id="loadingModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body text-center">
+                        <!-- Spinner -->
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Cargando...</span>
+                        </div>
+                        <!-- Mensaje -->
+                        <p class="mt-3 fs-5 text-muted">Enviando pedido, por favor espera...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Toast para notificación de producto agregado -->
+        <div id="cartToast" 
+             class="toast position-fixed top-0 start-50 translate-middle-x mt-3" 
+             role="alert" 
+             aria-live="assertive" 
+             aria-atomic="true" 
+             data-bs-autohide="true" 
+             data-bs-delay="2000" 
+             style="z-index: 10060; max-width: 400px; border-radius: 10px; pointer-events: none;">
+            <div class="toast-header bg-primary text-white" style="background-color: rgba(0, 123, 255, 0.8);">
+                <strong class="me-auto fs-5">Carrito</strong>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close" style="pointer-events: auto;"></button>
+            </div>
+            <div class="toast-body fs-5 text-center" style="background-color: rgba(0, 123, 255, 0.6); color: #fff;">
+                Producto agregado al carrito de compras.
+            </div>
+        </div>
+        <!-- Toast para notificación de falta de datos -->
+        <div id="cartToast2" 
+             class="toast position-fixed top-0 start-50 translate-middle-x mt-3" 
+             role="alert" 
+             aria-live="assertive" 
+             aria-atomic="true" 
+             data-bs-autohide="true" 
+             data-bs-delay="2000" 
+             style="z-index: 10060; max-width: 400px; border-radius: 10px; pointer-events: none;">
+            <div class="toast-header" style="background-color: rgba(255, 165, 0, 0.8); box-shadow: 0 0 15px rgba(255, 165, 0, 0.8);">
+                <strong class="me-auto fs-5 text-white">Carrito</strong>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close" style="pointer-events: auto;"></button>
+            </div>
+            <div class="toast-body fs-5 text-center" style="background-color: rgba(255, 165, 0, 0.5); color: #fff; box-shadow: 0 0 10px rgba(255, 165, 0, 0.8);">
+                Para que puedas pagar por tus pedidos, primero debes rellenar estos datos.
+            </div>
+        </div>
+        <!-- Mnesaje -->
+        <div aria-live="polite" aria-atomic="true" class="position-fixed top-0 end-0 p-3" style="z-index: 10500; pointer-events: auto;">
+            <div id="errorToast" class="toast align-items-center text-bg-danger border-0" data-bs-delay="2000"  role="alert" aria-live="assertive" aria-atomic="true" style="pointer-events: none;">
+                <div class="d-flex">
+                    <div class="toast-body" style="pointer-events: auto;">
+                        No puedes agregar más de 10 unidades del mismo plato.
+                    </div>
+                    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close" style="pointer-events: auto;"></button>
+                </div>
+            </div>
+        </div>
+        <div aria-live="polite" aria-atomic="true" class="position-fixed top-0 end-0 p-3" style="z-index: 10500; pointer-events: auto;">
+            <div id="warningToast" class="toast align-items-center text-bg-warning border-0" role="alert" aria-live="assertive" aria-atomic="true" style="pointer-events: none;">
+                <div class="d-flex">
+                    <div class="toast-body" style="pointer-events: auto;">
+                        Tu carrito está vacío.
+                    </div>
+                    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close" style="pointer-events: auto;"></button>
+                </div>
+            </div>
+        </div>
+        <div aria-live="polite" aria-atomic="true" class="position-fixed top-0 end-0 p-3" style="z-index: 10500; pointer-events: auto;">
+            <div id="infoToast" class="toast align-items-center text-bg-info border-0" role="alert" aria-live="assertive" aria-atomic="true" style="pointer-events: none;">
+                <div class="d-flex">
+                    <div class="toast-body" style="pointer-events: auto;">
+                        Por favor, completa todos los campos.
+                    </div>
+                    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close" style="pointer-events: auto;"></button>
+                </div>
+            </div>
+        </div>
+        <div aria-live="polite" aria-atomic="true" class="position-fixed top-0 end-0 p-3" style="z-index: 10500; pointer-events: auto;">
+            <div id="warningToast2" class="toast align-items-center text-bg-warning border-0" role="alert" aria-live="assertive" aria-atomic="true" style="pointer-events: none;">
+                <div class="d-flex">
+                    <div class="toast-body" style="pointer-events: auto;">
+                        La cantidad mínima es 1.
+                    </div>
+                    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close" style="pointer-events: auto;"></button>
+                </div>
+            </div>
+        </div>
+        <!-- Botón del carrito (inicio oculto) -->
+        <button id="cartButton" class="btn btn-outline-warning position-fixed bottom-0 start-0 m-4 rounded-circle d-flex align-items-center justify-content-center p-3 shadow-lg border-0"
+                data-bs-toggle="modal" data-bs-target="#cartModal" style="display: none;">
+            <i class="bi bi-cart fs-2 text-warning"></i>
+        </button>
+        <!-- Botón del camaron -->
+        <button id="backToTopBtn" onclick="scrollToTop()">
+            <img src="imagenes/vecteezy_shrimp-png-clipart_27738778.png" alt="Subir"/> <!-- Asegúrate de cambiar el enlace de la imagen -->
+        </button>
+        <!-- Footer -->
+        <div  th:replace="~{vistas/footer::footer}"></div>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                botonMas();
+                initializeCart();
+            });
+            // Función para ocultar la pantalla de carga y mostrar el contenido
+            window.onload = function () {
+                document.getElementById('loader').style.display = 'none'; // Oculta el loader
+                document.body.style.visibility = 'visible'; // Muestra el contenido de la página
+                document.body.style.opacity = '1'; // Transición suave para mostrar el contenido
+            };
+            // Pagina animación
+            document.addEventListener("DOMContentLoaded", function () {
+                const fadeElements = document.querySelectorAll('.fade-slide-in'); // Selecciona todos los elementos con esta clase
+
+                const checkVisibility = () => {
+                    fadeElements.forEach((element) => {
+                        const rect = element.getBoundingClientRect();
+                        // Si la parte superior del elemento es visible en el viewport
+                        if (rect.top >= 0 && rect.top <= window.innerHeight) {
+                            // Verifica si el elemento aún no tiene la clase visible
+                            if (!element.classList.contains('visible')) {
+                                // Usa un temporizador para añadir un efecto escalonado
+                                const delay = Array.from(fadeElements).indexOf(element) * 10; // 300ms entre cada elemento
+                                setTimeout(() => {
+                                    element.classList.add('visible');
+                                }, delay);
+                            }
+                        }
+                    });
+                };
+
+                // Verifica si algunos elementos ya están visibles al cargar la página
+                checkVisibility();
+
+                // Ejecuta la función cuando el usuario haga scroll
+                window.addEventListener('scroll', checkVisibility);
+            });
+        </script>
+        <script src="/js/funtion_ex.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    </body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+
+<body th:fragment="footer"> 
+<!-- Footer -->
+<footer  id="footer" class="bg-custom-3 text-light pt-5 pb-3">
+    <div class="container">
+        <div class="row">
+            <!-- Columna de Información de la Empresa -->
+            <div class="col-md-4 mb-4">
+                <h5 class="text-warning">Cevichería Cachina Fish</h5>
+                <p th:text="#{footer.disfruta}"class="text-light"></p>
+                <ul class="list-unstyled">
+                    <li><a th:text="#{footer.nosotros}" href="#" class="text-light"></a></li>
+                    <li><a th:text="#{footer.privacidad}" href="#" class="text-light"></a></li>
+                    <li><a th:text="#{footer.terminos}" href="#" class="text-light"></a></li>
+                    <li><a th:text="#{footer.reclamaciones}" href="/reclamaciones" class="text-light"></a></li>
+                    <li><a th:text="#{footer.sugerencias}" href="/sugerencias" class="text-light"></a></li>
+                </ul>
+            </div>
+            <!-- Columna de Enlaces Rápidos -->
+            <div class="col-md-4 mb-4">
+                <h5 th:text="#{footer.enlaces}" class="text-warning"></h5>
+                <ul class="list-unstyled">
+                    <li><a th:text="#{footer.inicio}" href="#" class="text-light"></a></li>
+                    <li><a th:text="#{footer.menu}" href="#" class="text-light"></a></li>
+                    <li><a th:text="#{footer.reservas}" href="#" class="text-light"></a></li>
+                    <li><a th:text="#{footer.galeria}" href="#" class="text-light"></a></li>
+                    <li><a th:text="#{footer.contacto}" href="/contactos" class="text-light"></a></li>
+                </ul>
+            </div>
+            <!-- Columna de Contacto y Redes Sociales -->
+            <div class="col-md-4 mb-4">
+                <h5 th:text="#{footer.contacto}" class="text-warning"></h5>
+                <p class="text-light"><i class="bi bi-geo-alt"></i> Prd. 15, Las Flores, San Juan de Lurigancho Lima, Perú</p>
+                <p class="text-light"><i class="bi bi-telephone"></i> (+51) 920 826 294</p>
+                <p class="text-light"><i class="bi bi-envelope"></i> Lacachinafish.barracevichera@gmail.com</p>
+                
+                <h5 th:text="#{footer.siguenos}" class="text-warning mt-4"></h5>
+                <a href="https://www.facebook.com/SabrosuraAchoradaza/?locale=es_LA" class="btn btn-outline-light btn-icon me-2"><i class="bi bi-facebook"></i></a>
+                <a href="#" class="btn btn-outline-light btn-icon me-2"><i class="bi bi-twitter"></i></a>
+                <a href="https://www.instagram.com/la_cachina_fish_cevicheria" class="btn btn-outline-light btn-icon me-2"><i class="bi bi-instagram"></i></a>
+                <a href="#" class="btn btn-outline-light btn-icon"><i class="bi bi-youtube"></i></a>
+            </div>
+        </div>
+        <!-- Línea de Separación -->
+        <hr class="border-warning my-3">
+        <!-- Subfooter -->
+        <div class="row text-center">
+            <div class="col">
+                <p th:text="#{footer.derechos}" class="text-light mb-0"></p>
+                <p th:text="#{footer.creadores}" class="text-warning mb-0"></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    </body>
+</html>

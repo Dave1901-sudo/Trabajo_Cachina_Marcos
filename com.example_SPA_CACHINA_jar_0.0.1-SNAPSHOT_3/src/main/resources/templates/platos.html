@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Formulario platos</title>
+        <link rel="icon" href="imagenes/Logo.jpg" type="image/x-icon">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+              integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+        <link rel="stylesheet" href="/Style/Style_form.css">
+        <link rel="stylesheet" href="/Style/Style_carrousel.css">
+        <style>
+            .spinner {
+                width: 150px; /* Tamaño de la imagen del camarón */
+                height: 150px;
+                background-image: url('imagenes/vecteezy_shrimp-png-clipart_27738778.png');
+                background-size: contain;
+                background-repeat: no-repeat;
+                animation: spin 1s linear infinite;
+            }
+        </style>    
+    </head>
+
+    <body class="d-flex flex-column min-vh-100 bg-custom-2">
+
+
+        <!-- Navbar -->
+        <div th:replace="~{vistas/navbar::encabezado}"></div>
+        <!-- Main Content -->
+        <div class="container my-5" style="max-width: 90%;">
+            <div class="row justify-content-center">
+
+                <div class="col-md-8 bg-light shadow-lg rounded p-4">
+                    <h5 class="card-title text-warning text-center mb-3" style="font-size: 1.75rem;">Platos</h5>
+                    <p class="card-text text-primary text-center fs-5 mb-4">Ingrese sus Platos.</p>
+
+                    <form th:action="@{/registrarPlatos}" method="post" th:object="${platos}" enctype="multipart/form-data">
+
+                        <div th:if="${errorMessage}" class="alert alert-danger d-flex align-items-center" role="alert">
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i> 
+                            <span th:text="${errorMessage}"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <input type="text" 
+                                   class="form-control form-control-lg border-primary"
+                                   placeholder="Nombre del plato"
+                                   name="nombre" th:field="*{nombre}" required="true">
+                        </div>
+
+                        <div class="mb-3">
+                            <input type="text" 
+                                   class="form-control form-control-lg border-primary"
+                                   placeholder="Descripcion del plato"
+                                   name="descripcion" th:field="*{descripcion}" required="true">
+                        </div>
+
+                        <div class="mb-3">
+                            <input type="number" 
+                                   class="form-control form-control-lg border-primary"
+                                   placeholder="Precio del plato"
+                                   name="precio" th:field="*{precio}" required="true" step="0.01">
+                        </div>
+
+                        <div class="mb-3">
+                            <input type="file" 
+                                   class="form-control form-control-lg border-primary"
+                                   th:placeholder="#{imagen URL}"
+                                   name="imagenArchivo" id="imagenArchivo" accept="image/*" required="true">
+                        </div>
+
+                        <div class="mb-3">
+                            <input type="text" 
+                                   class="form-control form-control-lg border-primary"
+                                   placeholder="Categoria del plato"
+                                   name="categoria" th:field="*{categoria}" required="true">
+                        </div>
+
+                        <div class="d-flex justify-content-center">
+                            <button type="submit" 
+                                    class="btn btn-success btn-lg me-2" 
+                                    style="font-size: 1.2rem;">Enviar</button>
+                            <button type="button" 
+                                    onclick="window.location.href = '/formResultadoPlatos'" 
+                                    class="btn btn-secondary btn-lg" 
+                                    style="font-size: 1.2rem;">
+                                Ver platos almacenados
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- Footer -->
+        <div th:replace="~{vistas/footer::footer}"></div>
+
+        <!-- Bootstrap JS -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+        <script src="/js/funtion_ex.js"></script>
+        <script>
+                                        // Función para ocultar la pantalla de carga y mostrar el contenido
+                                        window.onload = function () {
+                                            document.getElementById('loader').style.display = 'none'; // Oculta el loader
+                                            document.body.style.visibility = 'visible'; // Muestra el contenido de la página
+                                            document.body.style.opacity = '1'; // Transición suave para mostrar el contenido
+                                        };
+        </script>    
+    </body>
+
+</html>

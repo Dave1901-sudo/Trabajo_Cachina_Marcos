@@ -1,0 +1,147 @@
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Lista de Usuarios - Cachina Fish</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <!-- Bootstrap 5.0.2 CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+        
+        <!-- Bootstrap Icons CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+        <style>
+            /* General body styling */
+            body {
+                background-color: #f4f8fb;
+                font-family: 'Arial', sans-serif;
+                margin: 0;
+                padding: 0;
+            }
+
+            /* Main container */
+            .container {
+                margin-top: 50px;
+                padding: 30px;
+                max-width: 1200px;
+                background-color: white;
+                border-radius: 12px;
+                box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+            }
+
+            /* Title styles */
+            h1 {
+                color: #003a63;
+                text-align: center;
+                font-size: 36px;
+                font-weight: bold;
+                margin-bottom: 40px;
+                text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.1);
+            }
+
+            /* Table styles */
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 20px;
+            }
+
+            table thead {
+                background-color: #0054a0;
+                color: white;
+            }
+
+            table th, table td {
+                padding: 15px;
+                text-align: center;
+                border: 1px solid #ddd;
+            }
+
+            table tbody tr:nth-child(even) {
+                background-color: #f7f7f7;
+            }
+
+            table tbody tr:hover {
+                background-color: #e3f2fd;
+                cursor: pointer;
+            }
+
+            /* Button styles for "Eliminar" */
+            button {
+                background-color: #f6a945;
+                color: white;
+                padding: 8px 12px;
+                border: none;
+                border-radius: 6px;
+                font-weight: bold;
+                transition: background-color 0.3s;
+            }
+
+            button:hover {
+                background-color: #003a63;
+            }
+
+            /* Link styling */
+            a {
+                text-decoration: none;
+                color: #0054a0;
+                font-weight: bold;
+                font-size: 18px;
+                display: block;
+                text-align: center;
+                margin-top: 40px;
+            }
+
+            a:hover {
+                color: #f6a945;
+            }
+
+            /* Footer styling */
+            .footer {
+                text-align: center;
+                color: #003a63;
+                font-size: 16px;
+                margin-top: 40px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="container">
+            <h1>Lista de Usuarios</h1>
+
+            <!-- User Table -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Role</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="user : ${users}">
+                        <td th:text="${user.username}"></td>
+                        <td th:text="${user.role}"></td>
+                        <td>
+                            <form action="/admin/deleteUser" method="POST" style="display:inline">
+                                <input type="hidden" name="username" th:value="${user.username}"/>
+                                <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>  <!-- CSRF token -->
+                                <button type="submit">
+                                    <i class="bi bi-trash"></i> Eliminar
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Return Link -->
+            <a th:href="@{/admin}">Volver al Panel de Administración</a>
+            <a th:href="@{/admin/roleForm}">Actualizar Rol de Usuario</a>
+        </div>
+
+        <!-- Bootstrap 5.0.2 JS -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+</html>

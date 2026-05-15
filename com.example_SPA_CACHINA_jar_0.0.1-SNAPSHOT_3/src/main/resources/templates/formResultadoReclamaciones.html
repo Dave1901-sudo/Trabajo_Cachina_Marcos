@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Resultado de la Reclamación</title>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.2/css/bootstrap.min.css" rel="stylesheet">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+            <link rel="stylesheet" href="/Style/Style_carrousel.css">
+                <link rel="stylesheet" href="/Style/formresultadoReclamaciones.css">
+                    <style>
+                        .spinner {
+                            width: 150px; /* Tamaño de la imagen del camarón */
+                            height: 150px;
+                            background-image: url('imagenes/vecteezy_shrimp-png-clipart_27738778.png');
+                            background-size: contain;
+                            background-repeat: no-repeat;
+                            animation: spin 1s linear infinite;
+                        }
+                    </style>
+                    </head>
+                    <body>
+                        <!-- Navbar -->
+                        <div th:replace="~{vistas/navbar::encabezado}"></div>
+
+<div class="container my-5">
+    <h1 th:text="#{resultado.reclamacion}" class="reclamacion-title text-center mb-4">Resultado de la Reclamación</h1>
+    <div class="text-center mb-4">
+        <a th:href="@{/reclamaciones}" class="btn btn-agregar-contacto cevicheria-btn-custom">Agregar Contacto</a>
+    </div>
+    <div class="cevicheria-container-transparent p-4 mb-5">
+        <div class="row">
+            <div class="col-md-6 col-lg-4 mb-4" th:each="reclamaciones : ${lista}">
+                <div class="card cevicheria-card animate__animated animate__fadeIn h-100">
+                    <div class="card-body d-flex flex-column">
+                        <h2 th:text="#{resultado.consumidor}" class="reclamacion-title">Información del Consumidor</h2>
+                        <h5 class="card-title cevicheria-info-label">Id: 
+                            <span class="cevicheria-info-value" th:text="${reclamaciones.idreclamaciones}"></span>
+                        </h5>
+                        <div class="mb-3">
+                            <span class="reclamacion-info-label" th:text="#{formulario.nombre.imprimir}">Nombre Completo:</span>
+                            <span class="reclamacion-info-value" th:text="${reclamaciones.nombre_Completo}"></span>
+                        </div>
+                        <div class="mb-3">
+                            <span class="reclamacion-info-label" th:text="#{formulario.domicilio.imprimir}">Domicilio:</span>
+                            <span class="reclamacion-info-value" th:text="${reclamaciones.domicilio}"></span>
+                        </div>
+                        <div class="mb-3">
+                            <span class="reclamacion-info-label" th:text="#{formulario.dni.imprimir}">DNI/CE:</span>
+                            <span class="reclamacion-info-value" th:text="${reclamaciones.dni_Ce}"></span>
+                        </div>
+                        <div class="mb-3">
+                            <span class="reclamacion-info-label" th:text="#{formulario.telefono.imprimir}">Número de Teléfono:</span>
+                            <span class="reclamacion-info-value" th:text="${reclamaciones.telefono}"></span>
+                        </div>
+                        <div class="mb-3">
+                            <span class="reclamacion-info-label" th:text="#{formulario.correo.imprimir}">Correo Electrónico:</span>
+                            <span class="reclamacion-info-value" th:text="${reclamaciones.correo_Electronico}"></span>
+                        </div>
+                        <h2 th:text="#{resultado.reclamacion.bien}" class="reclamacion-title">Información del Bien Reclamado</h2>
+                        <div class="mb-3">
+                            <span class="reclamacion-info-label" th:text="#{formulario.tipoBien.imprimir}">Tipo de Bien:</span>
+                            <span class="reclamacion-info-value" th:text="${reclamaciones.tipo_Bien}"></span>
+                        </div>
+                        <div class="mb-3">
+                            <span class="reclamacion-info-label" th:text="#{formulario.montoReclamado.imprimir}">Monto Reclamado:</span>
+                            <span class="reclamacion-info-value" th:text="${reclamaciones.monto_Reclamado}"></span>
+                        </div>
+                        <div class="mb-3">
+                            <span class="reclamacion-info-label" th:text="#{formulario.descripcionBien.imprimir}">Descripción del Bien:</span>
+                            <span class="reclamacion-info-value" th:text="${reclamaciones.descripcion_Bien}"></span>
+                        </div>
+                        <h2 th:text="#{resultado.reclamacion.bien.detalles}" class="reclamacion-title">Detalles de la Reclamación</h2>
+                        <div class="mb-3">
+                            <span class="reclamacion-info-label" th:text="#{formulario.tipoReclamacion.imprimir}">Tipo de Reclamación:</span>
+                            <span class="reclamacion-info-value" th:text="${reclamaciones.tipo_Reclamacion}"></span>
+                        </div>
+                        <div class="mb-3">
+                            <span class="reclamacion-info-label" th:text="#{formulario.detalleReclamacion.imprimir}">Detalles de la Reclamación:</span>
+                            <span class="reclamacion-info-value" th:text="${reclamaciones.detalle_Reclamacion}"></span>
+                        </div>
+                        <div class="mb-3">
+                            <span class="reclamacion-info-label" th:text="#{formulario.detallePedido.imprimir}">Detalles del Pedido:</span>
+                            <span class="reclamacion-info-value" th:text="${reclamaciones.detalle_Pedido}"></span>
+                        </div>
+
+                        <div class="card-footer container-all d-flex justify-content-between mt-auto">
+                            <a th:href="@{/getEditReclamaciones/{id}(id=${reclamaciones.idreclamaciones})}" class="btn btn-outline-primary btn-sm cevicheria-btn-edit">Editar</a>
+                            <a th:href="@{/deleteReclamaciones(id=${reclamaciones.idreclamaciones})}" class="btn btn-outline-danger btn-sm cevicheria-btn-delete">Eliminar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="text-center">
+        <a href="/reclamaciones" class="cevicheria-btn-custom text-decoration-none border-warning mt-3">Volver</a>
+    </div>
+    <footer class="reclamacion-footer mt-3">
+        <p>© 2024 Cevichería - San Juan de Lurigancho</p>
+    </footer>
+</div>
+
+
+                        <div th:replace="~{vistas/footer::footer}"></div>
+
+                        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.2/js/bootstrap.bundle.min.js"></script>
+                        <script>
+                            // Función para ocultar la pantalla de carga y mostrar el contenido
+                            window.onload = function () {
+                                document.getElementById('loader').style.display = 'none'; // Oculta el loader
+                                document.body.style.visibility = 'visible'; // Muestra el contenido de la página
+                                document.body.style.opacity = '1'; // Transición suave para mostrar el contenido
+                            };
+                        </script>    
+                    </body>
+                    </html>

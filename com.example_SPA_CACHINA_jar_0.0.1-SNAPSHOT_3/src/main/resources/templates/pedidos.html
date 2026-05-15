@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Listado de Pedidos</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+        <style>
+            body {
+                background-color: #f8f9fa;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                margin: 0;
+                padding: 0;
+            }
+            h1 {
+                text-align: center;
+                margin-top: 30px;
+                font-size: 2.5rem;
+                color: #2c3e50;
+                text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            }
+            .container {
+                max-width: 1550px;
+                margin: 30px auto;
+                padding: 40px;
+                background: #ffffff;
+                border-radius: 12px;
+                box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+            }
+            .table {
+                background-color: #ffffff;
+                border-radius: 10px;
+                border: none;
+                color: #34495e;
+                box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+                width: 100%;
+            }
+            .table th, .table td {
+                padding: 16px;
+                text-align: center;
+                vertical-align: middle;
+                font-size: 1.1rem;
+            }
+            .table th {
+                background-color: #3498db;
+                color: white;
+            }
+            .table tr:hover {
+                background-color: #ecf0f1;
+                transition: all 0.3s ease;
+                cursor: pointer;
+            }
+            .action-buttons {
+                display: flex;
+                gap: 10px;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            .action-buttons form button {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                padding: 10px 20px;
+                border-radius: 50px;
+                font-size: 1rem;
+                border: none;
+                transition: transform 0.3s ease, background-color 0.3s ease;
+                white-space: nowrap;
+            }
+            .action-buttons form button:hover {
+                transform: scale(1.05);
+            }
+            .btn-primary {
+                background-color: #3498db;
+                color: white;
+            }
+            .btn-primary:hover {
+                background-color: #2980b9;
+            }
+            .btn-danger {
+                background-color: #e74c3c;
+                color: white;
+            }
+            .btn-danger:hover {
+                background-color: #c0392b;
+            }
+            .btn-success {
+                background-color: #2ecc71;
+                color: white;
+            }
+            .btn-success:hover {
+                background-color: #27ae60;
+            }
+            .btn-warning {
+                background-color: #f39c12;
+                color: white;
+            }
+            .btn-warning:hover {
+                background-color: #e67e22;
+            }
+            .no-print {
+                display: inline-block;
+                font-size: 1.1rem;
+                padding: 12px 20px;
+                border-radius: 50px;
+                background-color: #3498db;
+                color: white;
+                text-decoration: none;
+            }
+            .no-print:hover {
+                background-color: #2980b9;
+            }
+            @media (max-width: 768px) {
+                .container {
+                    padding: 20px;
+                }
+                h1 {
+                    font-size: 1.8rem;
+                }
+                .table th, .table td {
+                    font-size: 1rem;
+                }
+                .action-buttons {
+                    flex-direction: column;
+                    align-items: stretch;
+                    gap: 15px;
+                }
+            }
+        </style>
+        <script>
+            function printTable() {
+                var printWindow = window.open('/admin/printTemplate', '', 'height=600,width=800');
+
+                printWindow.onload = function () {
+                    var tableClone = document.querySelector('.container').cloneNode(true);
+
+                    var headers = tableClone.querySelectorAll('thead tr th');
+                    var rows = tableClone.querySelectorAll('tbody tr');
+
+                    headers[headers.length - 1].remove();
+
+                    rows.forEach(row => {
+                        row.lastElementChild.remove();
+                    });
+
+                    var tableContent = tableClone.querySelector('.table').innerHTML;
+                    var printTable = printWindow.document.querySelector('table');
+                    printTable.innerHTML = tableContent;
+
+                    printWindow.print();
+                };
+            }
+        </script>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Listado de Pedidos</h1>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Fecha de Pedido</th>
+                        <th>Email</th>
+                        <th>Telefono</th>
+                        <th>Direccion</th>
+                        <th>Total</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <th:block th:each="pedido : ${pedidos}">
+                        <tr>
+                            <td th:text="${pedido.id}"></td>
+                            <td th:text="${#dates.format(pedido.fechaPedido, 'yyyy-MM-dd')}"></td>
+                            <td th:text="${pedido.email}"></td>
+                            <td th:text="${pedido.phone}"></td>
+                            <td th:text="${pedido.direccion}"></td>
+                            <td th:text="${pedido.total}"></td>
+                            <td th:text="${pedido.estado}"></td>
+                            <td class="action-buttons">
+                                <a th:href="@{/pedidos/editar/{id}(id=${pedido.id})}" class="btn btn-primary">
+                                    <i class="fas fa-edit"></i> Editar
+                                </a>
+                                <a th:href="@{/pedidos/eliminar/{id}(id=${pedido.id})}" class="btn btn-danger">
+                                    <i class="fas fa-trash-alt"></i> Eliminar
+                                </a>
+                                <a th:href="@{/pedidos/detalles/{id}(id=${pedido.id})}" class="btn btn-info">
+                                    <i class="fas fa-info-circle"></i> Ver Detalles
+                                </a>
+                                <form th:action="@{/pedidos/confirmar/{id}(id=${pedido.id})}" method="post" style="display:inline;">
+                                    <button type="submit" class="btn" 
+                                            th:text="${pedido.estado == 'Pendiente' ? 'Confirmar Pedido' : 'Desconfirmar Pedido'}" 
+                                            th:class="${pedido.estado == 'Pendiente' ? 'btn-success' : 'btn-warning'}">
+                                        <i class="fas" th:class="${pedido.estado == 'Pendiente' ? 'fa-check' : 'fa-times'}"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    </th:block>
+                </tbody>
+            </table>
+            <div class="d-flex justify-content-between">
+                <button class="btn btn-info mb-3 no-print" onclick="printTable()">
+                    <i class="fas fa-print"></i> Imprimir Pedidos
+                </button>
+                <a th:href="@{/admin}" class="btn btn-warning mb-3 no-print">
+                    <i class="fas fa-arrow-left"></i> Volver al Panel de Administración
+                </a>
+            </div>
+        </div>
+    </body>
+</html>

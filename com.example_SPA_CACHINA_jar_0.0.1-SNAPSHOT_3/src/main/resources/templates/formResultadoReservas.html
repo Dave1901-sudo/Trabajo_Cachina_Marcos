@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Resultado del Registro</title>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.2/css/bootstrap.min.css" rel="stylesheet">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+            <link rel="stylesheet" href="/Style/Style_carrousel.css">
+                <link rel="stylesheet" href="/Style/frmResevaresultado.css">
+
+                    <style>
+                        .spinner {
+                            width: 150px; /* Tamaño de la imagen del camarón */
+                            height: 150px;
+                            background-image: url('imagenes/vecteezy_shrimp-png-clipart_27738778.png');
+                            background-size: contain;
+                            background-repeat: no-repeat;
+                            animation: spin 1s linear infinite;
+                        }
+                    </style>
+                    </head>
+                    <body>
+                        <!-- Navbar -->
+                        <div th:replace="~{vistas/navbar::encabezado}"></div>
+
+                        <div class="container my-5">
+
+                            <h1 th:text="#{form.sugerencias.legend.genera.re}" class="info-title">Información de la reserva</h1>
+                            <div class="text-center mb-4">
+                                <a th:href="@{/#reservas}" class="btn btn-agregar-contacto cevicheria-btn-custom">Agregar Reserva</a>
+                            </div>
+                            <div class="cevicheria-container-transparent p-4 mb-5"> <!-- Añadido mb-5 para separación -->
+                                <div class="row">
+                                    <div class="col-md-6 col-lg-4 mb-4" th:each="reservas : ${lista}">
+                                        <div class="card cevicheria-card animate__animated animate__fadeIn h-100">
+                                            <div class="card-body d-flex flex-column">
+                                                <h5 class="card-title cevicheria-info-label">Id: 
+                                                    <span class="cevicheria-info-value" th:text="${reservas.idreservas}"></span>
+                                                </h5>
+                                                <div class="mb-3">
+                                                    <span class="info-label" th:text="#{form.sugerencias.nombre}">Nombre:</span>
+                                                    <span class="info-value" th:text="${reservas.nombre}"></span>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <span class="info-label" th:text="#{form.sugerencias.correo}">Correo:</span>
+                                                    <span class="info-value" th:text="${reservas.correo}"></span>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <span class="info-label" th:text="#{form.sugerencias.fecha.placeholder}">Fecha:</span>
+                                                    <span class="info-value" th:text="${reservas.fecha}"></span>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <span class="info-label" th:text="#{form.sugerencias.hora.placeholder}">Hora:</span>
+                                                    <span class="info-value" th:text="${reservas.hora}"></span>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <span class="info-label" th:text="#{form.sugerencias.persona}">Personas:</span>
+                                                    <span class="info-value" th:text="${reservas.personas}"></span>
+                                                </div>
+                                                <div th:if="${isAdmin}" class="card-footer container-all d-flex justify-content-between mt-auto">
+                                                    <a th:href="@{/getEditReservas/{id}(id=${reservas.idreservas})}" class="btn btn-outline-primary btn-sm cevicheria-btn-edit">Editar</a>
+                                                    <a th:href="@{/deleteReservas(id=${reservas.idreservas})}" class="btn btn-outline-danger btn-sm cevicheria-btn-delete">Eliminar</a>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <a href="/" class="cevicheria-btn-custom text-decoration-none border-warning mt-3">Volver</a>
+                            </div>
+
+                            <footer class="info-footer mt-3">
+                                <p>© 2024 Cevichería - San Juan de Lurigancho</p>
+                            </footer>
+                        </div>
+
+
+                        <div th:replace="~{vistas/footer::footer}"></div>
+
+                        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.2/js/bootstrap.bundle.min.js"></script>
+                        <script>
+                            // Función para ocultar la pantalla de carga y mostrar el contenido
+                            window.onload = function () {
+                                document.getElementById('loader').style.display = 'none'; // Oculta el loader
+                                document.body.style.visibility = 'visible'; // Muestra el contenido de la página
+                                document.body.style.opacity = '1'; // Transición suave para mostrar el contenido
+                            };
+                        </script>    
+                    </body>
+                    </html>

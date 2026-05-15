@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+
+    <body th:fragment="reserva"> 
+<!-- Reservación Inicio -->
+<div class="container-fluid my-5" id="reservas">
+    <div class="container">
+        <h2 id="section-title" class="text-danger text-center mt-4 fade-slide-in">¡Reserva tu mesa ahora!</h2>
+        <hr class="border border-dark w-100">
+        <div class="reservation position-relative overlay-top overlay-bottom">
+            <div class="row align-items-center bg-white rounded shadow-lg overflow-hidden fade-slide-in">
+                <div class="col-lg-6 my-5">
+                    <div class="p-5 text-center text-lg-start">
+                        <div class="mb-4">
+                            <h1 class="display-3 text-danger fw-bold text-uppercase" style="text-shadow: 3px 3px 5px rgba(0,0,0,0.3);">¡30% Descuento!</h1>
+                            <h2 class="text-dark text-uppercase">Por Reservación Online</h2>
+                        </div>
+                        <p class="text-dark lead">Disfruta de nuestros exquisitos ceviches con un 30% de descuento al reservar en línea. ¡Fresco, delicioso y al mejor precio!</p>
+                        <ul class="list-inline text-dark m-0 fs-5">
+                            <li class="py-2"><i class="fa fa-check text-danger me-2"></i>Ceviche de Pescado Fresco</li>
+                            <li class="py-2"><i class="fa fa-check text-danger me-2"></i>Ceviche Mixto con Mariscos</li>
+                            <li class="py-2"><i class="fa fa-check text-danger me-2"></i>Atención Rápida y Cordial</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="text-center p-5 bg-primary text-white" style="border-radius: 0 0.375rem 0.375rem 0; animation: pulse 2s infinite;">
+                        <h1 class="text-white mb-4 display-4">Reserva Tu Mesa</h1>
+                        <form  th:action="@{/registrarReservas}" method="post" th:object="${reservas}">
+                            <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+                                <i class="bi bi-exclamation-triangle-fill"></i> 
+                                <span th:text="${errorMessage}"></span>
+                            </div>
+                            <div class="mb-3">
+                                <input type="text" class="form-control bg-transparent border-light text-white p-3" th:placeholder="#{form.sugerencias.nombre.placeholder}" name="nombre" th:field="*{nombre}" required="true">
+                            </div>
+                            <div class="mb-3">
+                                <input type="email" class="form-control bg-transparent border-light text-white p-3" th:placeholder="#{form.sugerencias.correo.placeholder}" name="correo" th:field="*{correo}" required="true">
+                            </div>
+                            <div class="mb-3">
+                                <input type="date" class="form-control bg-transparent border-light text-white p-3 datetimepicker-input" 
+                                       th:placeholder="#{form.sugerencias.fecha.placeholder}" name="fecha" th:field="*{fecha}" required="true"
+                                       data-target="#date" data-toggle="datetimepicker">
+                            </div>
+                            <div class="mb-3">
+                                <input type="time" class="form-control bg-transparent border-light text-white p-3 datetimepicker-input" 
+                                       th:placeholder="#{form.sugerencias.hora.placeholder}" name="hora" th:field="*{hora}" required="true"
+                                       data-target="#time" data-toggle="datetimepicker">
+                            </div>
+                            <div class="mb-4">
+                                <select class="form-select bg-transparent border-danger text-danger p-3"
+                                         name="personas" th:field="*{personas}" required="true">
+                                    <option value="" disabled selected>Personas</option>
+                                    <option value="1">1 Persona</option>
+                                    <option value="2">2 Personas</option>
+                                    <option value="3">3 Personas</option>
+                                    <option value="4">4 Personas</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-warning btn-block fw-bold py-3" type="submit" th:value="#{form.boton.registrar.re}" style="border-radius: 2rem;">¡Reservar Ahora!</button>
+                            <button class="btn btn-warning btn-block fw-bold py-3" type="button" th:value="#{form.boton.ver.re}" onclick="window.location.href='/formResultadoReservas'" style="border-radius: 2rem;">¡Ver reservas!</button>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Reservación Fin -->
+    </body>
+</html>

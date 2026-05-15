@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+
+    <body th:fragment="modalContainer"> 
+<!-- Modal 1-->
+<div class="modal fade" id="modal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title text-center w-100" id="exampleModalLabel">Ceviche con chicharrón de pota</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <div class="row">
+                  <div class="col-md-6">
+                      <!-- Imagen del plato -->
+                      <img src="../imagenes/CevicheConChicharronDePota.jpg" alt="Ceviche con chicharrón de pota" class="img-fluid rounded">
+                  </div>
+                  <div class="col-md-6 d-flex flex-column justify-content-between">
+                      <!-- Descripción y opciones -->
+                      <div>
+                          <p>Clásico dúo del barrio con todo su recutecu.</p>
+                          <h4>S/. 24,90</h4>
+                          <div class="mb-3">
+                              <label for="comentarios" class="form-label">Comentarios</label>
+                              <textarea class="form-control" id="comentarios" rows="3" placeholder="Opcional"></textarea>
+                          </div>
+                      </div>
+                      <div>
+                          <div class="d-flex align-items-center mb-3">
+                              <label for="cantidad" class="form-label me-2">Cantidad</label>
+                              <input type="number" id="cantidad" class="form-control" value="1" min="1" max="10" style="width: 70px;">
+                          </div>
+                          <button type="button" class="btn btn-danger w-100">Agregar S/. 24,90</button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+ <!-- Modal 2-->
+ <div class="modal fade" id="modal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title text-center w-100" id="exampleModalLabel">Duo marino con arroz de su preferencia</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <div class="row">
+                  <div class="col-md-6">
+                      <!-- Imagen del plato -->
+                      <img src="../imagenes/DuoMarinoConArrozDeSuPreferencia.jpg" alt="Ceviche con chicharrón de pota" class="img-fluid rounded">
+                  </div>
+                  <div class="col-md-6 d-flex flex-column justify-content-between">
+                      <!-- Descripción y opciones -->
+                      <div>
+                          <p>Ceviche de pescado acompañado con arroz de su preferencia.</p>
+                          <h4>S/. 26,90</h4>
+                          <div class="mb-3">
+                              <label for="comentarios" class="form-label">Comentarios</label>
+                              <textarea class="form-control" id="comentarios" rows="3" placeholder="Opcional"></textarea>
+                          </div>
+                      </div>
+                      <div>
+                          <div class="d-flex align-items-center mb-3">
+                              <label for="cantidad" class="form-label me-2">Cantidad</label>
+                              <input type="number" id="cantidad" class="form-control" value="1" min="1" max="10" style="width: 70px;">
+                          </div>
+                          <button type="button" class="btn btn-danger w-100">Agregar S/. 26,90</button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- Modal 3-->
+<div class="modal fade" id="modal3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title text-center w-100" id="exampleModalLabel">Duo con chicharrón de pescado</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <div class="row">
+                  <div class="col-md-6">
+                      <!-- Imagen del plato -->
+                      <img src="../imagenes/DuoConChicharronDePescado.jpg" alt="Ceviche con chicharrón de pota" class="img-fluid rounded">
+                  </div>
+                  <div class="col-md-6 d-flex flex-column justify-content-between">
+                      <!-- Descripción y opciones -->
+                      <div>
+                          <p>Ceviche de pescado y/o mixto con chicharrón de pescado.</p>
+                          <h4>S/. 29,90</h4>
+                          <div class="mb-3">
+                              <label for="comentarios" class="form-label">Comentarios</label>
+                              <textarea class="form-control" id="comentarios" rows="3" placeholder="Opcional"></textarea>
+                          </div>
+                      </div>
+                      <div>
+                          <div class="d-flex align-items-center mb-3">
+                              <label for="cantidad" class="form-label me-2">Cantidad</label>
+                              <input type="number" id="cantidad" class="form-control" value="1" min="1" max="10" style="width: 70px;">
+                          </div>
+                          <button type="button" class="btn btn-danger w-100">Agregar S/. 29,90</button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- Modal 4-->
+<div class="modal fade" id="modal4" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title text-center w-100" id="exampleModalLabel">Trio marino clásico</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <div class="row">
+                  <div class="col-md-6">
+                      <!-- Imagen del plato -->
+                      <img src="../imagenes/TrioMarinoClasico.jpg" alt="Ceviche con chicharrón de pota" class="img-fluid rounded">
+                  </div>
+                  <div class="col-md-6 d-flex flex-column justify-content-between">
+                      <!-- Descripción y opciones -->
+                      <div>
+                          <p>Ceviche de pescado, acompañado de chicharrón más arroz de su preferencia.</p>
+                          <h4>S/. 29,90</h4>
+                          <div class="mb-3">
+                              <label for="comentarios" class="form-label">Comentarios</label>
+                              <textarea class="form-control" id="comentarios" rows="3" placeholder="Opcional"></textarea>
+                          </div>
+                      </div>
+                      <div>
+                          <div class="d-flex align-items-center mb-3">
+                              <label for="cantidad" class="form-label me-2">Cantidad</label>
+                              <input type="number" id="cantidad" class="form-control" value="1" min="1" max="10" style="width: 70px;">
+                          </div>
+                          <button type="button" class="btn btn-danger w-100">Agregar S/. 29,90</button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- Modal 5-->
+<div class="modal fade" id="modal5" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title text-center w-100" id="exampleModalLabel">Trio con leche (Arroz de su preferencia)</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <div class="row">
+                  <div class="col-md-6">
+                      <!-- Imagen del plato -->
+                      <img src="../imagenes/TrioConLeche.jpg" alt="Ceviche con chicharrón de pota" class="img-fluid rounded">
+                  </div>
+                  <div class="col-md-6 d-flex flex-column justify-content-between">
+                      <!-- Descripción y opciones -->
+                      <div>
+                          <p>Trio con leche y arroz de su preferencia (chaufa de mariscos, arroz con mariscos chiclayana y/o arroz con mariscos clásico).</p>
+                          <h4>S/. 29,90</h4>
+                          <div class="mb-3">
+                              <label for="comentarios" class="form-label">Comentarios</label>
+                              <textarea class="form-control" id="comentarios" rows="3" placeholder="Opcional"></textarea>
+                          </div>
+                      </div>
+                      <div>
+                          <div class="d-flex align-items-center mb-3">
+                              <label for="cantidad" class="form-label me-2">Cantidad</label>
+                              <input type="number" id="cantidad" class="form-control" value="1" min="1" max="10" style="width: 70px;">
+                          </div>
+                          <button type="button" class="btn btn-danger w-100">Agregar S/. 29,90</button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- Modal 6-->
+<div class="modal fade" id="modal6" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title text-center w-100" id="exampleModalLabel">Trio con Causa</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <div class="row">
+                  <div class="col-md-6">
+                      <!-- Imagen del plato -->
+                      <img src="../imagenes/TrioConCausa.jpg" alt="Ceviche con chicharrón de pota" class="img-fluid rounded">
+                  </div>
+                  <div class="col-md-6 d-flex flex-column justify-content-between">
+                      <!-- Descripción y opciones -->
+                      <div>
+                          <p>Arroz de su preferencia, ceviche de la casa de pescado o mixto, causa de atún y chicharrón montado.</p>
+                          <h4>S/. 34,90</h4>
+                          <div class="mb-3">
+                              <label for="comentarios" class="form-label">Comentarios</label>
+                              <textarea class="form-control" id="comentarios" rows="3" placeholder="Opcional"></textarea>
+                          </div>
+                      </div>
+                      <div>
+                          <div class="d-flex align-items-center mb-3">
+                              <label for="cantidad" class="form-label me-2">Cantidad</label>
+                              <input type="number" id="cantidad" class="form-control" value="1" min="1" max="10" style="width: 70px;">
+                          </div>
+                          <button type="button" class="btn btn-danger w-100">Agregar S/. 34,90</button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- Modal 7-->
+<div class="modal fade" id="modal7" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title text-center w-100" id="exampleModalLabel">Trio clásico (conchas, pescado, causa)</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <div class="row">
+                  <div class="col-md-6">
+                      <!-- Imagen del plato -->
+                      <img src="../imagenes/TrioClasicoConchasPesCausa.jpg" alt="Ceviche con chicharrón de pota" class="img-fluid rounded">
+                  </div>
+                  <div class="col-md-6 d-flex flex-column justify-content-between">
+                      <!-- Descripción y opciones -->
+                      <div>
+                          <p>Conchas a la chalaca, ceviche de pescado y/o mixto con causa de la casa y chicharrón.</p>
+                          <h4>S/. 34,90</h4>
+                          <div class="mb-3">
+                              <label for="comentarios" class="form-label">Comentarios</label>
+                              <textarea class="form-control" id="comentarios" rows="3" placeholder="Opcional"></textarea>
+                          </div>
+                      </div>
+                      <div>
+                          <div class="d-flex align-items-center mb-3">
+                              <label for="cantidad" class="form-label me-2">Cantidad</label>
+                              <input type="number" id="cantidad" class="form-control" value="1" min="1" max="10" style="width: 70px;">
+                          </div>
+                          <button type="button" class="btn btn-danger w-100">Agregar S/. 34,90</button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- Modal 8-->
+<div class="modal fade" id="modal8" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title text-center w-100" id="exampleModalLabel">Ronda Marina Fria y Caliente</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <div class="row">
+                  <div class="col-md-6">
+                      <!-- Imagen del plato -->
+                      <img src="../imagenes/RondaMarinaFriaYCaliente.jpg" alt="Ceviche con chicharrón de pota" class="img-fluid rounded">
+                  </div>
+                  <div class="col-md-6 d-flex flex-column justify-content-between">
+                      <!-- Descripción y opciones -->
+                      <div>
+                          <p>Chicharrón de pescado , chicharrón de pota , arroz de su preferencia , causa de atún, ceviche de pescado ,mixto o leche de tigre.</p>
+                          <h4>S/. 64,90</h4>
+                          <div class="mb-3">
+                              <label for="comentarios" class="form-label">Comentarios</label>
+                              <textarea class="form-control" id="comentarios" rows="3" placeholder="Opcional"></textarea>
+                          </div>
+                      </div>
+                      <div>
+                          <div class="d-flex align-items-center mb-3">
+                              <label for="cantidad" class="form-label me-2">Cantidad</label>
+                              <input type="number" id="cantidad" class="form-control" value="1" min="1" max="10" style="width: 70px;">
+                          </div>
+                          <button type="button" class="btn btn-danger w-100">Agregar S/. 64,90</button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- Modal 9-->
+<div class="modal fade" id="modal9" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title text-center w-100" id="exampleModalLabel">Leche de Tigre</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <div class="row">
+                  <div class="col-md-6">
+                      <!-- Imagen del plato -->
+                      <img src="../imagenes/LecheDeTigre.jpg" alt="Ceviche con chicharrón de pota" class="img-fluid rounded">
+                  </div>
+                  <div class="col-md-6 d-flex flex-column justify-content-between">
+                      <!-- Descripción y opciones -->
+                      <div>
+                          <p>Rico jugo cevichero acompañado con trozos de pescado y choclo tierno, acompañado con su riquisimo chicharrón.</p>
+                          <h4>S/. 15,90</h4>
+                          <div class="mb-3">
+                              <label for="comentarios" class="form-label">Comentarios</label>
+                              <textarea class="form-control" id="comentarios" rows="3" placeholder="Opcional"></textarea>
+                          </div>
+                      </div>
+                      <div>
+                          <div class="d-flex align-items-center mb-3">
+                              <label for="cantidad" class="form-label me-2">Cantidad</label>
+                              <input type="number" id="cantidad" class="form-control" value="1" min="1" max="10" style="width: 70px;">
+                          </div>
+                          <button type="button" class="btn btn-danger w-100">Agregar S/. 15,90</button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- Modal 10-->
+<div class="modal fade" id="modal10" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title text-center w-100" id="exampleModalLabel">Leche de Pantera</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <div class="row">
+                  <div class="col-md-6">
+                      <!-- Imagen del plato -->
+                      <img src="../imagenes/LecheDePantera.jpg" alt="Ceviche con chicharrón de pota" class="img-fluid rounded">
+                  </div>
+                  <div class="col-md-6 d-flex flex-column justify-content-between">
+                      <!-- Descripción y opciones -->
+                      <div>
+                          <p>Rica leche de pantera (conchas negras con trozos de pescado, que nadan en un rico jugo cevichero), acompañado de chicharrón y su infaltable canchita con chifles.</p>
+                          <h4>S/. 19,90</h4>
+                          <div class="mb-3">
+                              <label for="comentarios" class="form-label">Comentarios</label>
+                              <textarea class="form-control" id="comentarios" rows="3" placeholder="Opcional"></textarea>
+                          </div>
+                      </div>
+                      <div>
+                          <div class="d-flex align-items-center mb-3">
+                              <label for="cantidad" class="form-label me-2">Cantidad</label>
+                              <input type="number" id="cantidad" class="form-control" value="1" min="1" max="10" style="width: 70px;">
+                          </div>
+                          <button type="button" class="btn btn-danger w-100">Agregar S/. 19,90</button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- Modal 11-->
+<div class="modal fade" id="modal11" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title text-center w-100" id="exampleModalLabel">Leche Achorada</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <div class="row">
+                  <div class="col-md-6">
+                      <!-- Imagen del plato -->
+                      <img src="../imagenes/LecheAchorada.jpg" alt="Ceviche con chicharrón de pota" class="img-fluid rounded">
+                  </div>
+                  <div class="col-md-6 d-flex flex-column justify-content-between">
+                      <!-- Descripción y opciones -->
+                      <div>
+                          <p>Copón de leche de tigre en crema de ají amarillo, pescados y mariscos de temporada, un manjar de los dioses.</p>
+                          <h4>S/. 27,90</h4>
+                          <div class="mb-3">
+                              <label for="comentarios" class="form-label">Comentarios</label>
+                              <textarea class="form-control" id="comentarios" rows="3" placeholder="Opcional"></textarea>
+                          </div>
+                      </div>
+                      <div>
+                          <div class="d-flex align-items-center mb-3">
+                              <label for="cantidad" class="form-label me-2">Cantidad</label>
+                              <input type="number" id="cantidad" class="form-control" value="1" min="1" max="10" style="width: 70px;">
+                          </div>
+                          <button type="button" class="btn btn-danger w-100">Agregar S/. 27,90</button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- Modal 12-->
+<div class="modal fade" id="modal12" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title text-center w-100" id="exampleModalLabel">Choritos a la barreada x 8 unidades</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <div class="row">
+                  <div class="col-md-6">
+                      <!-- Imagen del plato -->
+                      <img src="../imagenes/RondaMarinaFriaYCaliente.jpg" alt="Ceviche con chicharrón de pota" class="img-fluid rounded">
+                  </div>
+                  <div class="col-md-6 d-flex flex-column justify-content-between">
+                      <!-- Descripción y opciones -->
+                      <div>
+                          <p>Clásico choritos, en nuestra salsa especial con aveite de oliva , cebollita,choclito,tomate, y limon de chulucanas.</p>
+                          <h4>S/. 19,90</h4>
+                          <div class="mb-3">
+                              <label for="comentarios" class="form-label">Comentarios</label>
+                              <textarea class="form-control" id="comentarios" rows="3" placeholder="Opcional"></textarea>
+                          </div>
+                      </div>
+                      <div>
+                          <div class="d-flex align-items-center mb-3">
+                              <label for="cantidad" class="form-label me-2">Cantidad</label>
+                              <input type="number" id="cantidad" class="form-control" value="1" min="1" max="10" style="width: 70px;">
+                          </div>
+                          <button type="button" class="btn btn-danger w-100">Agregar S/. 19,90</button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- Modal 13-->
+<div class="modal fade" id="modal13" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title text-center w-100" id="exampleModalLabel">Ceviche Mixto</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <div class="row">
+                  <div class="col-md-6">
+                      <!-- Imagen del plato -->
+                      <img src="../imagenes/CevicheMixto.jpg" alt="Ceviche con chicharrón de pota" class="img-fluid rounded">
+                  </div>
+                  <div class="col-md-6 d-flex flex-column justify-content-between">
+                      <!-- Descripción y opciones -->
+                      <div>
+                          <p>Pesca del día y los mariscos más frescos, con porción de chicharrón.</p>
+                          <h4>S/. 28,90</h4>
+                          <div class="mb-3">
+                              <label for="comentarios" class="form-label">Comentarios</label>
+                              <textarea class="form-control" id="comentarios" rows="3" placeholder="Opcional"></textarea>
+                          </div>
+                      </div>
+                      <div>
+                          <div class="d-flex align-items-center mb-3">
+                              <label for="cantidad" class="form-label me-2">Cantidad</label>
+                              <input type="number" id="cantidad" class="form-control" value="1" min="1" max="10" style="width: 70px;">
+                          </div>
+                          <button type="button" class="btn btn-danger w-100">Agregar S/. 28,90</button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- Modal 14-->
+<div class="modal fade" id="modal14" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title text-center w-100" id="exampleModalLabel">Ceviche de pesca del día</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <div class="row">
+                  <div class="col-md-6">
+                      <!-- Imagen del plato -->
+                      <img src="../imagenes/CevicheDePescaDelDia.jpg" alt="Ceviche con chicharrón de pota" class="img-fluid rounded">
+                  </div>
+                  <div class="col-md-6 d-flex flex-column justify-content-between">
+                      <!-- Descripción y opciones -->
+                      <div>
+                          <p>Trosos frescos de pesca del día , en nuestro clásico ceviche de la casa.</p>
+                          <h4>S/. 24,90</h4>
+                          <div class="mb-3">
+                              <label for="comentarios" class="form-label">Comentarios</label>
+                              <textarea class="form-control" id="comentarios" rows="3" placeholder="Opcional"></textarea>
+                          </div>
+                      </div>
+                      <div>
+                          <div class="d-flex align-items-center mb-3">
+                              <label for="cantidad" class="form-label me-2">Cantidad</label>
+                              <input type="number" id="cantidad" class="form-control" value="1" min="1" max="10" style="width: 70px;">
+                          </div>
+                          <button type="button" class="btn btn-danger w-100">Agregar S/. 24,90</button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- Modal 15-->
+<div class="modal fade" id="modal15" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title text-center w-100" id="exampleModalLabel">Ceviche de conchas negras</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <div class="row">
+                  <div class="col-md-6">
+                      <!-- Imagen del plato -->
+                      <img src="../imagenes/CevicheDeConchasNegras.jpg" alt="Ceviche con chicharrón de pota" class="img-fluid rounded">
+                  </div>
+                  <div class="col-md-6 d-flex flex-column justify-content-between">
+                      <!-- Descripción y opciones -->
+                      <div>
+                          <p>Conchas negras tumbesinas y complementos.</p>
+                          <h4>S/. 31,90</h4>
+                          <div class="mb-3">
+                              <label for="comentarios" class="form-label">Comentarios</label>
+                              <textarea class="form-control" id="comentarios" rows="3" placeholder="Opcional"></textarea>
+                          </div>
+                      </div>
+                      <div>
+                          <div class="d-flex align-items-center mb-3">
+                              <label for="cantidad" class="form-label me-2">Cantidad</label>
+                              <input type="number" id="cantidad" class="form-control" value="1" min="1" max="10" style="width: 70px;">
+                          </div>
+                          <button type="button" class="btn btn-danger w-100">Agregar S/. 31,90</button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- Modal 16-->
+<div class="modal fade" id="modal16" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title text-center w-100" id="exampleModalLabel">Ceviche carretillero</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <div class="row">
+                  <div class="col-md-6">
+                      <!-- Imagen del plato -->
+                      <img src="../imagenes/CevicheCarretillero.jpg" alt="Ceviche con chicharrón de pota" class="img-fluid rounded">
+                  </div>
+                  <div class="col-md-6 d-flex flex-column justify-content-between">
+                      <!-- Descripción y opciones -->
+                      <div>
+                          <p>Un clásico de mis carretillas , pescado y mariscos ,con su chicharrón.</p>
+                          <h4>S/. 26,90</h4>
+                          <div class="mb-3">
+                              <label for="comentarios" class="form-label">Comentarios</label>
+                              <textarea class="form-control" id="comentarios" rows="3" placeholder="Opcional"></textarea>
+                          </div>
+                      </div>
+                      <div>
+                          <div class="d-flex align-items-center mb-3">
+                              <label for="cantidad" class="form-label me-2">Cantidad</label>
+                              <input type="number" id="cantidad" class="form-control" value="1" min="1" max="10" style="width: 70px;">
+                          </div>
+                          <button type="button" class="btn btn-danger w-100">Agregar S/. 26,90</button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+<!-- Modal 17-->
+<div class="modal fade" id="modal17" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center w-100" id="exampleModalLabel">Causa Acevichada con Chicharrón</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <!-- Imagen del plato -->
+                        <img src="../imagenes/CausaAcevichadaConChicharron.jpg" alt="Causa Acevichada con Chicharrón" class="img-fluid rounded">
+                    </div>
+                    <div class="col-md-6 d-flex flex-column justify-content-between">
+                        <!-- Descripción y opciones -->
+                        <div>
+                            <p>Causa de atún con su chicharrón montado, acompañado de su rico ceviche.</p>
+                            <h4>S/. 27,90</h4>
+                            <div class="mb-3">
+                                <label for="comentarios" class="form-label">Comentarios</label>
+                                <textarea class="form-control" id="comentarios" rows="3" placeholder="Opcional"></textarea>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="d-flex align-items-center mb-3">
+                                <label for="cantidad" class="form-label me-2">Cantidad</label>
+                                <input type="number" id="cantidad" class="form-control" value="1" min="1" max="10" style="width: 70px;">
+                            </div>
+                            <button type="button" class="btn btn-danger w-100">Agregar S/. 27,90</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <!-- Modal 18-->
+<div class="modal fade" id="modal18" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center w-100" id="exampleModalLabel">Causa de Pulpa de Cangrejo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <!-- Imagen del plato -->
+                        <img src="../imagenes/CausaDePulpaDeCangrejo.jpg" alt="Causa de Pulpa de Cangrejo" class="img-fluid rounded">
+                    </div>
+                    <div class="col-md-6 d-flex flex-column justify-content-between">
+                        <!-- Descripción y opciones -->
+                        <div>
+                            <p>Clásica causita rellena de pulpa de cangrejo y un ceviche de la casa en crema de ají amarillo.</p>
+                            <h4>S/. 26,90</h4>
+                            <div class="mb-3">
+                                <label for="comentarios" class="form-label">Comentarios</label>
+                                <textarea class="form-control" id="comentarios" rows="3" placeholder="Opcional"></textarea>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="d-flex align-items-center mb-3">
+                                <label for="cantidad" class="form-label me-2">Cantidad</label>
+                                <input type="number" id="cantidad" class="form-control" value="1" min="1" max="10" style="width: 70px;">
+                            </div>
+                            <button type="button" class="btn btn-danger w-100">Agregar S/. 26,90</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <!-- Modal 19-->
+<div class="modal fade" id="modal19" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center w-100" id="exampleModalLabel">Causa de atun</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <!-- Imagen del plato -->
+                        <img src="../imagenes/CausaDeAtun.jpg" alt="Causa de atun" class="img-fluid rounded">
+                    </div>
+                    <div class="col-md-6 d-flex flex-column justify-content-between">
+                        <!-- Descripción y opciones -->
+                        <div>
+                            <p>Nuestra tradicional causa limeña , rellena de trozos de atún, cebollita y mayonesa casera y un clásico ceviche en crema de ají o clásico.</p>
+                            <h4>S/. 24,90</h4>
+                            <div class="mb-3">
+                                <label for="comentarios" class="form-label">Comentarios</label>
+                                <textarea class="form-control" id="comentarios" rows="3" placeholder="Opcional"></textarea>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="d-flex align-items-center mb-3">
+                                <label for="cantidad" class="form-label me-2">Cantidad</label>
+                                <input type="number" id="cantidad" class="form-control" value="1" min="1" max="10" style="width: 70px;">
+                            </div>
+                            <button type="button" class="btn btn-danger w-100">Agregar S/. 24,90</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <!-- Modal 20-->
+<div class="modal fade" id="modal20" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center w-100" id="exampleModalLabel">Parihuela</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <!-- Imagen del plato -->
+                        <img src="../imagenes/Parihuela.jpg" alt="Causa de atun" class="img-fluid rounded">
+                    </div>
+                    <div class="col-md-6 d-flex flex-column justify-content-between">
+                        <!-- Descripción y opciones -->
+                        <div>
+                            <p>concentrado de pescado, cangrejo y una mixtura especial son salsa madre de mariscos y verduras , un manjar para los amantes de las sopas marinas.</p>
+                            <h4>S/. 32,90</h4>
+                            <div class="mb-3">
+                                <label for="comentarios" class="form-label">Comentarios</label>
+                                <textarea class="form-control" id="comentarios" rows="3" placeholder="Opcional"></textarea>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="d-flex align-items-center mb-3">
+                                <label for="cantidad" class="form-label me-2">Cantidad</label>
+                                <input type="number" id="cantidad" class="form-control" value="1" min="1" max="10" style="width: 70px;">
+                            </div>
+                            <button type="button" class="btn btn-danger w-100">Agregar S/. 32,90</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+   <!-- Modal 21-->
+<div class="modal fade" id="modal21" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center w-100" id="exampleModalLabel">Sudado de doncella</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <!-- Imagen del plato -->
+                        <img src="../imagenes/SudadoDeDoncella.jpg" alt="Causa de atun" class="img-fluid rounded">
+                    </div>
+                    <div class="col-md-6 d-flex flex-column justify-content-between">
+                        <!-- Descripción y opciones -->
+                        <div>
+                            <p>Concentrado de pescado, chicha de jora y pasta de ajís ,vino blanco, cebolla ,tomate ,culantro , siempre acompañado de su arroz blanco.</p>
+                            <h4>S/. 26,90</h4>
+                            <div class="mb-3">
+                                <label for="comentarios" class="form-label">Comentarios</label>
+                                <textarea class="form-control" id="comentarios" rows="3" placeholder="Opcional"></textarea>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="d-flex align-items-center mb-3">
+                                <label for="cantidad" class="form-label me-2">Cantidad</label>
+                                <input type="number" id="cantidad" class="form-control" value="1" min="1" max="10" style="width: 70px;">
+                            </div>
+                            <button type="button" class="btn btn-danger w-100">Agregar S/. 26,90</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+   <!-- Modal 22-->
+<div class="modal fade" id="modal22" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center w-100" id="exampleModalLabel">Sudado De Cabrilla</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <!-- Imagen del plato -->
+                        <img src="../imagenes/SudadoDeCabrilla.jpg" alt="Causa de atun" class="img-fluid rounded">
+                    </div>
+                    <div class="col-md-6 d-flex flex-column justify-content-between">
+                        <!-- Descripción y opciones -->
+                        <div>
+                            <p>Concentrado de pescado, vino blanco ,chicha de jora y nuestra estrella , la cabrilla ,acompañado de arroz blanco.</p>
+                            <h4>S/. 28,90</h4>
+                            <div class="mb-3">
+                                <label for="comentarios" class="form-label">Comentarios</label>
+                                <textarea class="form-control" id="comentarios" rows="3" placeholder="Opcional"></textarea>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="d-flex align-items-center mb-3">
+                                <label for="cantidad" class="form-label me-2">Cantidad</label>
+                                <input type="number" id="cantidad" class="form-control" value="1" min="1" max="10" style="width: 70px;">
+                            </div>
+                            <button type="button" class="btn btn-danger w-100">Agregar S/. 28,90</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+<!-- Modal 23-->
+<div class="modal fade" id="modal23" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center w-100" id="exampleModalLabel">Chicharron de Pescado</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <!-- Imagen del plato -->
+                        <img src="../imagenes/ChicharronDePescado.jpg" alt="Causa de atun" class="img-fluid rounded">
+                    </div>
+                    <div class="col-md-6 d-flex flex-column justify-content-between">
+                        <!-- Descripción y opciones -->
+                        <div>
+                            <p>Trozos de pescado crocante con sus yucas fritas, cremas y salsa criolla.</p>
+                            <h4>S/. 29,90</h4>
+                            <div class="mb-3">
+                                <label for="comentarios" class="form-label">Comentarios</label>
+                                <textarea class="form-control" id="comentarios" rows="3" placeholder="Opcional"></textarea>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="d-flex align-items-center mb-3">
+                                <label for="cantidad" class="form-label me-2">Cantidad</label>
+                                <input type="number" id="cantidad" class="form-control" value="1" min="1" max="10" style="width: 70px;">
+                            </div>
+                            <button type="button" class="btn btn-danger w-100">Agregar S/. 29,90</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+  <!-- Modal 24-->
+<div class="modal fade" id="modal24" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center w-100" id="exampleModalLabel">Chicharron de calamar y leche</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <!-- Imagen del plato -->
+                        <img src="../imagenes/ChicharronDeCalamarYLeche.jpg" alt="Causa de atun" class="img-fluid rounded">
+                    </div>
+                    <div class="col-md-6 d-flex flex-column justify-content-between">
+                        <!-- Descripción y opciones -->
+                        <div>
+                            <p>Chicharrón de calamar con copón de achori.
+                            </p>
+                            <h4>S/. 39,90</h4>
+                            <div class="mb-3">
+                                <label for="comentarios" class="form-label">Comentarios</label>
+                                <textarea class="form-control" id="comentarios" rows="3" placeholder="Opcional"></textarea>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="d-flex align-items-center mb-3">
+                                <label for="cantidad" class="form-label me-2">Cantidad</label>
+                                <input type="number" id="cantidad" class="form-control" value="1" min="1" max="10" style="width: 70px;">
+                            </div>
+                            <button type="button" class="btn btn-danger w-100">Agregar S/. 39,90</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+  <!-- Modal 25-->
+<div class="modal fade" id="modal25" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center w-100" id="exampleModalLabel">Jalea Mixta + Copa de leche</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <!-- Imagen del plato -->
+                        <img src="../imagenes/JaleaMixta+CopaDeLeche.jpg" alt="Causa de atun" class="img-fluid rounded">
+                    </div>
+                    <div class="col-md-6 d-flex flex-column justify-content-between">
+                        <!-- Descripción y opciones -->
+                        <div>
+                            <p>Pescados y mariscos crocantes , con sus yuquitas fritas, leche de tigre, salsa criolla y chifles.</p>
+                            <h4>S/. 34,90</h4>
+                            <div class="mb-3">
+                                <label for="comentarios" class="form-label">Comentarios</label>
+                                <textarea class="form-control" id="comentarios" rows="3" placeholder="Opcional"></textarea>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="d-flex align-items-center mb-3">
+                                <label for="cantidad" class="form-label me-2">Cantidad</label>
+                                <input type="number" id="cantidad" class="form-control" value="1" min="1" max="10" style="width: 70px;">
+                            </div>
+                            <button type="button" class="btn btn-danger w-100">Agregar S/. 34,90</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+  <!-- Modal 26-->
+<div class="modal fade" id="modal26" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center w-100" id="exampleModalLabel">Arroz Con Mariscos Tradicional</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <!-- Imagen del plato -->
+                        <img src="../imagenes/ArrozConMariscosTradicional.jpg" alt="Causa de atun" class="img-fluid rounded">
+                    </div>
+                    <div class="col-md-6 d-flex flex-column justify-content-between">
+                        <!-- Descripción y opciones -->
+                        <div>
+                            <p>Arroz cremoso con mariscos de temporada y toques de crema de leche y parmezano.</p>
+                            <h4>S/. 24,90</h4>
+                            <div class="mb-3">
+                                <label for="comentarios" class="form-label">Comentarios</label>
+                                <textarea class="form-control" id="comentarios" rows="3" placeholder="Opcional"></textarea>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="d-flex align-items-center mb-3">
+                                <label for="cantidad" class="form-label me-2">Cantidad</label>
+                                <input type="number" id="cantidad" class="form-control" value="1" min="1" max="10" style="width: 70px;">
+                            </div>
+                            <button type="button" class="btn btn-danger w-100">Agregar S/. 28,90</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <!-- Modal 27-->
+<div class="modal fade" id="modal27" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center w-100" id="exampleModalLabel">Arroz achifado de mariscos</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <!-- Imagen del plato -->
+                        <img src="../imagenes/ArrozAchifaoDeMariscos.jpg" alt="Causa de atun" class="img-fluid rounded">
+                    </div>
+                    <div class="col-md-6 d-flex flex-column justify-content-between">
+                        <!-- Descripción y opciones -->
+                        <div>
+                            <p>Arroz frito sazonado en ostión, sillao y toque de ajonjoli.</p>
+                            <h4>S/. 24,90</h4>
+                            <div class="mb-3">
+                                <label for="comentarios" class="form-label">Comentarios</label>
+                                <textarea class="form-control" id="comentarios" rows="3" placeholder="Opcional"></textarea>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="d-flex align-items-center mb-3">
+                                <label for="cantidad" class="form-label me-2">Cantidad</label>
+                                <input type="number" id="cantidad" class="form-control" value="1" min="1" max="10" style="width: 70px;">
+                            </div>
+                            <button type="button" class="btn btn-danger w-100">Agregar S/. 24,90</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <!-- Modal 28-->
+<div class="modal fade" id="modal28" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center w-100" id="exampleModalLabel">Arroz Chiclayano</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <!-- Imagen del plato -->
+                        <img src="../imagenes/ArrozChiclayano.jpg" alt="Causa de atun" class="img-fluid rounded">
+                    </div>
+                    <div class="col-md-6 d-flex flex-column justify-content-between">
+                        <!-- Descripción y opciones -->
+                        <div>
+                            <p>Pescados y mariscos crocantes , con sus yuquitas fritas, leche de tigre, salsa criolla y chifles.</p>
+                            <h4>S/. 24,90</h4>
+                            <div class="mb-3">
+                                <label for="comentarios" class="form-label">Comentarios</label>
+                                <textarea class="form-control" id="comentarios" rows="3" placeholder="Opcional"></textarea>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="d-flex align-items-center mb-3">
+                                <label for="cantidad" class="form-label me-2">Cantidad</label>
+                                <input type="number" id="cantidad" class="form-control" value="1" min="1" max="10" style="width: 70px;">
+                            </div>
+                            <button type="button" class="btn btn-danger w-100">Agregar S/. 24,90</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+  
+  
+    </body>
+</html>

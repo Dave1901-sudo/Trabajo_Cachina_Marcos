@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Panel de Administración - Cachina Fish</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- Bootstrap 5.0.2 CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Bootstrap Icons CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+        <style>
+            /* General Body Styles */
+            body {
+                background-color: #e9f4f9; /* Soft Blueish Background */
+                font-family: 'Arial', sans-serif;
+                margin: 0;
+                padding: 0;
+            }
+
+            /* Header Styles */
+            h1 {
+                color: #003a63; /* Dark Blue */
+                text-align: center;
+                font-weight: bold;
+                margin-top: 50px;
+                font-size: 36px;
+                font-family: 'Georgia', serif;
+                text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.1);
+            }
+
+            /* Container for Main Content */
+            .container {
+                max-width: 1200px;
+                margin: 50px auto;
+                padding: 30px;
+                background-color: white;
+                border-radius: 12px;
+                box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+            }
+
+            /* Layout for Cards (Sections) */
+            .section {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                gap: 25px;
+                margin-bottom: 50px;
+            }
+
+            .card {
+                background-color: #ffffff;
+                border-radius: 15px;
+                padding: 20px;
+                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+                text-align: center;
+                transition: box-shadow 0.3s ease, transform 0.3s ease;
+            }
+
+            .card:hover {
+                box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+                transform: translateY(-5px);
+            }
+
+            .card h3 {
+                color: #0054a0; /* Dark Blue */
+                font-size: 24px;
+                margin-bottom: 15px;
+                font-weight: 600;
+            }
+
+            .card a {
+                display: block;
+                color: #0054a0; /* Dark Blue */
+                text-decoration: none;
+                padding: 10px 15px;
+                font-weight: bold;
+                border-radius: 8px;
+                transition: background-color 0.3s ease, color 0.3s ease;
+                margin-top: 10px;
+                font-size: 16px;
+            }
+
+            .card a:hover {
+                background-color: #f6a945; /* Soft Orange */
+                color: white;
+            }
+
+            /* Button Styles */
+            .logout-btn {
+                display: block;
+                width: 100%;
+                padding: 15px;
+                background-color: #f6a945; /* Soft Orange */
+                color: white;
+                font-size: 18px;
+                font-weight: 600;
+                border: none;
+                border-radius: 10px;
+                text-align: center;
+                transition: background-color 0.3s ease, transform 0.3s ease;
+                margin-top: 40px;
+            }
+
+            .logout-btn:hover {
+                background-color: #003a63; /* Dark Blue */
+                transform: scale(1.05);
+                color: white;
+            }
+
+            /* Footer Section */
+            .footer {
+                text-align: center;
+                color: #003a63; /* Dark Blue */
+                font-size: 16px;
+                margin-top: 40px;
+            }
+
+            /* Icon Styling */
+            .card i {
+                font-size: 30px;
+                color: #0054a0;
+                margin-bottom: 20px;
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <div class="container">
+            <!-- Header -->
+            <h1>Bienvenido al Panel de Administración</h1>
+
+            <!-- Sections: Links in cards with icons -->
+            <div class="section">
+                <div class="card">
+                    <i class="bi bi-person-check"></i>
+                    <h3>Roles de Usuario</h3>
+                    <a th:href="@{/admin/roleForm}">Actualizar Rol de Usuario</a>
+                </div>
+                <div class="card">
+                    <i class="bi bi-person-lines-fill"></i>
+                    <h3>Usuarios</h3>
+                    <a th:href="@{/admin/userList}">Lista de Usuarios</a>
+                </div>
+                <div class="card">
+                    <i class="bi bi-envelope-open"></i>
+                    <h3>Contactos</h3>
+                    <a th:href="@{/formResultadoContactos}">Lista de Contactos</a>
+                </div>
+                <div class="card">
+                    <i class="bi bi-lightbulb"></i>
+                    <h3>Sugerencias</h3>
+                    <a th:href="@{/formResultadoSugerencias}">Lista de Sugerencias</a>
+                </div>
+                <div class="card">
+                    <i class="bi bi-flag"></i>
+                    <h3>Reclamaciones</h3>
+                    <a th:href="@{/formResultadoReclamaciones}">Lista de Reclamaciones</a>
+                </div>
+                <div class="card">
+                    <i class="bi bi-calendar-check"></i>
+                    <h3>Reservas</h3>
+                    <a th:href="@{/formResultadoReservas}">Lista de Reservas</a>
+                </div>
+                <div class="card">
+                    <i class="bi bi-cup-straw"></i>
+                    <h3>Platos</h3>
+                    <a th:href="@{/platos}">Agregar Platos</a>
+                </div>
+                <div class="card">
+                    <i class="bi bi-basket"></i>
+                    <h3>Pedidos</h3>
+                    <a th:href="@{/pedidos}">Ver Pedidos</a>
+                </div>
+                <div class="card">
+                    <i class="bi bi-house-door"></i>
+                    <h3>Inicio</h3>
+                    <a th:href="@{/}">Volver al index</a>
+                </div>
+            </div>
+
+            <!-- Logout Button -->
+            <form action="/logout" method="POST" style="display:inline">
+                <button type="submit" class="logout-btn">Cerrar sesión</button>
+            </form>
+        </div>
+
+        <!-- Bootstrap 5.0.2 JS -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    </body>
+</html>

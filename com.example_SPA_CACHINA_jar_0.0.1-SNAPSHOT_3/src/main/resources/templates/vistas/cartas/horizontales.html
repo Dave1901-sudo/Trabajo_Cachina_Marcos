@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+
+    <body th:fragment="cartas_horizontales(platosPorCategoria)"> 
+        <!-- CARD HORIZONTAL -->
+        <div class="bg-custom" id="cartas_horizontales">
+            <div class="container">
+                <!-- CARD HORIZONTAL -->
+                <div class="row" id="card-container">          
+                    <h2 id="section-title" class="mb-2 mt-4 fade-slide-in">Trios y Dúos</h2>
+                    <hr class="border border-primary w-100">
+                        <!-- Tarjetas visibles por defecto -->
+                        <div class="col-md-6 mb-3" 
+                             th:each="platos, iterStat : ${platosPorCategoria['trios y duos']}" 
+                             th:if="${platos.categoria == 'trios y duos'}" 
+                             th:classappend="${iterStat.index >= 2} ? 'd-none extra-card' : ''">
+                            <div class="card bg-light border-0 shadow-sm h-100 fade-slide-in">
+                                <div class="row g-0 h-100 ">
+                                    <div class="col-md-6">
+                                        <img th:src="@{/imagen/{id}(id=${platos.idplato})}" alt="${platos.nombre}" class="p-2 img-fluid rounded-start card-img-top-2">
+                                    </div>
+                                    <div class="col-md-6 d-flex flex-column">
+                                        <div class="card-body d-flex flex-column">
+                                            <h5 class="card-title text-primary" th:text="${platos.nombre}"></h5>
+                                            <p class="card-text text-muted mb-auto" th:text="${platos.descripcion}"></p>
+                                            <div class="mt-auto">
+                                                <p class="card-text text-muted">S/. <small class="text-muted" th:text="${platos.precio}"></small></p>
+                                                <button type="button" class="btn btn-outline-primary"
+                                                        th:attr="data-bs-target='#modal-' + ${platos.idplato}" 
+                                                        data-bs-toggle="modal"
+                                                        >Ordenar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- /CARD modal-->
+                            <div class="modal fade" th:id="'modal-' + ${platos.idplato}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title text-center w-100" id="exampleModalLabel"  th:text="${platos.nombre}"></h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <!-- Imagen del plato -->
+                                                    <img th:src="@{/imagen/{id}(id=${platos.idplato})}" alt="${platos.nombre}" class="img-fluid rounded">
+                                                </div>
+                                                <div class="col-md-6 d-flex flex-column justify-content-between">
+                                                    <!-- Descripción y opciones -->
+                                                    <div>
+                                                        <p th:text="${platos.descripcion}"></p>
+                                                        <h4>S/. <span th:text="${platos.precio}"></span></h4>
+                                                        <div class="mb-3">
+                                                            <label for="comentarios" class="form-label">Comentarios</label>
+                                                            <textarea class="form-control text-muted" id="comentarios" rows="3" placeholder="Opcional"></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <div class="d-flex align-items-center mb-3">
+                                                            <label for="cantidad" class="form-label me-2">Cantidad</label>
+                                                            <input type="number" id="cantidad" class="form-control" value="1" min="1" max="10" style="width: 70px;">
+                                                        </div>
+                                                        <button type="button" class="btn btn-danger w-100" id="addToCart"
+                                                                th:data-id="${platos.idplato}"
+                                                                th:data-nombre="${platos.nombre}"
+                                                                th:data-precio="${platos.precio}"
+                                                                th:data-imagen="@{/imagen/{id}(id=${platos.idplato})}" >
+                                                            Agregar S/. <span th:text="${platos.precio}"></span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /CARD HORIZONTAL-boton -->
+                        <div class="text-center my-1 mb-3 ">
+                            <button id="btn-show-more" class="btn btn-outline-warning fade-slide-in">Ver más</button>
+                            <button id="btn-show-less" class="btn btn-outline-warning d-none fade-slide-in">Ver menos</button>
+                        </div>
+                </div>   
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Bienvenido - Cevicheria Cachina Fish</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <!-- Bootstrap 5.0.2 CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+        
+        <!-- Bootstrap Icons CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+        
+        <style>
+            /* Background color for the page */
+            body {
+                background-color: #eaf6f9; /* Celeste background */
+                font-family: 'Arial', sans-serif;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                margin: 0;
+            }
+
+            /* Centered container for the login form */
+            .login-container {
+                background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white background */
+                border-radius: 15px;
+                padding: 40px;
+                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+                max-width: 500px;
+                width: 90%;
+                animation: fadeIn 1s ease-in-out;
+            }
+
+            /* Header text styles */
+            .login-title {
+                color: #f6a945; /* Orange color */
+                text-align: center;
+                font-weight: bold;
+                margin-bottom: 20px;
+                font-size: 28px;
+                font-family: 'Georgia', serif;
+            }
+
+            /* Customize input fields */
+            .form-group {
+                position: relative;
+                margin-bottom: 20px;
+            }
+
+            .form-control {
+                border: 1px solid #f6a945; /* Orange border */
+                border-radius: 8px;
+                padding-left: 50px; /* Space for icons */
+                width: 100%;
+                padding: 12px;
+            }
+
+            .form-control:focus {
+                border-color: #0054a0; /* Blue border on focus */
+                box-shadow: 0 0 0 0.2rem rgba(0, 84, 160, 0.25);
+            }
+
+            /* Icon styles */
+            .input-group-text {
+                background-color: transparent;
+                border: 1px solid #f6a945;
+                padding-left: 10px;
+                padding-right: 15px;
+            }
+
+            .input-icon {
+                font-size: 18px;
+                color: #f6a945;
+            }
+
+            /* Customize button */
+            .btn-custom {
+                background-color: #f6a945; /* Orange */
+                border: none;
+                color: white;
+                padding: 12px 25px;
+                border-radius: 8px;
+                font-size: 18px;
+                font-weight: bold;
+                width: 100%;
+                transition: background-color 0.3s ease, transform 0.3s ease;
+            }
+
+            .btn-custom:hover {
+                background-color: #0054a0; /* Blue on hover */
+                transform: scale(1.05);
+            }
+
+            /* Footer styling */
+            .footer {
+                text-align: center;
+                color: #f6a945;
+                font-size: 16px;
+                margin-top: 20px;
+            }
+
+            .footer a {
+                color: #0054a0; /* Blue link */
+                text-decoration: none;
+            }
+
+            .footer a:hover {
+                color: #f6a945;
+            }
+
+            /* Animation for fade-in effect */
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="login-container">
+            <!-- Logo or Title -->
+            <h2 class="login-title">Bienvenidos a la Cevichería "La Cachina Fish"</h2>
+
+            <!-- Error and Logout messages -->
+            <p th:if="${errorMessage}" th:text="${errorMessage}" style="color: red;"></p>
+            <p th:if="${logoutMessage}" th:text="${logoutMessage}" style="color: red;"></p>
+
+            <!-- Login Form -->
+            <form th:action="@{/login}" method="post">
+                <!-- Username Field -->
+                <div class="form-group">
+                    <label for="username">Usuario</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-person input-icon"></i></span>
+                        <input type="text" class="form-control" id="username" name="username" placeholder="Ingrese su nombre de usuario" required />
+                    </div>
+                </div>
+
+                <!-- Password Field -->
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-lock input-icon"></i></span>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Ingrese su contraseña" required />
+                    </div>
+                </div>
+
+                <!-- Login Button -->
+                <button type="submit" class="btn btn-custom">Iniciar sesión</button>
+            </form>
+
+            <!-- Footer with additional options -->
+            <div class="footer">
+                <p>¿No tienes una cuenta? <a th:href="@{/register}">Registrarse</a></p>
+            </div>
+        </div>
+
+        <!-- Bootstrap 5.0.2 JS -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+</html>
