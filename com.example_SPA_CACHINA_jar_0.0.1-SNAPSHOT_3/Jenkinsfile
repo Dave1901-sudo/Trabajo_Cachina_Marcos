@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    environment {
+        PROJECT_DIR = 'com.example_SPA_CACHINA_jar_0.0.1-SNAPSHOT_3'
+    }
+
     stages {
         stage('Inicio') {
             steps {
@@ -12,27 +16,34 @@ pipeline {
         stage('Verificar estructura del proyecto') {
             steps {
                 bat 'dir'
-                bat 'if not exist pom.xml exit /b 1'
-                bat 'if not exist Dockerfile exit /b 1'
-                bat 'if not exist mvnw.cmd exit /b 1'
+                bat "dir %PROJECT_DIR%"
+                bat "if not exist %PROJECT_DIR%\\pom.xml exit /b 1"
+                bat "if not exist %PROJECT_DIR%\\Dockerfile exit /b 1"
+                bat "if not exist %PROJECT_DIR%\\mvnw.cmd exit /b 1"
             }
         }
 
         stage('Compilar con Maven') {
             steps {
-                bat 'mvnw.cmd clean package -DskipTests'
+                dir("${env.PROJECT_DIR}") {
+                    bat 'mvnw.cmd clean package -DskipTests'
+                }
             }
         }
 
         stage('Validar JAR generado') {
             steps {
-                bat 'dir target'
+                dir("${env.PROJECT_DIR}") {
+                    bat 'dir target'
+                }
             }
         }
 
         stage('Validar Dockerfile') {
             steps {
-                bat 'type Dockerfile'
+                dir("${env.PROJECT_DIR}") {
+                    bat 'type Dockerfile'
+                }
                 echo 'Dockerfile validado correctamente para despliegue en Render'
             }
         }
