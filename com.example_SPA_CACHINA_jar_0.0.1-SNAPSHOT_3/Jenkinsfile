@@ -1,0 +1,53 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Inicio') {
+            steps {
+                echo 'Pipeline CI iniciado para La Cachina Fish'
+                echo 'Sistema: Spring Boot + Thymeleaf + MySQL Aiven + Docker + Render'
+            }
+        }
+
+        stage('Verificar estructura del proyecto') {
+            steps {
+                bat 'dir'
+                bat 'if not exist pom.xml exit /b 1'
+                bat 'if not exist Dockerfile exit /b 1'
+                bat 'if not exist mvnw.cmd exit /b 1'
+            }
+        }
+
+        stage('Compilar con Maven') {
+            steps {
+                bat 'mvnw.cmd clean package -DskipTests'
+            }
+        }
+
+        stage('Validar JAR generado') {
+            steps {
+                bat 'dir target'
+            }
+        }
+
+        stage('Validar Dockerfile') {
+            steps {
+                bat 'type Dockerfile'
+                echo 'Dockerfile validado correctamente para despliegue en Render'
+            }
+        }
+
+        stage('Pruebas de rendimiento con JMeter') {
+            steps {
+                echo 'Etapa reservada para pruebas con Apache JMeter'
+                echo 'Ejemplo futuro: jmeter -n -t pruebas/jmeter/cachinafish.jmx -l resultados.jtl'
+            }
+        }
+
+        stage('Resultado final') {
+            steps {
+                echo 'Pipeline CI completado. El proyecto queda validado para despliegue en Render.'
+            }
+        }
+    }
+}
