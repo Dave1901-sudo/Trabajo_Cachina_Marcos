@@ -23,6 +23,42 @@ pipeline {
             }
         }
 
+        stage('Verificar entorno Jenkins') {
+            steps {
+                dir("${env.PROJECT_DIR}") {
+                    bat '''
+                    echo ===== USUARIO DE JENKINS =====
+                    whoami
+                    echo USERPROFILE=%USERPROFILE%
+                    echo JAVA_HOME=%JAVA_HOME%
+        
+                    echo ===== JAVA QUE USA JENKINS =====
+                    java -version
+                    where java
+        
+                    echo ===== MAVEN WRAPPER =====
+                    mvnw.cmd -version
+        
+                    echo ===== VERIFICAR LOMBOK EN POM =====
+                    findstr /i "lombok annotationProcessorPaths maven-compiler-plugin" pom.xml
+        
+                    echo ===== LOMBOK EN .M2 DE JENKINS =====
+                    if exist "%USERPROFILE%\\.m2\\repository\\org\\projectlombok\\lombok" (
+                        dir "%USERPROFILE%\\.m2\\repository\\org\\projectlombok\\lombok"
+                    ) else (
+                        echo NO EXISTE LOMBOK EN EL .M2 DEL USUARIO ACTUAL
+                    )
+        
+                    if exist "C:\\Windows\\System32\\config\\systemprofile\\.m2\\repository\\org\\projectlombok\\lombok" (
+                        dir "C:\\Windows\\System32\\config\\systemprofile\\.m2\\repository\\org\\projectlombok\\lombok"
+                    ) else (
+                        echo NO EXISTE LOMBOK EN SYSTEMPROFILE
+                    )
+                    '''
+                }
+            }
+        }
+
         stage('Compilar con Maven') {
             steps {
                 dir("${env.PROJECT_DIR}") {
