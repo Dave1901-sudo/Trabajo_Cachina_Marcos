@@ -53,7 +53,7 @@ pipeline {
                 dir("${env.PROJECT_DIR}") {
                     bat 'if exist resultados-jmeter rmdir /s /q resultados-jmeter'
                     bat 'mkdir resultados-jmeter'
-                    bat '"C:\Users\user\Desktop\apache-jmeter-5.6.3\apache-jmeter-5.6.3\bin\jmeter.bat" -n -t pruebas\\jmeter\\Pruebas_testeo_cachinafish.jmx -l resultados-jmeter\\resultados.jtl -e -o resultados-jmeter\\reporte-html'
+                    bat '"C:\\Users\\user\\Desktop\\apache-jmeter-5.6.3\\apache-jmeter-5.6.3\\bin\\jmeter.bat" -n -t pruebas\\jmeter\\Pruebas_testeo_cachinafish.jmx -l resultados-jmeter\\resultados.jtl -e -o resultados-jmeter\\reporte-html'
                 }
             }
         }
