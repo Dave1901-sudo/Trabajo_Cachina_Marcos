@@ -38,7 +38,7 @@ public class LoginController {
             model.addAttribute("logoutMessage", "Ha cerrado su sesión correctamente.");
         }
 
-        System.out.println("Error: " + error + ", Logout: " + logout + ", Request Time: " + System.currentTimeMillis());
+        System.out.println("Login request -> errorParam: " + error + ", logoutParam: " + logout + ", requestTime: " + System.currentTimeMillis());
         return "login";
     }
     /*

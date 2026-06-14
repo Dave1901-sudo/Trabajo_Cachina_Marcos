@@ -89,7 +89,7 @@ public class SecurityConfig {
                 .logoutSuccessUrl("/login?logout=true")
                 )
                 .sessionManagement(session -> session
-                .sessionCreationPolicy(SessionCreationPolicy.ALWAYS) // Define cuándo se debe crear una nueva sesión
+                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // Define cuándo se debe crear una nueva sesión
                 .invalidSessionUrl("/login") // Redirigir a login si la sesión es inválida
                 .maximumSessions(1) // Permitir solo una sesión por usuario
                 .expiredUrl("/login") // Redirigir a login si la sesión ha expirado

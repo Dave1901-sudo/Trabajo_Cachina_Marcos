@@ -135,7 +135,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
             <!-- Error and Logout messages -->
             <p th:if="${errorMessage}" th:text="${errorMessage}" style="color: red;"></p>
-            <p th:if="${logoutMessage}" th:text="${logoutMessage}" style="color: red;"></p>
+            <p th:if="${logoutMessage}" th:text="${logoutMessage}" style="color: green;"></p>
 
             <!-- Login Form -->
             <form th:action="@{/login}" method="post">
