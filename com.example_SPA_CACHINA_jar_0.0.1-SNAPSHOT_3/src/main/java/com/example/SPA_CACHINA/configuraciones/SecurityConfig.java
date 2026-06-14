@@ -44,8 +44,17 @@ public class SecurityConfig {
                 .requestMatchers("/actuator/health", "/actuator/health/**").permitAll()
                 .requestMatchers("/api/**").permitAll()
                 .requestMatchers("/api/users/register").permitAll()
-                .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
-                .requestMatchers("/public/**").permitAll()
+                .requestMatchers(
+                        "/css/**",
+                        "/js/**",
+                        "/images/**",
+                        "/img/**",
+                        "/assets/**",
+                        "/uploads/**",
+                        "/favicon.ico",
+                        "/webjars/**",
+                        "/public/**"
+                ).permitAll()
                 .requestMatchers("/").authenticated()
                 .requestMatchers("/admin/**").hasAuthority("ADMIN")
                 .requestMatchers("/pedidos/**").hasAuthority("ADMIN")
