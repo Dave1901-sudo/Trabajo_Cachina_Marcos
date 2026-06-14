@@ -41,7 +41,7 @@ public class SecurityConfig {
                 "/api/sugerencias/**","/api/pedidos/**"))
                 .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/register").permitAll()
-                .requestMatchers("/actuator/health").permitAll()
+                .requestMatchers("/actuator/health", "/actuator/health/**").permitAll()
                 .requestMatchers("/api/**").permitAll()
                 .requestMatchers("/api/users/register").permitAll()
                 .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
