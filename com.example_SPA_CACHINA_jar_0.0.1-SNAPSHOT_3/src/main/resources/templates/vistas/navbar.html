@@ -13,7 +13,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         <!-- Navbar -->
         <nav class="navbar navbar-expand-lg navbar-custom">
             <div class="container">
-                <a class="navbar-brand" href="/">
+                <a class="navbar-brand" th:href="@{/}">
                     <img src="imagenes/Logo.jpg" alt="Cachina Fish" class="navbar-logo">
                         Cachina Fish
                 </a>
@@ -23,7 +23,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item">
-                            <a th:text="#{navbar.inicio}" class="nav-link" href="/">Inicio</a>
+                            <a th:text="#{navbar.inicio}" class="nav-link" th:href="@{/}">Inicio</a>
                         </li>
                         <li class="nav-item">
                             <a th:text="#{navbar.menu}" class="nav-link" href="#card-container">Menú</a>
@@ -45,10 +45,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                             </a>
                             <ul class="dropdown-menu custom-dropdown" aria-labelledby="navbarDropdownMenuLink">
                                 <li>
-                                    <a class="dropdown-item" th:href="@{/(lang='es')}" th:text="#{idioma.castellano}">Castellano</a>
+                                    <a class="dropdown-item" th:href="@{/?lang=es}" th:text="#{idioma.castellano}">Castellano</a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" th:href="@{/(lang='en')}" th:text="#{idioma.ingles}">Inglés</a>
+                                    <a class="dropdown-item" th:href="@{/?lang=en}" th:text="#{idioma.ingles}">Inglés</a>
                                 </li>
                             </ul>
                         </li>
