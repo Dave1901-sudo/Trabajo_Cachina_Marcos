@@ -31,19 +31,32 @@ public class SecurityConfig {
     }
 
     @Bean
-// Org. Ing. Jorge Chicana
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http.csrf(csrf -> csrf.ignoringRequestMatchers("/logout", "/realizarPedido", 
-                "/updateContactos","/login", 
-                "/api/registrar/**","/api/reservas/**", 
-                "/api/login/**","/api/contactos/**",
-                "/api/platos/**","/api/reclamaciones/**",
-                "/api/sugerencias/**","/api/pedidos/**"))
-                .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/register").permitAll()
-                .requestMatchers("/actuator/health", "/actuator/health/**").permitAll()
-                .requestMatchers("/api/**").permitAll()
-                .requestMatchers("/api/users/register").permitAll()
+
+        return http
+
+            // 🔴 CSRF (solo para endpoints que realmente lo necesitan)
+            .csrf(csrf -> csrf.ignoringRequestMatchers(
+                    "/logout",
+                    "/realizarPedido",
+                    "/updateContactos",
+                    "/api/**"
+            ))
+
+            // 🔵 AUTORIZACIÓN
+            .authorizeHttpRequests(auth -> auth
+
+                // públicos del sistema
+                .requestMatchers(
+                        "/login",
+                        "/register",
+                        "/error"
+                ).permitAll()
+
+                // actuator (CRÍTICO para Render / Datadog)
+                .requestMatchers("/actuator/**").permitAll()
+
+                // recursos estáticos
                 .requestMatchers(
                         "/css/**",
                         "/js/**",
@@ -55,58 +68,45 @@ public class SecurityConfig {
                         "/webjars/**",
                         "/public/**"
                 ).permitAll()
+
+                // APIs públicas
+                .requestMatchers("/api/**").permitAll()
+                .requestMatchers("/api/users/register").permitAll()
+
+                // protegidos
                 .requestMatchers("/").authenticated()
                 .requestMatchers("/admin/**").hasAuthority("ADMIN")
                 .requestMatchers("/pedidos/**").hasAuthority("ADMIN")
-                .requestMatchers(
-                        "/formResultadoPlatos",
-                        "/platos",
-                        "/registrarPlatos",
-                        "/getEditPlatos/**",
-                        "/deletePlatos"
-                ).hasAuthority("ADMIN")
-                .requestMatchers(
-                        "/formResultadoReclamaciones",
-                        "/getEditReclamaciones/**",
-                        "/deleteReclamaciones"
-                ).hasAuthority("ADMIN")
-                .requestMatchers(
-                        /*"/formResultadoReservas",*/
-                        "/getEditReservas/**",
-                        "/deleteReservas"
-                ).hasAuthority("ADMIN")
-                .requestMatchers(
-                        "/formResultadoContactos",
-                        "/getEdit/**",
-                        "/delete",
-                        "/updateContactos"
-                ).hasAuthority("ADMIN")
-                .requestMatchers(
-                       /* "/formResultadoSugerencias",*/
-                        "/getEditS/**",
-                        "/deleteS"
-                ).hasAuthority("ADMIN")
+
                 .anyRequest().authenticated()
-                )
-                .formLogin(form -> form
+            )
+
+            // 🔵 LOGIN
+            .formLogin(form -> form
                 .loginPage("/login")
                 .failureUrl("/login?error=true")
-                .defaultSuccessUrl("/", false)
+                .defaultSuccessUrl("/", true) // 🔥 evita /error?continue
                 .permitAll()
-                )
-                .logout(logout -> logout
+            )
+
+            // 🔵 LOGOUT
+            .logout(logout -> logout
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/login?logout=true")
-                )
-                .sessionManagement(session -> session
-                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // Define cuándo se debe crear una nueva sesión
-                .invalidSessionUrl("/login") // Redirigir a login si la sesión es inválida
-                .maximumSessions(1) // Permitir solo una sesión por usuario
-                .expiredUrl("/login") // Redirigir a login si la sesión ha expirado
-                ) // Configuración para migrar sesión si se produce un ataque de fijación de sesión
-                .build();
+            )
+
+            // 🔵 SESIONES (ESTABLE Y SIN BASURA)
+            .sessionManagement(session -> session
+                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                .invalidSessionUrl("/login")
+                .maximumSessions(1)
+                .expiredUrl("/login")
+            )
+
+            .build();
     }
 
+    // 🔵 Redirección segura tras login
     @Bean
     public AuthenticationSuccessHandler successHandlerOK() {
         return (request, response, authentication) -> {
