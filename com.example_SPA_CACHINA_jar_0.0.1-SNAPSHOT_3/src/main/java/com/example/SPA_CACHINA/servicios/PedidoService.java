@@ -37,7 +37,7 @@ public class PedidoService {
 
     @Autowired
     private JavaMailSender emailSender; // Para enviar correos electrónicos
-  @Autowired
+    @Autowired
     private PedidoDetalleRepository pedidoDetalleRepository;
     @Autowired
     private PlatosDAO platosDAO;
@@ -235,28 +235,34 @@ public class PedidoService {
             // Crear y enviar el correo
             MimeMessage message = emailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+            
+            helper.setFrom("dave2004a03@gmail.com", "Cachina Fish");            
+            
             helper.setTo(email);
             helper.setSubject("Confirmación de Pedido");
             helper.setText(contenido, true); // Indica que el contenido es HTML
             emailSender.send(message);
         } catch (Exception e) {
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
     }
     
-      public void enviarNotificacionNuevoPedido() {
+    public void enviarNotificacionNuevoPedido() {
         try {
             String template = "<h3>Nuevo Pedido Realizado</h3><p>Un nuevo pedido ha sido realizado. Revisa los detalles del pedido en el sistema.</p>";
 
             MimeMessage message = emailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-            helper.setTo("ssilvaavadave@gmail.com"); // Tu correo
+            helper.setFrom("dave2004a03@gmail.com", "Cachina Fish");
+            helper.setTo("u22244804@utp.edu.pe");
             helper.setSubject("Notificación de Nuevo Pedido");
             helper.setText(template, true); // Contenido HTML
             emailSender.send(message);
         } catch (Exception e) {
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
