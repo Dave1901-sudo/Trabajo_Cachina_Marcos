@@ -13,7 +13,6 @@ import com.example.SPA_CACHINA.locale.ResponseMessage;
 import com.example.SPA_CACHINA.repositorios.PedidoDetalleRepository;
 import com.example.SPA_CACHINA.repositorios.PedidoRepository;
 import com.example.SPA_CACHINA.repositorios.PlatosDAO;
-import jakarta.mail.internet.MimeMessage;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.file.Files;
@@ -21,8 +20,6 @@ import java.nio.file.Paths;
 import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 /**
@@ -36,7 +33,8 @@ public class PedidoService {
     private PedidoRepository pedidoRepository; // Repositorio para la entidad Pedido
 
     @Autowired
-    private JavaMailSender emailSender; // Para enviar correos electrónicos
+    private BrevoService brevoService;
+
     @Autowired
     private PedidoDetalleRepository pedidoDetalleRepository;
     @Autowired
@@ -232,16 +230,12 @@ public class PedidoService {
                     .replace("{{total}}", String.format("%.2f", total))
                     .replace("<!-- Detalles del pedido serán insertados aquí -->", detallesHtml.toString());
 
-            // Crear y enviar el correo
-            MimeMessage message = emailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-            
-            helper.setFrom("dave2004a03@gmail.com", "Cachina Fish");            
-            
-            helper.setTo(email);
-            helper.setSubject("Confirmación de Pedido");
-            helper.setText(contenido, true); // Indica que el contenido es HTML
-            emailSender.send(message);
+            brevoService.enviarCorreo(
+                    email,
+                    "Confirmación de Pedido",
+                    contenido
+            );
+
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException(e);
@@ -250,20 +244,17 @@ public class PedidoService {
     }
     
     public void enviarNotificacionNuevoPedido() {
-        try {
-            String template = "<h3>Nuevo Pedido Realizado</h3><p>Un nuevo pedido ha sido realizado. Revisa los detalles del pedido en el sistema.</p>";
 
-            MimeMessage message = emailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-            helper.setFrom("dave2004a03@gmail.com", "Cachina Fish");
-            helper.setTo("u22244804@utp.edu.pe");
-            helper.setSubject("Notificación de Nuevo Pedido");
-            helper.setText(template, true); // Contenido HTML
-            emailSender.send(message);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
+        String contenido =
+                "<h3>Nuevo Pedido Realizado</h3>" +
+                "<p>Un nuevo pedido ha sido realizado. Revisa los detalles del pedido en el sistema.</p>";
+
+        brevoService.enviarCorreo(
+                "u22244804@utp.edu.pe",
+                "Notificación de Nuevo Pedido",
+                contenido
+        );
+
     }
 
 }
