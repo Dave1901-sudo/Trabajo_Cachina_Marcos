@@ -232,5 +232,5 @@ Carrera: Ingeniería de Sistemas
 ---
 
 <p align="center">
-  Hecho con ❤️ por el Grupo 4 · UTP · 2024–2025
+  Hecho con ❤️ por el Grupo 4 · UTP · 2026
 </p>
