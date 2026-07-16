@@ -49,17 +49,41 @@ public class LoginController {
     }*/
 
     @PostMapping("/register")
-    public String registerUser(@RequestParam String username,
+    public String registerUser(
+            @RequestParam String username,
+            @RequestParam String nombres,
+            @RequestParam String apellidos,
+            @RequestParam String email,
+            @RequestParam String telefono,
+            @RequestParam String direccion,
+            @RequestParam String documentoIdentidad,
             @RequestParam String password,
             @RequestParam(name = "role", required = false, defaultValue = "USER") String role,
-            Model model) { // El modelo es necesario para agregar atributos de error
+            Model model) {
+
         try {
+
             System.out.println("*****registrar usuario*****");
-            usuarioService.createUser(username, password, role); // Método para registrar el usuario
-            return "redirect:/login";  // Redirigir a la página de login después del registro
+
+            usuarioService.createUser(
+                    username,
+                    nombres,
+                    apellidos,
+                    email,
+                    telefono,
+                    direccion,
+                    documentoIdentidad,
+                    password,
+                    role
+            );
+
+            return "redirect:/login";
+
         } catch (IllegalArgumentException e) {
-            model.addAttribute("errorMessage", e.getMessage()); // Agregar el mensaje de error al modelo
-            return "register"; // Volver a la página de registro con el mensaje de error
+
+            model.addAttribute("errorMessage", e.getMessage());
+
+            return "register";
         }
     }
 

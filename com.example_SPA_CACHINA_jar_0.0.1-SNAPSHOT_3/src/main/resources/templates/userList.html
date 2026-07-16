@@ -82,7 +82,7 @@
             }
 
             /* Link styling */
-            a {
+            .footer-link {
                 text-decoration: none;
                 color: #0054a0;
                 font-weight: bold;
@@ -92,7 +92,7 @@
                 margin-top: 40px;
             }
 
-            a:hover {
+            .footer-link:hover {
                 color: #f6a945;
             }
 
@@ -114,22 +114,53 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Username</th>
-                        <th>Role</th>
+                        <th>Usuario</th>
+                        <th>Nombres</th>
+                        <th>Apellidos</th>
+                        <th>Correo</th>
+                        <th>Teléfono</th>
+                        <th>Dirección</th>
+                        <th>Documento</th>
+                        <th>Rol</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr th:each="user : ${users}">
                         <td th:text="${user.username}"></td>
+                        <td th:text="${user.nombres != null ? user.nombres : '-'}"></td>
+                        <td th:text="${user.apellidos != null ? user.apellidos : '-'}"></td>
+                        <td th:text="${user.email != null ? user.email : '-'}"></td>
+                        <td th:text="${user.telefono != null ? user.telefono : '-'}"></td>
+                        <td th:text="${user.direccion != null ? user.direccion : '-'}"></td>
+                        <td th:text="${user.documentoIdentidad != null ? user.documentoIdentidad : '-'}"></td>
                         <td th:text="${user.role}"></td>
                         <td>
-                            <form action="/admin/deleteUser" method="POST" style="display:inline">
-                                <input type="hidden" name="username" th:value="${user.username}"/>
-                                <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>  <!-- CSRF token -->
-                                <button type="submit">
+                            <!-- Botón Editar -->
+                            <a th:href="@{/admin/editUser(id=${user.id})}"
+                               class="btn btn-primary btn-sm"
+                               style="margin-right:5px;">
+                                <i class="bi bi-pencil-square"></i> Editar
+                            </a>
+
+                            <!-- Botón Eliminar -->
+                            <form action="/admin/deleteUser"
+                                  method="POST"
+                                  style="display:inline">
+
+                                <input type="hidden"
+                                       name="username"
+                                       th:value="${user.username}"/>
+
+                                <input type="hidden"
+                                       name="_csrf"
+                                       th:value="${_csrf.token}"/>
+
+                                <button type="submit"
+                                        class="btn btn-danger btn-sm">
                                     <i class="bi bi-trash"></i> Eliminar
                                 </button>
+
                             </form>
                         </td>
                     </tr>
@@ -137,8 +168,8 @@
             </table>
 
             <!-- Return Link -->
-            <a th:href="@{/admin}">Volver al Panel de Administración</a>
-            <a th:href="@{/admin/roleForm}">Actualizar Rol de Usuario</a>
+            <a class="footer-link" th:href="@{/admin}">Volver al Panel de Administración</a>
+            <a class="footer-link" th:href="@{/admin/roleForm}">Actualizar Rol de Usuario</a>
         </div>
 
         <!-- Bootstrap 5.0.2 JS -->

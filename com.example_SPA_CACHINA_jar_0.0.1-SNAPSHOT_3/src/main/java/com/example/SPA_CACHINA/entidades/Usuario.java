@@ -24,14 +24,29 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "Userneg")
 public class Usuario {
-    @Id
+@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     private Long id;
 
-    private String password;
-    private String role;
-    
-    @Column(unique = true) 
+    @Column(unique = true)
     private String username;
+
+    private String nombres;
+
+    private String apellidos;
+
+    @Column(unique = true)
+    private String email;
+
+    private String telefono;
+
+    private String direccion;
+
+    @Column(unique = true)
+    private String documentoIdentidad;
+
+    private String password;
+
+    private String role;
 }

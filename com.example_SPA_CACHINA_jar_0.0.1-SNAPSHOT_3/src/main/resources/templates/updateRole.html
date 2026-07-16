@@ -100,13 +100,53 @@
 
 <body>
     <div class="container">
-        <h3>Actualizar Rol de Usuario</h3>
-
-        <!-- Form for updating user role -->
+        <h3>Administrar Credenciales del Usuario</h3>
+        
+        <div class="alert alert-danger"
+            th:if="${errorMessage}"
+            th:text="${errorMessage}">
+       </div>
+        <!-- Form for updating user credentials -->
         <form th:action="@{/admin/updateRole}" method="post">
             <div class="form-group">
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" class="form-control" required />
+
+                <label for="username">
+                    Seleccione un usuario:
+                </label>
+
+                <select
+                        id="username"
+                        name="username"
+                        class="form-control"
+                        required>
+
+                    <option value="">
+                        -- Seleccione un usuario --
+                    </option>
+
+                    <option
+                            th:each="user : ${users}"
+                            th:value="${user.username}"
+                            th:text="${user.username + ' - ' + user.nombres + ' ' + user.apellidos}">
+                    </option>
+
+                </select>
+
+            </div>
+            <div class="form-group">
+                <label for="nuevoUsername">Nuevo nombre de usuario:</label>
+                <input type="text" id="nuevoUsername" name="nuevoUsername" class="form-control" placeholder="Nombre de usuario"/>
+            </div>
+            <div class="form-group">
+                <label for="password">Nueva contraseña:</label>
+                <input type="password" id="password" name="password" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="confirmPassword">Confirmar contraseña:</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" />
+                <small class="text-muted">
+                    Deje ambos campos vacíos si no desea cambiar la contraseña.
+                </small>
             </div>
             <div class="form-group">
                 <label for="role">Nuevo Rol:</label>
@@ -115,13 +155,46 @@
                     <option value="ADMIN">ADMIN</option>
                 </select>
             </div>
-            <button type="submit" class="btn btn-primary">Actualizar Rol</button>
+            <button type="submit" class="btn btn-primary">Guardar cambios</button>
         </form>
 
         <!-- Link to return to the admin panel -->
         <a th:href="@{/admin}"><i class="bi bi-arrow-left-circle"></i> Volver al Panel de Administración</a>
     </div>
+    
+    <script>
 
+    document.getElementById("username").addEventListener("change", function () {
+
+        const username = this.value;
+
+        if (username === "") {
+
+            document.getElementById("nuevoUsername").value = "";
+            document.getElementById("password").value = "";
+            document.getElementById("confirmPassword").value = "";
+            document.getElementById("role").value = "USER";
+
+            return;
+        }
+
+        fetch("/admin/getUser?username=" + username)
+            .then(response => response.json())
+            .then(user => {
+
+                document.getElementById("role").value = user.role;
+
+                document.getElementById("nuevoUsername").value = user.username;
+
+                document.getElementById("password").value = "";
+                document.getElementById("confirmPassword").value = "";
+
+            })
+            .catch(error => console.error(error));
+
+    });
+
+    </script>
     <!-- Bootstrap 5.0.2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>

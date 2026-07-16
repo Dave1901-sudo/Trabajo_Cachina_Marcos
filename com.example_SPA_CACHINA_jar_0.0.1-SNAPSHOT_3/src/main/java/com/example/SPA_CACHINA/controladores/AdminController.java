@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  *
@@ -28,14 +29,51 @@ public class AdminController {
     private UsuarioService usuarioService;
 
     @GetMapping("/roleForm")
-    public String showRoleUpdateForm() {
-        return "updateRole"; // Nombre del archivo Thymeleaf: updateRole.html
+    public String showRoleUpdateForm(Model model) {
+
+        model.addAttribute("users", usuarioService.getList());
+
+        return "updateRole";
+    }
+    
+    @GetMapping("/getUser")
+    @ResponseBody
+    public Usuario getUser(@RequestParam String username) {
+
+        return usuarioService.getByUsername(username);
+
     }
 
     @PostMapping("/updateRole")
-    public String updateRole(@RequestParam String username, @RequestParam String role) {
-        usuarioService.updateRole(username, role);
-        return "redirect:/admin"; // Redirigir a una página de administración
+    public String updateRole(
+            @RequestParam String username,
+            @RequestParam(required = false) String nuevoUsername,
+            @RequestParam(required = false) String password,
+            @RequestParam(required = false) String confirmPassword,
+            @RequestParam String role,
+            Model model) {
+
+        try {
+
+            usuarioService.updateCredentials(
+                    username,
+                    nuevoUsername,
+                    password,
+                    confirmPassword,
+                    role
+            );
+
+            return "redirect:/admin";
+
+        } catch (IllegalArgumentException e) {
+
+            model.addAttribute("errorMessage", e.getMessage());
+
+            // Volver a cargar la lista de usuarios
+            model.addAttribute("users", usuarioService.getList());
+
+            return "updateRole";
+        }
     }
     
      @GetMapping("/printTemplate")
@@ -49,6 +87,64 @@ public class AdminController {
         List<Usuario> users = usuarioService.getList();
         model.addAttribute("users", users); // Pasar la lista de usuarios al modelo
         return "userList"; // Nombre del archivo Thymeleaf para la lista de usuarios
+    }
+    
+    @GetMapping("/editUser")
+    public String showEditUser(@RequestParam Long id, Model model) {
+
+        Usuario usuario = usuarioService.get(id);
+
+        if (usuario == null) {
+            return "redirect:/admin/userList";
+        }
+
+        model.addAttribute("usuario", usuario);
+
+        return "editUser";
+    }
+    
+    @PostMapping("/updateUser")
+    public String updateUser(
+            @RequestParam Long id,
+            @RequestParam String nombres,
+            @RequestParam String apellidos,
+            @RequestParam String email,
+            @RequestParam String telefono,
+            @RequestParam String direccion,
+            @RequestParam String documentoIdentidad,
+            Model model) {
+
+        try {
+
+            usuarioService.updateUser(
+                    id,
+                    nombres,
+                    apellidos,
+                    email,
+                    telefono,
+                    direccion,
+                    documentoIdentidad
+            );
+
+            return "redirect:/admin/userList";
+
+        } catch (IllegalArgumentException e) {
+
+            Usuario usuario = usuarioService.get(id);
+
+            // Sobrescribir únicamente los datos que el administrador escribió
+            usuario.setNombres(nombres);
+            usuario.setApellidos(apellidos);
+            usuario.setEmail(email);
+            usuario.setTelefono(telefono);
+            usuario.setDireccion(direccion);
+            usuario.setDocumentoIdentidad(documentoIdentidad);
+
+            model.addAttribute("usuario", usuario);
+            model.addAttribute("errorMessage", e.getMessage());
+
+            return "editUser";
+        }
     }
 
     @PostMapping("/deleteUser")

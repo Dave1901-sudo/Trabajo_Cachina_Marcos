@@ -26,17 +26,40 @@ public class UsuarioService {
     private PasswordEncoder passwordEncoder;
     
     
-    public void createUser(String username, String rawPassword, String role) {
-           if (userRepository.existsByUsername(username)) {
-        throw new IllegalArgumentException("El nombre de usuario ya está en uso. Por favor, elija otro.");
-    }
+    public void createUser(
+            String username,
+            String nombres,
+            String apellidos,
+            String email,
+            String telefono,
+            String direccion,
+            String documentoIdentidad,
+            String rawPassword,
+            String role) {
 
-// Codificar la contraseña
+        // Validación de unicidad
+        if (userRepository.existsByUsername(username)) {
+            throw new IllegalArgumentException("El nombre de usuario ya está en uso.");
+        }
+        if (userRepository.existsByEmail(email)) {
+            throw new IllegalArgumentException("El correo electrónico ya está registrado.");
+        }
+        if (userRepository.existsByDocumentoIdentidad(documentoIdentidad)) {
+            throw new IllegalArgumentException("El documento de identidad ya está registrado.");
+        }
+
+        // Codificar la contraseña
         String encodedPassword = passwordEncoder.encode(rawPassword);
         
         // Crear el usuario
         Usuario usuario = new Usuario();
         usuario.setUsername(username);
+        usuario.setNombres(nombres);
+        usuario.setApellidos(apellidos);
+        usuario.setEmail(email);
+        usuario.setTelefono(telefono);
+        usuario.setDireccion(direccion);
+        usuario.setDocumentoIdentidad(documentoIdentidad);
         usuario.setPassword(encodedPassword);
         usuario.setRole(role);
         
@@ -55,16 +78,90 @@ public class UsuarioService {
         }
     }
     
-    public void deleteUserByUsername(String username) {
-    Usuario user = userRepository.findByUsername(username);
-    if (user != null) {
-        userRepository.delete(user); // Elimina el usuario de la base de datos
-    } else {
-        throw new UsernameNotFoundException("Usuario no encontrado");
+    public void updateCredentials(
+            String username,
+            String nuevoUsername,
+            String password,
+            String confirmPassword,
+            String role) {
+
+        Usuario usuario = userRepository.findByUsername(username);
+
+        if (usuario == null) {
+            throw new UsernameNotFoundException("Usuario no encontrado.");
+        }
+
+        // Cambiar username (solo si se escribió uno nuevo)
+        if (nuevoUsername != null && !nuevoUsername.trim().isEmpty()) {
+
+            Usuario existente = userRepository.findByUsername(nuevoUsername);
+
+            if (existente != null && !existente.getId().equals(usuario.getId())) {
+                throw new IllegalArgumentException("Ese nombre de usuario ya existe.");
+            }
+
+            usuario.setUsername(nuevoUsername);
+        }
+
+        // Cambiar contraseña (solo si se escribió una)
+        if (password != null && !password.trim().isEmpty()) {
+
+            if (!password.equals(confirmPassword)) {
+                throw new IllegalArgumentException("Las contraseñas no coinciden.");
+            }
+
+            usuario.setPassword(passwordEncoder.encode(password));
+        }
+
+        // Actualizar rol
+        usuario.setRole(role);
+
+        userRepository.save(usuario);
     }
-}
+    
+    public void deleteUserByUsername(String username) {
+        Usuario user = userRepository.findByUsername(username);
+        if (user != null) {
+            userRepository.delete(user); // Elimina el usuario de la base de datos
+        } else {
+            throw new UsernameNotFoundException("Usuario no encontrado");
+        }
+    }
+    
+    public void updateUser(
+            Long id,
+            String nombres,
+            String apellidos,
+            String email,
+            String telefono,
+            String direccion,
+            String documentoIdentidad) {
 
+            Usuario usuario = userRepository.findById(id)
+                    .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
 
+            // Validar correo
+            Usuario usuarioCorreo = userRepository.findByEmail(email);
+            if (usuarioCorreo != null && !usuarioCorreo.getId().equals(id)) {
+                throw new IllegalArgumentException("El correo electrónico ya está registrado.");
+            }
+
+            // Validar documento
+            Usuario usuarioDocumento = userRepository.findByDocumentoIdentidad(documentoIdentidad);
+            if (usuarioDocumento != null && !usuarioDocumento.getId().equals(id)) {
+                throw new IllegalArgumentException("El documento de identidad ya está registrado.");
+            }
+
+            usuario.setNombres(nombres);
+            usuario.setApellidos(apellidos);
+            usuario.setEmail(email);
+            usuario.setTelefono(telefono);
+            usuario.setDireccion(direccion);
+            usuario.setDocumentoIdentidad(documentoIdentidad);
+
+            userRepository.save(usuario);
+    }
+    
     public List<Usuario> getList() {
         return userRepository.findAll();
     }
@@ -75,6 +172,11 @@ public class UsuarioService {
     public Usuario get(Long id){
         return userRepository.findById(id).orElse(null);
     }
+    
+    public Usuario getByUsername(String username){
+        return userRepository.findByUsername(username);
+    }
+    
     public void delete(Long id){
         userRepository.deleteById(id);
     }

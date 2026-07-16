@@ -21,10 +21,26 @@ public class ApiUsuarioTestController {
     public ResponseEntity<?> registrarUsuario(@RequestBody Map<String, String> body) {
         try {
             String username = body.get("username");
+            String nombres = body.get("nombres");
+            String apellidos = body.get("apellidos");
+            String email = body.get("email");
+            String telefono = body.get("telefono");
+            String direccion = body.get("direccion");
+            String documentoIdentidad = body.get("documentoIdentidad");
             String password = body.get("password");
             String role = body.getOrDefault("role", "USER");
 
-            usuarioService.createUser(username, password, role);
+            usuarioService.createUser(
+                    username,
+                    nombres,
+                    apellidos,
+                    email,
+                    telefono,
+                    direccion,
+                    documentoIdentidad,
+                    password,
+                    role
+            );
 
             return ResponseEntity.ok(Map.of(
                 "estado", "success",
@@ -39,8 +55,9 @@ public class ApiUsuarioTestController {
             ));
         }
     }
+
     @GetMapping("/listar")
-        public ResponseEntity<?> listarUsuarios() {
-            return ResponseEntity.ok(usuarioService.getList());
-        }
+    public ResponseEntity<?> listarUsuarios() {
+        return ResponseEntity.ok(usuarioService.getList());
+    }
 }
