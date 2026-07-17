@@ -60,18 +60,28 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                 <span th:text="${currentUser != null ? 'Bienvenido, ' + currentUser : 'Sin usuario'}"></span>
                             </button>
                             <ul class="dropdown-menu custom-dropdown" aria-labelledby="navbarDropdownMenuLink">
-                                <span th:if="${currentUser == null}">
-                                    <li><a class="dropdown-item" th:href="@{/login}">Iniciar sesión</a></li>
-                                    <li><a class="dropdown-item" th:href="@{/register}">Registrarse</a></li>
-                                </span>
                                 <span th:if="${currentUser != null}">
-                                    <form action="/logout" method="POST">
-                                        <button class="dropdown-item" type="submit">Logout</button>
-                                    </form>
-                                    <!-- Opciones visibles solo para usuarios con rol ADMIN -->
-                                    <li th:if="${isAdmin}">
-                                        <a class="dropdown-item" th:href="@{/admin}">Panel de Administración</a>
+
+                                    <li>
+                                        <a class="dropdown-item" th:href="@{/perfil}">
+                                            Ver perfil
+                                        </a>
                                     </li>
+
+                                    <li th:if="${isAdmin}">
+                                        <a class="dropdown-item" th:href="@{/admin}">
+                                            Panel de Administración
+                                        </a>
+                                    </li>
+
+                                    <li><hr class="dropdown-divider"></li>
+
+                                    <form action="/logout" method="POST">
+                                        <button class="dropdown-item" type="submit">
+                                            Cerrar sesión
+                                        </button>
+                                    </form>
+
                                 </span>
                             </ul>
                         </li>

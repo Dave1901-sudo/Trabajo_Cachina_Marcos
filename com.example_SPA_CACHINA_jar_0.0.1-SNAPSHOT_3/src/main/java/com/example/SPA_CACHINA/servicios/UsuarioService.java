@@ -162,6 +162,60 @@ public class UsuarioService {
             userRepository.save(usuario);
     }
     
+    public void actualizarCampoPerfil(
+            String usernameLogueado,
+            Long id,
+            String campo,
+            String valor) {
+
+        Usuario usuario = userRepository.findById(id)
+                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado."));
+
+        // Seguridad: solo puede modificar su propio perfil
+        if (!usuario.getUsername().equals(usernameLogueado)) {
+            throw new IllegalArgumentException("No autorizado para modificar este perfil.");
+        }
+
+        valor = valor.trim();
+
+        switch (campo) {
+
+            case "nombres":
+                usuario.setNombres(valor);
+                break;
+
+            case "apellidos":
+                usuario.setApellidos(valor);
+                break;
+
+            case "telefono":
+                usuario.setTelefono(valor);
+                break;
+
+            case "direccion":
+                usuario.setDireccion(valor);
+                break;
+
+            case "email":
+
+                Usuario usuarioCorreo = userRepository.findByEmail(valor);
+
+                if (usuarioCorreo != null
+                        && !usuarioCorreo.getId().equals(usuario.getId())) {
+
+                    throw new IllegalArgumentException("El correo electrónico ya está registrado.");
+                }
+
+                usuario.setEmail(valor);
+                break;
+
+            default:
+                throw new IllegalArgumentException("Campo no permitido.");
+        }
+
+        userRepository.save(usuario);
+    }
+    
     public List<Usuario> getList() {
         return userRepository.findAll();
     }
