@@ -117,6 +117,9 @@ function initializeCart() {
                             showSuccessAlert("Pedido realizado con éxito. Verifica tu email para pagar.");
                             cart = [];  // Limpiar el carrito
                             updateCartModal();
+                            if (typeof refreshOrderNotifications === 'function') {
+                                refreshOrderNotifications();
+                            }
                             // Cerrar el modal de confirmación
                             bootstrap.Modal.getInstance(document.getElementById('confirmOrderModal')).hide();
                         }, 1000);
@@ -249,6 +252,265 @@ function initializeCart() {
             });
         });
     }
+}
+
+function initializeOrderNotifications() {
+    const notificationButton = document.getElementById('notificationButton');
+    const notificationsModal = document.getElementById('notificationsModal');
+
+    if (!notificationButton || !notificationsModal) {
+        return;
+    }
+
+    notificationButton.addEventListener('click', () => {
+        loadOrderNotifications(true);
+    });
+
+    refreshOrderNotifications();
+    checkConfirmedOrderNotifications();
+    setInterval(() => {
+        refreshOrderNotifications();
+        checkConfirmedOrderNotifications();
+    }, 30000);
+}
+
+function refreshOrderNotifications() {
+    loadOrderNotifications(false);
+}
+
+function loadOrderNotifications(renderList) {
+    const badge = document.getElementById('notificationBadge');
+    const loading = document.getElementById('notificationsLoading');
+    const empty = document.getElementById('notificationsEmpty');
+    const list = document.getElementById('notificationsList');
+
+    if (!badge) {
+        return;
+    }
+
+    if (renderList) {
+        if (loading) loading.classList.remove('d-none');
+        if (empty) empty.classList.add('d-none');
+        if (list) list.innerHTML = '';
+    }
+
+    fetch('/mis-pedidos/pendientes')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('No se pudieron cargar los pedidos pendientes.');
+                }
+                return response.json();
+            })
+            .then(pedidos => {
+                updateNotificationBadge(pedidos.length);
+
+                if (!renderList || !list || !loading || !empty) {
+                    return;
+                }
+
+                loading.classList.add('d-none');
+                list.innerHTML = '';
+
+                if (pedidos.length === 0) {
+                    empty.classList.remove('d-none');
+                    return;
+                }
+
+                empty.classList.add('d-none');
+                pedidos.forEach(pedido => {
+                    const button = document.createElement('button');
+                    button.type = 'button';
+                    button.className = 'pedido-notificacion bg-white text-start p-3 w-100';
+                    button.innerHTML = `
+                        <div class="d-flex justify-content-between gap-3 align-items-start">
+                            <div>
+                                <div class="fw-bold text-primary">Pedido #${pedido.id}</div>
+                                <div class="text-muted small">
+                                    <i class="bi bi-clock me-1"></i>${escapeHtml(pedido.fecha || 'Fecha no disponible')}
+                                </div>
+                            </div>
+                            <div class="text-end">
+                                <span class="badge bg-warning text-dark mb-2">${escapeHtml(pedido.estado || 'Pendiente')}</span>
+                                <div class="fw-bold">S/. ${formatCurrency(pedido.total)}</div>
+                            </div>
+                        </div>
+                    `;
+                    button.addEventListener('click', () => showOrderDetail(pedido.id));
+                    list.appendChild(button);
+                });
+            })
+            .catch(error => {
+                console.error(error);
+                if (renderList && loading && empty && list) {
+                    loading.classList.add('d-none');
+                    empty.classList.remove('d-none');
+                    empty.innerHTML = `
+                        <i class="bi bi-exclamation-triangle fs-1 text-warning"></i>
+                        <p class="mb-0 mt-2">No se pudieron cargar tus pedidos pendientes.</p>
+                    `;
+                    list.innerHTML = '';
+                }
+            });
+}
+
+function updateNotificationBadge(count) {
+    const badge = document.getElementById('notificationBadge');
+    if (!badge) {
+        return;
+    }
+
+    badge.textContent = count;
+    badge.classList.toggle('d-none', count === 0);
+}
+
+function showOrderDetail(orderId) {
+    const detailBody = document.getElementById('orderDetailBody');
+    if (!detailBody) {
+        return;
+    }
+
+    detailBody.innerHTML = `
+        <div class="text-center text-muted py-4">
+            <div class="spinner-border text-primary mb-3" role="status">
+                <span class="visually-hidden">Cargando...</span>
+            </div>
+            <p class="mb-0">Cargando detalle del pedido...</p>
+        </div>
+    `;
+
+    const notificationsModalElement = document.getElementById('notificationsModal');
+    const notificationsModal = bootstrap.Modal.getInstance(notificationsModalElement);
+    if (notificationsModal) {
+        notificationsModal.hide();
+    }
+
+    const detailModal = new bootstrap.Modal(document.getElementById('orderDetailModal'));
+    detailModal.show();
+
+    fetch(`/mis-pedidos/${orderId}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('No se pudo cargar el detalle del pedido.');
+                }
+                return response.json();
+            })
+            .then(pedido => {
+                const detalles = Array.isArray(pedido.detalles) ? pedido.detalles : [];
+                const filas = detalles.map(item => `
+                    <tr>
+                        <td>${escapeHtml(item.nombre || '-')}</td>
+                        <td class="text-center">${item.cantidad || 0}</td>
+                        <td class="text-end">S/. ${formatCurrency(item.precio)}</td>
+                        <td class="text-end">S/. ${formatCurrency(item.subtotal)}</td>
+                    </tr>
+                    ${item.comentario ? `<tr><td colspan="4" class="text-muted small pt-0">Comentario: ${escapeHtml(item.comentario)}</td></tr>` : ''}
+                `).join('');
+
+                detailBody.innerHTML = `
+                    <div class="d-flex justify-content-between flex-wrap gap-3 mb-3">
+                        <div>
+                            <h5 class="text-primary mb-1">Pedido #${pedido.id}</h5>
+                            <div class="text-muted"><i class="bi bi-clock me-1"></i>${escapeHtml(pedido.fecha || 'Fecha no disponible')}</div>
+                        </div>
+                        <div class="text-end">
+                            <span class="badge bg-warning text-dark">${escapeHtml(pedido.estado || 'Pendiente')}</span>
+                            <div class="fs-5 fw-bold text-primary mt-1">S/. ${formatCurrency(pedido.total)}</div>
+                        </div>
+                    </div>
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-4"><strong>Correo:</strong><br>${escapeHtml(pedido.email || '-')}</div>
+                        <div class="col-md-4"><strong>Telefono:</strong><br>${escapeHtml(pedido.phone || '-')}</div>
+                        <div class="col-md-4"><strong>Direccion:</strong><br>${escapeHtml(pedido.direccion || '-')}</div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-sm align-middle pedido-detalle-table bg-white">
+                            <thead>
+                                <tr>
+                                    <th>Producto</th>
+                                    <th class="text-center">Cant.</th>
+                                    <th class="text-end">Precio</th>
+                                    <th class="text-end">Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${filas || '<tr><td colspan="4" class="text-center text-muted">Sin detalles.</td></tr>'}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            })
+            .catch(error => {
+                console.error(error);
+                detailBody.innerHTML = `
+                    <div class="text-center text-muted py-4">
+                        <i class="bi bi-exclamation-triangle fs-1 text-warning"></i>
+                        <p class="mb-0 mt-2">No se pudo cargar el detalle del pedido.</p>
+                    </div>
+                `;
+            });
+}
+
+function formatCurrency(value) {
+    const number = Number(value || 0);
+    return number.toFixed(2);
+}
+
+function escapeHtml(value) {
+    return String(value)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+}
+
+function checkConfirmedOrderNotifications() {
+    fetch('/mis-pedidos/confirmados')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('No se pudieron cargar pedidos confirmados.');
+                }
+                return response.json();
+            })
+            .then(pedidos => {
+                const storageKey = 'cachina_confirmed_orders_notified';
+                const notifiedIds = JSON.parse(localStorage.getItem(storageKey) || '[]');
+                const currentIds = pedidos.map(pedido => String(pedido.id));
+                const newConfirmed = pedidos.filter(pedido => !notifiedIds.includes(String(pedido.id)));
+
+                if (newConfirmed.length > 0) {
+                    showConfirmedOrdersAlert(newConfirmed);
+                    localStorage.setItem(storageKey, JSON.stringify([...new Set([...notifiedIds, ...currentIds])]));
+                }
+            })
+            .catch(error => console.error(error));
+}
+
+function showConfirmedOrdersAlert(pedidos) {
+    const plural = pedidos.length > 1;
+    const title = plural ? 'Tus pedidos fueron confirmados' : 'Tu pedido fue confirmado';
+    const text = plural
+            ? `Tienes ${pedidos.length} pedidos confirmados. Revisa tu historial de pedidos.`
+            : `El pedido #${pedidos[0].id} fue confirmado. Revisa tu historial de pedidos.`;
+
+    if (typeof Swal !== 'undefined') {
+        Swal.fire({
+            icon: 'success',
+            title: title,
+            text: text,
+            confirmButtonText: 'Ver historial',
+            showCancelButton: true,
+            cancelButtonText: 'Cerrar',
+            confirmButtonColor: '#0277bd'
+        }).then(result => {
+            if (result.isConfirmed) {
+                window.location.href = '/historial-pedidos';
+            }
+        });
+        return;
+    }
+
+    alert(text);
 }
 //El camarón :D función
 // Función para desplazarse hacia el principio de la página

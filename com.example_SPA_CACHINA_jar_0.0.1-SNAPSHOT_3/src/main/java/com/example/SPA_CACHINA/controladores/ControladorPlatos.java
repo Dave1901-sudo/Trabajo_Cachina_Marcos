@@ -5,14 +5,22 @@
 package com.example.SPA_CACHINA.controladores;
 
 import com.example.SPA_CACHINA.entidades.Reservas;
+import com.example.SPA_CACHINA.entidades.Pedido;
+import com.example.SPA_CACHINA.entidades.PedidoDetalle;
+import com.example.SPA_CACHINA.entidades.Usuario;
 import com.example.SPA_CACHINA.entidades.platos;
 import com.example.SPA_CACHINA.locale.PedidoRequest;
 import com.example.SPA_CACHINA.locale.ResponseMessage;
 import com.example.SPA_CACHINA.servicios.PedidoService;
 import com.example.SPA_CACHINA.servicios.Servicioplatos;
+import com.example.SPA_CACHINA.servicios.UsuarioService;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URLConnection;
+import java.security.Principal;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -47,6 +55,9 @@ public class ControladorPlatos {
 
     @Autowired
     private PedidoService pedidoService;
+
+    @Autowired
+    private UsuarioService usuarioService;
 
     /* @GetMapping("/")
     public String listarPlatosVerticales(Model model) {
@@ -141,15 +152,114 @@ public class ControladorPlatos {
 
     @PostMapping("/realizarPedido")
     @ResponseBody
-    public ResponseEntity<?> realizarPedido(@RequestBody PedidoRequest orderData) {
+    public ResponseEntity<?> realizarPedido(@RequestBody PedidoRequest orderData, Principal principal) {
         try {
-            pedidoService.guardarPedido(orderData);
+            Usuario usuario = obtenerUsuarioLogueado(principal);
+            if (usuario != null && usuario.getEmail() != null) {
+                orderData.setEmail(usuario.getEmail());
+            }
+            pedidoService.guardarPedido(orderData, usuario);
             return ResponseEntity.ok().body(new ResponseMessage("success"));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ResponseMessage("error: " + e.getMessage()));
         }
+    }
+
+    @GetMapping("/mis-pedidos/pendientes")
+    @ResponseBody
+    public ResponseEntity<?> listarPedidosPendientes(Principal principal) {
+        Usuario usuario = obtenerUsuarioLogueado(principal);
+        if (usuario == null || usuario.getId() == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        List<Map<String, Object>> pedidos = pedidoService
+                .obtenerPedidosPendientesPorUsuario(usuario.getId())
+                .stream()
+                .map(this::resumenPedido)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(pedidos);
+    }
+
+    @GetMapping("/mis-pedidos/confirmados")
+    @ResponseBody
+    public ResponseEntity<?> listarPedidosConfirmados(Principal principal) {
+        Usuario usuario = obtenerUsuarioLogueado(principal);
+        if (usuario == null || usuario.getId() == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        List<Map<String, Object>> pedidos = pedidoService
+                .obtenerPedidosConfirmadosPorUsuario(usuario.getId())
+                .stream()
+                .map(this::resumenPedido)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(pedidos);
+    }
+
+    @GetMapping("/mis-pedidos/{id}")
+    @ResponseBody
+    public ResponseEntity<?> obtenerMiPedido(@PathVariable("id") Long id, Principal principal) {
+        Usuario usuario = obtenerUsuarioLogueado(principal);
+        if (usuario == null || usuario.getId() == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        try {
+            Pedido pedido = pedidoService.obtenerPedidoPendientePorIdYUsuario(id, usuario.getId());
+            return ResponseEntity.ok(detallePedido(pedido));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMessage("Pedido no encontrado"));
+        }
+    }
+
+    private Usuario obtenerUsuarioLogueado(Principal principal) {
+        if (principal == null) {
+            return null;
+        }
+        return usuarioService.getByUsername(principal.getName());
+    }
+
+    private Map<String, Object> resumenPedido(Pedido pedido) {
+        Map<String, Object> data = new LinkedHashMap<>();
+        data.put("id", pedido.getId());
+        data.put("fecha", formatearFecha(pedido.getFechaPedido()));
+        data.put("total", pedido.getTotal());
+        data.put("estado", pedido.getEstado());
+        return data;
+    }
+
+    private Map<String, Object> detallePedido(Pedido pedido) {
+        Map<String, Object> data = resumenPedido(pedido);
+        data.put("email", pedido.getEmail());
+        data.put("phone", pedido.getPhone());
+        data.put("direccion", pedido.getDireccion());
+
+        List<Map<String, Object>> detalles = new ArrayList<>();
+        if (pedido.getDetalles() != null) {
+            for (PedidoDetalle detalle : pedido.getDetalles()) {
+                Map<String, Object> item = new LinkedHashMap<>();
+                item.put("nombre", detalle.getNombre());
+                item.put("cantidad", detalle.getCantidad());
+                item.put("precio", detalle.getPrecio());
+                item.put("subtotal", detalle.getPrecio() * detalle.getCantidad());
+                item.put("comentario", detalle.getComentario());
+                detalles.add(item);
+            }
+        }
+        data.put("detalles", detalles);
+        return data;
+    }
+
+    private String formatearFecha(java.util.Date fecha) {
+        if (fecha == null) {
+            return "";
+        }
+        return new SimpleDateFormat("dd/MM/yyyy HH:mm").format(fecha);
     }
 
     @GetMapping("/imagen/{id}")

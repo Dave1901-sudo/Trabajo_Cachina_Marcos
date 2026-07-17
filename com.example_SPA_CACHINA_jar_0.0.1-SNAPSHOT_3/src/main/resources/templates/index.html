@@ -173,6 +173,49 @@
             .info-message a:hover {
                 text-decoration: underline;
             }
+
+            .floating-action-button {
+                width: 64px;
+                height: 64px;
+                z-index: 1030;
+            }
+
+            #notificationButton {
+                left: 1.5rem;
+                bottom: 6rem;
+                background: #0277bd;
+                color: #ffffff;
+            }
+
+            #notificationButton:hover {
+                background: #01579b;
+                color: #ffffff;
+            }
+
+            #notificationBadge {
+                min-width: 1.4rem;
+                height: 1.4rem;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 0.75rem;
+            }
+
+            .pedido-notificacion {
+                border: 1px solid #cfe8ef;
+                border-left: 4px solid #ffa500;
+                border-radius: 8px;
+                transition: background-color 0.2s ease, transform 0.2s ease;
+            }
+
+            .pedido-notificacion:hover {
+                background-color: #eefaff;
+                transform: translateY(-1px);
+            }
+
+            .pedido-detalle-table th {
+                color: #01579b;
+            }
         </style>
     </head>
     <body class="bg-custom-2">
@@ -275,6 +318,46 @@
                 </div>
             </div>
         </div>
+        <!-- Modal de pedidos pendientes del usuario -->
+        <div class="modal fade" id="notificationsModal" tabindex="-1" aria-labelledby="notificationsModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content border-0 shadow">
+                    <div class="modal-header bg-primary text-white">
+                        <h5 class="modal-title" id="notificationsModalLabel">
+                            <i class="bi bi-bell-fill me-2"></i>Pedidos pendientes
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body bg-light">
+                        <div id="notificationsLoading" class="text-center text-muted py-4">
+                            <div class="spinner-border text-primary mb-3" role="status">
+                                <span class="visually-hidden">Cargando...</span>
+                            </div>
+                            <p class="mb-0">Cargando tus pedidos pendientes...</p>
+                        </div>
+                        <div id="notificationsEmpty" class="text-center text-muted py-4 d-none">
+                            <i class="bi bi-check2-circle fs-1 text-success"></i>
+                            <p class="mb-0 mt-2">No tienes pedidos pendientes por ahora.</p>
+                        </div>
+                        <div id="notificationsList" class="d-grid gap-3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal de detalle de pedido pendiente -->
+        <div class="modal fade" id="orderDetailModal" tabindex="-1" aria-labelledby="orderDetailModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content border-0 shadow">
+                    <div class="modal-header bg-orange text-white">
+                        <h5 class="modal-title" id="orderDetailModalLabel">
+                            <i class="bi bi-receipt me-2"></i>Detalle del pedido
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div id="orderDetailBody" class="modal-body bg-light"></div>
+                </div>
+            </div>
+        </div>
         <!-- Toast para notificación de producto agregado -->
         <div id="cartToast" 
              class="toast position-fixed top-0 start-50 translate-middle-x mt-3" 
@@ -351,7 +434,12 @@
             </div>
         </div>
         <!-- Botón del carrito (inicio oculto) -->
-        <button id="cartButton" class="btn btn-outline-warning position-fixed bottom-0 start-0 m-4 rounded-circle d-flex align-items-center justify-content-center p-3 shadow-lg border-0"
+        <button id="notificationButton" class="btn position-fixed rounded-circle d-flex align-items-center justify-content-center shadow-lg border-0 floating-action-button"
+                data-bs-toggle="modal" data-bs-target="#notificationsModal" type="button" aria-label="Ver pedidos pendientes">
+            <i class="bi bi-bell fs-2"></i>
+            <span id="notificationBadge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none">0</span>
+        </button>
+        <button id="cartButton" class="btn btn-outline-warning position-fixed bottom-0 start-0 m-4 rounded-circle d-flex align-items-center justify-content-center p-3 shadow-lg border-0 floating-action-button"
                 data-bs-toggle="modal" data-bs-target="#cartModal" style="display: none;">
             <i class="bi bi-cart fs-2 text-warning"></i>
         </button>
@@ -365,6 +453,7 @@
             document.addEventListener("DOMContentLoaded", function () {
                 botonMas();
                 initializeCart();
+                initializeOrderNotifications();
             });
             // Función para ocultar la pantalla de carga y mostrar el contenido
             window.onload = function () {

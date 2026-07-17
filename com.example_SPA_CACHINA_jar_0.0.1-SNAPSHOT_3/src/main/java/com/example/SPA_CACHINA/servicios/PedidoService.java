@@ -6,6 +6,7 @@ package com.example.SPA_CACHINA.servicios;
 
 import com.example.SPA_CACHINA.entidades.Pedido;
 import com.example.SPA_CACHINA.entidades.PedidoDetalle;
+import com.example.SPA_CACHINA.entidades.Usuario;
 import com.example.SPA_CACHINA.entidades.platos;
 import com.example.SPA_CACHINA.locale.CarritoItem;
 import com.example.SPA_CACHINA.locale.PedidoRequest;
@@ -41,6 +42,10 @@ public class PedidoService {
     private PlatosDAO platosDAO;
     
     public ResponseMessage guardarPedido(PedidoRequest orderData) {
+        return guardarPedido(orderData, null);
+    }
+
+    public ResponseMessage guardarPedido(PedidoRequest orderData, Usuario usuario) {
         try {
             // Crear un objeto Pedido
             Pedido pedido = new Pedido();
@@ -48,6 +53,7 @@ public class PedidoService {
             pedido.setEmail(orderData.getEmail());
             pedido.setPhone(orderData.getPhone());
             pedido.setDireccion(orderData.getDireccion());
+            pedido.setUsuario(usuario);
 
             double total = 0;
             
@@ -83,6 +89,19 @@ public class PedidoService {
     // Nuevo método para obtener todos los pedidos
     public List<Pedido> obtenerTodosLosPedidos() {
         return pedidoRepository.findAll(); // Recupera todos los pedidos de la base de datos
+    }
+
+    public List<Pedido> obtenerPedidosPendientesPorUsuario(Long usuarioId) {
+        return pedidoRepository.findByUsuarioIdAndEstadoOrderByFechaPedidoDesc(usuarioId, "Pendiente");
+    }
+
+    public List<Pedido> obtenerPedidosConfirmadosPorUsuario(Long usuarioId) {
+        return pedidoRepository.findByUsuarioIdAndEstadoOrderByFechaPedidoDesc(usuarioId, "Confirmado");
+    }
+
+    public Pedido obtenerPedidoPendientePorIdYUsuario(Long id, Long usuarioId) {
+        return pedidoRepository.findWithDetallesByIdAndUsuarioIdAndEstado(id, usuarioId, "Pendiente")
+                .orElseThrow(() -> new RuntimeException("Pedido no encontrado"));
     }
 
     // Método para obtener un pedido por su ID

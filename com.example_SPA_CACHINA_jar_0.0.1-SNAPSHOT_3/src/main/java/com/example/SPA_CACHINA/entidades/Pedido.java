@@ -10,6 +10,8 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.Date;
@@ -34,6 +36,10 @@ public class Pedido {
     private String phone; // Teléfono del cliente
     private String direccion;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "usuario_id")
+    private Usuario usuario;
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "pedido")
     private List<PedidoDetalle> detalles;
     private String estado = "Pendiente";
@@ -55,6 +61,14 @@ public class Pedido {
 
     public void setDireccion(String direccion) {
         this.direccion = direccion;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     public Pedido(Long id, Date fechaPedido, double total, String email, String phone, String direccion, List<PedidoDetalle> detalles) {
