@@ -24,6 +24,48 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 padding: 0;
             }
 
+            #loader {
+                position: fixed;
+                z-index: 99999;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: #1e90ff;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .spinner {
+                width: 150px;
+                height: 150px;
+                background-image: url('/imagenes/vecteezy_shrimp-png-clipart_27738778.png');
+                background-size: contain;
+                background-repeat: no-repeat;
+                animation: spin 1s linear infinite;
+            }
+
+            @keyframes spin {
+                0% {
+                    transform: rotate(0deg);
+                }
+                100% {
+                    transform: rotate(360deg);
+                }
+            }
+
+            .page-enter {
+                opacity: 0;
+                transform: translateY(28px);
+                transition: opacity 0.8s ease, transform 0.8s ease;
+            }
+
+            body.page-loaded .page-enter {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
             /* Header Styles */
             h1 {
                 color: #003a63; /* Dark Blue */
@@ -132,7 +174,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
     <body>
 
-        <div class="container">
+        <div id="loader">
+            <div class="spinner"></div>
+        </div>
+
+        <div class="container page-enter">
             <!-- Header -->
             <h1>Bienvenido al Panel de Administración</h1>
 
@@ -193,6 +239,15 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
         <!-- Bootstrap 5.0.2 JS -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+            window.addEventListener('load', function () {
+                const loader = document.getElementById('loader');
+                if (loader) {
+                    loader.style.display = 'none';
+                }
+                document.body.classList.add('page-loaded');
+            });
+        </script>
 
     </body>
 </html>

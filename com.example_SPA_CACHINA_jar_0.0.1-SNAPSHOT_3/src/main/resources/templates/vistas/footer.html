@@ -6,6 +6,50 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 <html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
 
 <body th:fragment="footer"> 
+<style>
+    #footer {
+        background-color: #0277bd;
+    }
+
+    #footer h5 {
+        font-weight: 700;
+    }
+
+    #footer p,
+    #footer a {
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
+
+    #footer a {
+        text-decoration: none;
+        transition: color 0.2s ease, padding-left 0.2s ease, border-color 0.2s ease;
+    }
+
+    #footer ul a:hover {
+        color: #ffe0a3 !important;
+        padding-left: 0.25rem;
+    }
+
+    #footer .btn-icon {
+        width: 2.35rem;
+        height: 2.35rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+    }
+
+    #footer .btn-icon:hover {
+        color: #0277bd !important;
+        background-color: #ffffff;
+        border-color: #ffffff;
+    }
+
+    #footer hr {
+        opacity: 0.85;
+    }
+</style>
 <!-- Footer -->
 <footer  id="footer" class="bg-custom-3 text-light pt-5 pb-3">
     <div class="container">
@@ -13,7 +57,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             <!-- Columna de Información de la Empresa -->
             <div class="col-md-4 mb-4">
                 <h5 class="text-warning">Cevichería Cachina Fish</h5>
-                <p th:text="#{footer.disfruta}"class="text-light"></p>
+                <p th:text="#{footer.disfruta}" class="text-light"></p>
                 <ul class="list-unstyled">
                     <li><a th:text="#{footer.nosotros}" href="#" class="text-light"></a></li>
                     <li><a th:text="#{footer.privacidad}" href="#" class="text-light"></a></li>
