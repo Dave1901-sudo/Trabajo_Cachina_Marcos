@@ -133,6 +133,22 @@
                     </div>
                 </div>
 
+                <!-- Usuario -->
+                <div class="mb-3">
+                    <label for="usuarioId" class="form-label"><i class="fas fa-user"></i> Usuario</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-user"></i></span>
+                        <select class="form-control" id="usuarioId" name="usuarioId">
+                            <option value="">-- Seleccione un usuario --</option>
+                            <option th:each="user : ${usuarios}"
+                                    th:value="${user.id}"
+                                    th:text="${user.username + ' (' + user.nombres + ' ' + user.apellidos + ')'}"
+                                    th:selected="${pedido.usuario != null and pedido.usuario.id == user.id}">
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
                 <!-- Botón de submit -->
                 <button type="submit" class="btn btn-primary">
                     <i class="fas fa-save"></i> Actualizar Pedido

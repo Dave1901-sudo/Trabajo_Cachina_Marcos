@@ -76,10 +76,12 @@ function initializeCart() {
         toastElement1.show();
     });
     document.getElementById('sendOrder').addEventListener('click', function () {
+        const nombres = document.getElementById('nombres').value;
         const email = document.getElementById('email').value;
         const phone = document.getElementById('phone').value;
         const direccion = document.getElementById('direccion').value;
-        if (!email || !phone || !direccion) {
+        const referencia = document.getElementById('referencia').value;
+        if (!nombres || !email || !phone || !direccion) {
             showInfoAlert();
             return;
         }
@@ -95,9 +97,11 @@ function initializeCart() {
                     cantidad: item.cantidad,
                     comentario: item.comentario
                 })),
+            nombres: nombres,
             email: email,
             phone: phone,
-            direccion: direccion
+            direccion: direccion,
+            referencia: referencia
         };
         const loadingText = document.querySelector('#loadingModal .modal-body p');
         const spinner = document.querySelector('#loadingModal .spinner-border');
@@ -317,14 +321,14 @@ function loadOrderNotifications(renderList) {
                 }
 
                 empty.classList.add('d-none');
-                pedidos.forEach(pedido => {
+                pedidos.forEach((pedido, index) => {
                     const button = document.createElement('button');
                     button.type = 'button';
                     button.className = 'pedido-notificacion bg-white text-start p-3 w-100';
                     button.innerHTML = `
                         <div class="d-flex justify-content-between gap-3 align-items-start">
                             <div>
-                                <div class="fw-bold text-primary">Pedido #${pedido.id}</div>
+                                <div class="fw-bold text-primary">Pedido #${index + 1}</div>
                                 <div class="text-muted small">
                                     <i class="bi bi-clock me-1"></i>${escapeHtml(pedido.fecha || 'Fecha no disponible')}
                                 </div>

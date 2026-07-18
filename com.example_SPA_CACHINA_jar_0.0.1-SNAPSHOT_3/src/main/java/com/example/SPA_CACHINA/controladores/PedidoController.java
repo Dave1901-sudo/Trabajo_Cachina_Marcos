@@ -8,6 +8,7 @@ import com.example.SPA_CACHINA.entidades.Pedido;
 import com.example.SPA_CACHINA.entidades.PedidoDetalle;
 import com.example.SPA_CACHINA.servicios.PedidoService;
 import com.example.SPA_CACHINA.servicios.Servicioplatos;
+import com.example.SPA_CACHINA.servicios.UsuarioService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,6 +33,9 @@ public class PedidoController {
     @Autowired
     private Servicioplatos servicioplatos;
     
+    @Autowired
+    private UsuarioService usuarioService;
+    
     @GetMapping
     public String listarPedidos(Model model) {
         List<Pedido> pedidos = pedidoService.obtenerTodosLosPedidos();
@@ -43,12 +47,13 @@ public class PedidoController {
     public String editarPedido(@PathVariable("id") Long id, Model model) {
         Pedido pedido = pedidoService.obtenerPedidoPorId(id);
         model.addAttribute("pedido", pedido);
+        model.addAttribute("usuarios", usuarioService.getList());
         return "editarPedido"; // Vista para editar el pedido
     }
 
     @PostMapping("/editar/{id}")
-    public String actualizarPedido(@PathVariable("id") Long id, @ModelAttribute Pedido pedido) {
-        pedidoService.actualizarPedido(id, pedido);
+    public String actualizarPedido(@PathVariable("id") Long id, @ModelAttribute Pedido pedido, @RequestParam("usuarioId") Long usuarioId) {
+        pedidoService.actualizarPedido(id, pedido, usuarioId);
         return "redirect:/pedidos"; // Redirige a la lista de pedidos
     }
 

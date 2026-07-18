@@ -123,11 +123,11 @@
                 Todavía no tienes pedidos confirmados.
             </div>
             <div class="row g-3" th:if="${!#lists.isEmpty(pedidosConfirmados)}">
-                <div class="col-md-6 col-xl-4" th:each="pedido : ${pedidosConfirmados}">
+                <div class="col-md-6 col-xl-4" th:each="pedido, iterStat : ${pedidosConfirmados}">
                     <article class="pedido-card confirmado">
                         <div class="d-flex justify-content-between align-items-start gap-3">
                             <div>
-                                <h5 class="mb-1 text-primary" th:text="'Pedido #' + ${pedido.id}">Pedido #1</h5>
+                                <h5 class="mb-1 text-primary">Pedido #<span th:text="${iterStat.count}">1</span></h5>
                                 <div class="pedido-meta">
                                     <i class="bi bi-clock me-1"></i>
                                     <span th:text="${#dates.format(pedido.fechaPedido, 'dd/MM/yyyy HH:mm')}">17/07/2026 12:00</span>
@@ -152,11 +152,11 @@
                 No tienes pedidos pendientes.
             </div>
             <div class="row g-3" th:if="${!#lists.isEmpty(pedidosPendientes)}">
-                <div class="col-md-6 col-xl-4" th:each="pedido : ${pedidosPendientes}">
+                <div class="col-md-6 col-xl-4" th:each="pedido, iterStat : ${pedidosPendientes}">
                     <article class="pedido-card pendiente">
                         <div class="d-flex justify-content-between align-items-start gap-3">
                             <div>
-                                <h5 class="mb-1 text-primary" th:text="'Pedido #' + ${pedido.id}">Pedido #1</h5>
+                                <h5 class="mb-1 text-primary">Pedido #<span th:text="${iterStat.count}">1</span></h5>
                                 <div class="pedido-meta">
                                     <i class="bi bi-clock me-1"></i>
                                     <span th:text="${#dates.format(pedido.fechaPedido, 'dd/MM/yyyy HH:mm')}">17/07/2026 12:00</span>

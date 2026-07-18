@@ -14,6 +14,7 @@ import com.example.SPA_CACHINA.locale.ResponseMessage;
 import com.example.SPA_CACHINA.repositorios.PedidoDetalleRepository;
 import com.example.SPA_CACHINA.repositorios.PedidoRepository;
 import com.example.SPA_CACHINA.repositorios.PlatosDAO;
+import com.example.SPA_CACHINA.repositorios.UserRepository;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.file.Files;
@@ -41,6 +42,9 @@ public class PedidoService {
     @Autowired
     private PlatosDAO platosDAO;
     
+    @Autowired
+    private UserRepository userRepository;
+    
     public ResponseMessage guardarPedido(PedidoRequest orderData) {
         return guardarPedido(orderData, null);
     }
@@ -53,6 +57,7 @@ public class PedidoService {
             pedido.setEmail(orderData.getEmail());
             pedido.setPhone(orderData.getPhone());
             pedido.setDireccion(orderData.getDireccion());
+            pedido.setReferencia(orderData.getReferencia());
             pedido.setUsuario(usuario);
 
             double total = 0;
@@ -76,8 +81,8 @@ public class PedidoService {
             pedidoRepository.save(pedido);
 
             // Enviar correo
-            // Enviar correo
-            enviarCorreo(orderData.getEmail(), total, pedido.getDetalles());
+            String nombresCorreo = (usuario != null) ? usuario.getNombres() + " " + usuario.getApellidos() : orderData.getNombres();
+            enviarCorreo(orderData.getEmail(), nombresCorreo, orderData.getPhone(), orderData.getDireccion(), orderData.getReferencia(), total, pedido.getDetalles());
             enviarNotificacionNuevoPedido();
             
             return new ResponseMessage("Pedido realizado con éxito.");
@@ -92,11 +97,11 @@ public class PedidoService {
     }
 
     public List<Pedido> obtenerPedidosPendientesPorUsuario(Long usuarioId) {
-        return pedidoRepository.findByUsuarioIdAndEstadoOrderByFechaPedidoDesc(usuarioId, "Pendiente");
+        return pedidoRepository.findByUsuarioIdAndEstadoOrderByFechaPedidoAsc(usuarioId, "Pendiente");
     }
 
     public List<Pedido> obtenerPedidosConfirmadosPorUsuario(Long usuarioId) {
-        return pedidoRepository.findByUsuarioIdAndEstadoOrderByFechaPedidoDesc(usuarioId, "Confirmado");
+        return pedidoRepository.findByUsuarioIdAndEstadoOrderByFechaPedidoAsc(usuarioId, "Confirmado");
     }
 
     public Pedido obtenerPedidoPendientePorIdYUsuario(Long id, Long usuarioId) {
@@ -110,14 +115,17 @@ public class PedidoService {
     }
 
     // Método para actualizar un pedido
-    public void actualizarPedido(Long id, Pedido pedidoActualizado) {
+    public void actualizarPedido(Long id, Pedido pedidoActualizado, Long usuarioId) {
         Pedido pedido = obtenerPedidoPorId(id);
         pedido.setFechaPedido(pedidoActualizado.getFechaPedido());
         pedido.setTotal(pedidoActualizado.getTotal());
         pedido.setEmail(pedidoActualizado.getEmail());
         pedido.setPhone(pedidoActualizado.getPhone());
         pedido.setDireccion(pedidoActualizado.getDireccion());
-        // Actualizar otros campos si es necesario
+        if (usuarioId != null) {
+            Usuario usuario = userRepository.findById(usuarioId).orElse(null);
+            pedido.setUsuario(usuario);
+        }
         pedidoRepository.save(pedido);
     }
 
@@ -229,12 +237,10 @@ public class PedidoService {
 }
 
     
-    private void enviarCorreo(String email, double total, List<PedidoDetalle> detallesPedido) {
+    private void enviarCorreo(String email, String nombres, String telefono, String direccion, String referencia, double total, List<PedidoDetalle> detallesPedido) {
         try {
-            // Cargar la plantilla HTML
             String template = new String(Files.readAllBytes(Paths.get("src/main/resources/templates/pedido-confirmacion.html")));
 
-            // Reemplazar los datos en la plantilla
             StringBuilder detallesHtml = new StringBuilder();
             for (PedidoDetalle detalle : detallesPedido) {
                 detallesHtml.append("<tr>")
@@ -246,6 +252,10 @@ public class PedidoService {
             }
 
             String contenido = template
+                    .replace("{{nombres}}", nombres != null ? nombres : "")
+                    .replace("{{telefono}}", telefono != null ? telefono : "")
+                    .replace("{{direccion}}", direccion != null ? direccion : "")
+                    .replace("{{referencia}}", referencia != null && !referencia.isEmpty() ? referencia : "Ninguna referencia asignada")
                     .replace("{{total}}", String.format("%.2f", total))
                     .replace("<!-- Detalles del pedido serán insertados aquí -->", detallesHtml.toString());
 

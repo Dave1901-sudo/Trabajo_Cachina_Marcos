@@ -160,9 +160,12 @@
                     <tr>
                         <th>ID</th>
                         <th>Fecha de Pedido</th>
+                        <th>Hora</th>
                         <th>Email</th>
                         <th>Telefono</th>
                         <th>Direccion</th>
+                        <th>Usuario</th>
+                        <th>Cliente</th>
                         <th>Total</th>
                         <th>Estado</th>
                         <th>Acciones</th>
@@ -173,9 +176,12 @@
                         <tr>
                             <td th:text="${pedido.id}"></td>
                             <td th:text="${#dates.format(pedido.fechaPedido, 'yyyy-MM-dd')}"></td>
+                            <td th:text="${#dates.format(pedido.fechaPedido, 'HH:mm')}"></td>
                             <td th:text="${pedido.email}"></td>
                             <td th:text="${pedido.phone}"></td>
                             <td th:text="${pedido.direccion}"></td>
+                            <td th:text="${pedido.usuario?.username}"></td>
+                            <td th:text="${pedido.usuario != null ? pedido.usuario.nombres + ' ' + pedido.usuario.apellidos : ''}"></td>
                             <td th:text="${pedido.total}"></td>
                             <td th:text="${pedido.estado}"></td>
                             <td class="action-buttons">

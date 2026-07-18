@@ -14,7 +14,9 @@ public class PedidoRequest {
     private List<CarritoItem> orderItems;
     private String email;
     private String phone;
-     private String direccion;
+    private String direccion;
+    private String nombres;
+    private String referencia;
 
     public List<CarritoItem> getOrderItems() {
         return orderItems;
@@ -39,7 +41,6 @@ public class PedidoRequest {
     public void setPhone(String phone) {
         this.phone = phone;
     }
-
     public String getDireccion() {
         return direccion;
     }
@@ -47,9 +48,22 @@ public class PedidoRequest {
     public void setDireccion(String direccion) {
         this.direccion = direccion;
     }
-    
-    
 
-    
+    public String getNombres() {
+        return nombres;
+    }
+
+    public void setNombres(String nombres) {
+        this.nombres = nombres;
+    }
+
+    public String getReferencia() {
+        return referencia;
+    }
+
+    public void setReferencia(String referencia) {
+        this.referencia = referencia;
+    }
+
 }
 

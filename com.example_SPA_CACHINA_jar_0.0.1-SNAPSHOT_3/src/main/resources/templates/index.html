@@ -192,6 +192,18 @@
                 color: #ffffff;
             }
 
+            #cartButton {
+                bottom: 1.5rem;
+                left: 1.5rem;
+                background: #0277bd;
+                color: #ffffff;
+            }
+
+            #cartButton:hover {
+                background: #01579b;
+                color: #ffffff;
+            }
+
             #notificationBadge {
                 min-width: 1.4rem;
                 height: 1.4rem;
@@ -283,16 +295,24 @@
                     <div class="modal-body">
                         <form id="confirmOrderForm">
                             <div class="mb-3">
+                                <label for="nombres" class="form-label">Nombres y Apellidos</label>
+                                <input type="text" class="form-control" id="nombres" th:value="${currentUserData != null ? currentUserData.nombres + ' ' + currentUserData.apellidos : ''}" required>
+                            </div>
+                            <div class="mb-3">
                                 <label for="email" class="form-label">Correo electrónico</label>
-                                <input type="email" class="form-control" id="email" required>
+                                <input type="email" class="form-control" id="email" th:value="${currentUserData?.email}" required>
                             </div>
                             <div class="mb-3">
                                 <label for="phone" class="form-label">Número de teléfono</label>
-                                <input type="tel" class="form-control" id="phone" required>
+                                <input type="tel" class="form-control" id="phone" th:value="${currentUserData?.telefono}" required>
                             </div>
                             <div class="mb-3">
                                 <label for="direccion" class="form-label">Dirección</label>
-                                <input type="text" class="form-control" id="direccion" required>
+                                <input type="text" class="form-control" id="direccion" th:value="${currentUserData?.direccion}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="referencia" class="form-label">Referencia / Punto de referencia</label>
+                                <input type="text" class="form-control" id="referencia" placeholder="Ej: altura del paradero Los Olivos, al costado del parque">
                             </div>
                         </form>
                     </div>
@@ -304,7 +324,7 @@
             </div>
         </div>
         <!-- Modal de Carga -->
-        <div class="modal fade" id="loadingModal" tabindex="-1" aria-hidden="true">
+        <div class="modal fade" id="loadingModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-body text-center">
@@ -439,9 +459,9 @@
             <i class="bi bi-bell fs-2"></i>
             <span id="notificationBadge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none">0</span>
         </button>
-        <button id="cartButton" class="btn btn-outline-warning position-fixed bottom-0 start-0 m-4 rounded-circle d-flex align-items-center justify-content-center p-3 shadow-lg border-0 floating-action-button"
+        <button id="cartButton" class="btn position-fixed rounded-circle d-flex align-items-center justify-content-center shadow-lg border-0 floating-action-button"
                 data-bs-toggle="modal" data-bs-target="#cartModal" style="display: none;">
-            <i class="bi bi-cart fs-2 text-warning"></i>
+            <i class="bi bi-cart fs-2 text-white"></i>
         </button>
         <!-- Botón del camaron -->
         <button id="backToTopBtn" onclick="scrollToTop()">
@@ -490,6 +510,7 @@
             });
         </script>
         <script src="/js/funtion_ex.js"></script>
+        <script src="/js/resenas.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     </body>

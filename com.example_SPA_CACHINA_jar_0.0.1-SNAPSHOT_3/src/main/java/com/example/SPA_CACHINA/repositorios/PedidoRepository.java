@@ -19,6 +19,8 @@ import org.springframework.stereotype.Repository;
 public interface PedidoRepository extends JpaRepository<Pedido, Long> {
     List<Pedido> findByUsuarioIdAndEstadoOrderByFechaPedidoDesc(Long usuarioId, String estado);
 
+    List<Pedido> findByUsuarioIdAndEstadoOrderByFechaPedidoAsc(Long usuarioId, String estado);
+
     @EntityGraph(attributePaths = "detalles")
     Optional<Pedido> findWithDetallesByIdAndUsuarioIdAndEstado(Long id, Long usuarioId, String estado);
 }

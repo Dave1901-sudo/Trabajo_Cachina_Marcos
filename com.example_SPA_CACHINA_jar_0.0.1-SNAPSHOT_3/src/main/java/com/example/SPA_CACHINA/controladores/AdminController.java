@@ -4,7 +4,9 @@
  */
 package com.example.SPA_CACHINA.controladores;
 
+import com.example.SPA_CACHINA.entidades.Resena;
 import com.example.SPA_CACHINA.entidades.Usuario;
+import com.example.SPA_CACHINA.servicios.ResenaService;
 import com.example.SPA_CACHINA.servicios.UsuarioService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,6 +30,9 @@ public class AdminController {
 
     @Autowired
     private UsuarioService usuarioService;
+
+    @Autowired
+    private ResenaService resenaService;
 
     @GetMapping("/roleForm")
     public String showRoleUpdateForm(Model model) {
@@ -76,7 +82,26 @@ public class AdminController {
         }
     }
     
-     @GetMapping("/printTemplate")
+     @GetMapping("/resenas")
+    public String gestionarResenas(Model model) {
+        List<Resena> resenas = resenaService.obtenerTodasLasResenas();
+        model.addAttribute("resenas", resenas);
+        return "adminResenas";
+    }
+
+    @GetMapping("/resenas/aprobar/{id}")
+    public String aprobarResena(@PathVariable Long id) {
+        resenaService.aprobarResena(id);
+        return "redirect:/admin/resenas";
+    }
+
+    @GetMapping("/resenas/eliminar/{id}")
+    public String eliminarResena(@PathVariable Long id) {
+        resenaService.eliminarResena(id);
+        return "redirect:/admin/resenas";
+    }
+
+    @GetMapping("/printTemplate")
     public String showPrintTemplate(Model model) {
         // Agregar lógica para pasar datos al modelo si es necesario
         return "printTemplate";

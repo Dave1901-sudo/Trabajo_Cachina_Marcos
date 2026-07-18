@@ -32,9 +32,10 @@ public class Pedido {
     private Date fechaPedido;
     private double total;
 
-    private String email; // Correo del cliente
-    private String phone; // Teléfono del cliente
+    private String email;
+    private String phone;
     private String direccion;
+    private String referencia;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_id")
@@ -105,6 +106,14 @@ public class Pedido {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getReferencia() {
+        return referencia;
+    }
+
+    public void setReferencia(String referencia) {
+        this.referencia = referencia;
     }
 
     public Long getId() {

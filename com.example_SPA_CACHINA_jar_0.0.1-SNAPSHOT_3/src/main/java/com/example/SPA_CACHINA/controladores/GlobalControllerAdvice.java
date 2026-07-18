@@ -4,6 +4,9 @@
  */
 package com.example.SPA_CACHINA.controladores;
 
+import com.example.SPA_CACHINA.entidades.Usuario;
+import com.example.SPA_CACHINA.servicios.UsuarioService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -15,16 +18,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 @ControllerAdvice
 public class GlobalControllerAdvice {
 
-    /*@ModelAttribute("isAdmin")
-    public boolean isAdmin(Authentication authentication) {
-        if (authentication != null && authentication.isAuthenticated()) {
-            boolean isAdmin = authentication.getAuthorities().stream()
-                    .anyMatch(auth -> auth.getAuthority().equals("ADMIN"));
-            System.out.println("User is admin: " + isAdmin); // Depuración
-            return isAdmin;
-        }
-        return false;
-    }*/
+    @Autowired
+    private UsuarioService usuarioService;
+
     @ModelAttribute("isAdmin")
     public boolean isAdmin(Authentication authentication) {
         if (authentication != null && authentication.isAuthenticated()) {
@@ -38,9 +34,17 @@ public class GlobalControllerAdvice {
     @ModelAttribute("currentUser")
     public String getCurrentUser(Authentication authentication) {
         if (authentication != null && authentication.isAuthenticated()) {
-            return authentication.getName(); // Nombre del usuario autenticado
+            return authentication.getName();
         }
-        return null; // Si no está autenticado, no hay nombre
+        return null;
+    }
+
+    @ModelAttribute("currentUserData")
+    public Usuario getCurrentUserData(Authentication authentication) {
+        if (authentication != null && authentication.isAuthenticated()) {
+            return usuarioService.getByUsername(authentication.getName());
+        }
+        return null;
     }
 
 }
