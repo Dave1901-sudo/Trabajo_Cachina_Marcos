@@ -45,7 +45,7 @@ public class BrevoService {
 
         Map<String, String> sender = new HashMap<>();
         sender.put("name", "Cachina Fish");
-        sender.put("email", "u22244804@utp.edu.pe");
+        sender.put("email", "silvadave678@gmail.com");
 
         body.put("sender", sender);
 
