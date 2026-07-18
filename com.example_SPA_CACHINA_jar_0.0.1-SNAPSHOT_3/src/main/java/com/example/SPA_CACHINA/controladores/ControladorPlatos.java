@@ -32,7 +32,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,7 +39,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -103,36 +101,33 @@ public class ControladorPlatos {
     @GetMapping("/platos")
     public String formPlatos(Model model) {
         model.addAttribute("platos", new platos());
+        model.addAttribute("categorias", servicioplatos.getCategoriasDistinct());
         return "platos";
     }
 
     @PostMapping("/registrarPlatos")
     public String grabarPlatos(
             @ModelAttribute platos platos,
-            @RequestParam("imagenArchivo") MultipartFile imagenArchivo, // Recibe el archivo subido
+            @RequestParam("imagenArchivo") MultipartFile imagenArchivo,
             Model model) {
         try {
-            // Convertir el archivo en un array de bytes
             if (!imagenArchivo.isEmpty()) {
                 platos.setImagen(imagenArchivo.getBytes());
             } else {
                 platos platoExistente = servicioplatos.get(platos.getIdplato());
-                platos.setImagen(platoExistente.getImagen());
+                if (platoExistente != null) {
+                    platos.setImagen(platoExistente.getImagen());
+                }
             }
             servicioplatos.save(platos);
             return "redirect:/formResultadoPlatos";
         } catch (Exception e) {
-            model.addAttribute("errorMessage", e.getMessage());
+            model.addAttribute("errorMessage", "El archivo que intentas subir es demasiado grande.");
             model.addAttribute("platos", platos);
-            return "platos";
+            model.addAttribute("categorias", servicioplatos.getCategoriasDistinct());
+            String view = (platos.getIdplato() != null) ? "Platos_edit" : "platos";
+            return view;
         }
-    }
-
-    // Manejar la excepción MaxUploadSizeExceededException
-    @ExceptionHandler(MaxUploadSizeExceededException.class)
-    public String handleMaxSizeException(MaxUploadSizeExceededException exc, Model model) {
-        model.addAttribute("errorMessage", "El archivo que intentas subir es demasiado grande.");
-        return "platos"; // O la vista que prefieras mostrar
     }
 
     @GetMapping("/getEditPlatos/{codigos}")
@@ -140,6 +135,7 @@ public class ControladorPlatos {
             @PathVariable("codigos") Long id) {
         platos platos = servicioplatos.get(id);
         model.addAttribute("platos", platos);
+        model.addAttribute("categorias", servicioplatos.getCategoriasDistinct());
         return "Platos_edit";
     }
 

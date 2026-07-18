@@ -38,4 +38,8 @@ public class Servicioplatos {
     public void delete(Long id) {
         platosDAO.deleteById(id);
     }
+
+    public List<String> getCategoriasDistinct() {
+        return platosDAO.findCategoriasDistinct();
+    }
 }

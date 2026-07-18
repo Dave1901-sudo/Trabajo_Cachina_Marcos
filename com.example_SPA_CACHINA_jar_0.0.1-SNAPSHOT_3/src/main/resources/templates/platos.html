@@ -11,6 +11,7 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
         <link rel="stylesheet" href="/Style/Style_form.css">
         <link rel="stylesheet" href="/Style/Style_carrousel.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css"/>
         <style>
             .spinner {
                 width: 150px; /* Tamaño de la imagen del camarón */
@@ -36,7 +37,7 @@
                     <h5 class="card-title text-warning text-center mb-3" style="font-size: 1.75rem;">Platos</h5>
                     <p class="card-text text-primary text-center fs-5 mb-4">Ingrese sus Platos.</p>
 
-                    <form th:action="@{/registrarPlatos}" method="post" th:object="${platos}" enctype="multipart/form-data">
+                    <form th:action="@{/registrarPlatos}" method="post" th:object="${platos}" enctype="multipart/form-data" onsubmit="return validarCategoria() && validarTamañoArchivo()">
 
                         <div th:if="${errorMessage}" class="alert alert-danger d-flex align-items-center" role="alert">
                             <i class="bi bi-exclamation-triangle-fill me-2"></i> 
@@ -72,10 +73,16 @@
                         </div>
 
                         <div class="mb-3">
+                            <select class="form-control form-control-lg border-primary" id="categoriaSelect" onchange="toggleNuevaCategoria(this)">
+                                <option value="">-- Seleccionar categoría --</option>
+                                <option th:each="cat : ${categorias}" th:value="${cat}" th:text="${cat}"></option>
+                                <option value="__NUEVA__">+ Agregar categoría nueva</option>
+                            </select>
                             <input type="text" 
-                                   class="form-control form-control-lg border-primary"
-                                   placeholder="Categoria del plato"
-                                   name="categoria" th:field="*{categoria}" required="true">
+                                   class="form-control form-control-lg border-primary mt-2"
+                                   placeholder="Escriba la nueva categoría"
+                                   name="categoria" th:field="*{categoria}" required="true"
+                                   id="categoriaInput" style="display: none;">
                         </div>
 
                         <div class="d-flex justify-content-center">
@@ -103,16 +110,71 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
                 integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+        <script>
+            function toggleNuevaCategoria(select) {
+                var input = document.getElementById('categoriaInput');
+                if (select.value === '__NUEVA__') {
+                    input.style.display = 'block';
+                    input.value = '';
+                    input.focus();
+                } else {
+                    input.style.display = 'none';
+                    input.value = select.value;
+                }
+            }
+            function validarCategoria() {
+                var select = document.getElementById('categoriaSelect');
+                var input = document.getElementById('categoriaInput');
+                if (select.value === '__NUEVA__' && input.value.trim() !== '') {
+                    var options = select.options;
+                    for (var i = 0; i < options.length; i++) {
+                        if (options[i].value !== '' && options[i].value !== '__NUEVA__' && options[i].value.toLowerCase() === input.value.trim().toLowerCase()) {
+                            Swal.fire({
+                                toast: true,
+                                position: 'bottom-end',
+                                icon: 'warning',
+                                title: 'Esa categoría ya existe. Selecciónala del listado.',
+                                showConfirmButton: false,
+                                timer: 2500,
+                                timerProgressBar: false
+                            });
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            }
+            function validarTamañoArchivo() {
+                var fileInput = document.getElementById('imagenArchivo');
+                if (fileInput.files.length > 0) {
+                    var fileSize = fileInput.files[0].size;
+                    var maxSize = 10 * 1024 * 1024;
+                    if (fileSize > maxSize) {
+                        Swal.fire({
+                            toast: true,
+                            position: 'bottom-end',
+                            icon: 'error',
+                            title: 'El archivo es demasiado grande. Máximo 10 MB.',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: false
+                        });
+                        return false;
+                    }
+                }
+                return true;
+            }
+        </script>
         <script src="/js/funtion_ex.js"></script>
         <script>
-                                        // Función para ocultar la pantalla de carga y mostrar el contenido
                                         window.onload = function () {
-                                            document.getElementById('loader').style.display = 'none'; // Oculta el loader
-                                            document.body.style.visibility = 'visible'; // Muestra el contenido de la página
-                                            document.body.style.opacity = '1'; // Transición suave para mostrar el contenido
+                                            document.getElementById('loader').style.display = 'none';
+                                            document.body.style.visibility = 'visible';
+                                            document.body.style.opacity = '1';
                                         };
-        </script>    
+        </script>
     </body>
 
 </html>
