@@ -32,7 +32,15 @@ function initializeCart() {
             let comentario = modal.querySelector('#comentarios').value;
             // Verificar si la cantidad es mayor a 10
             if (cantidad > 10) {
-                alert("La cantidad máxima es 10.");
+                Swal.fire({
+                    toast: true,
+                    position: 'bottom-end',
+                    icon: 'error',
+                    title: 'La cantidad máxima es 10.',
+                    showConfirmButton: false,
+                    timer: 2000,
+                    timerProgressBar: false
+                });
                 return;
             }
             // Verificar si el plato ya existe en el carrito
@@ -138,14 +146,26 @@ function initializeCart() {
     });
 //mensajes
     function showWarningAlert() {
-        const toastElement = document.getElementById('warningToast');
-        const toast = new bootstrap.Toast(toastElement);
-        toast.show();
+        Swal.fire({
+            toast: true,
+            position: 'bottom-end',
+            icon: 'warning',
+            title: 'Tu carrito está vacío.',
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: false
+        });
     }
     function showInfoAlert() {
-        const toastElement = document.getElementById('infoToast');
-        const toast = new bootstrap.Toast(toastElement);
-        toast.show();
+        Swal.fire({
+            toast: true,
+            position: 'bottom-end',
+            icon: 'info',
+            title: 'Por favor, completa todos los campos.',
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: false
+        });
     }
     function showSuccessAlert(message) {
         Swal.fire({
@@ -172,14 +192,26 @@ function initializeCart() {
         });
     }
     function showErrorAlert() {
-        const toastElement = document.getElementById('errorToast');
-        const toast = new bootstrap.Toast(toastElement);
-        toast.show();
+        Swal.fire({
+            toast: true,
+            position: 'bottom-end',
+            icon: 'error',
+            title: 'No puedes agregar más de 10 unidades del mismo plato.',
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: false
+        });
     }
     function showWarningAlert2() {
-        const toastElement = document.getElementById('warningToast2');
-        const toast = new bootstrap.Toast(toastElement);
-        toast.show();
+        Swal.fire({
+            toast: true,
+            position: 'bottom-end',
+            icon: 'warning',
+            title: 'La cantidad mínima es 1.',
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: false
+        });
     }
     // Función para actualizar el modal del carrito
     function updateCartModal() {
