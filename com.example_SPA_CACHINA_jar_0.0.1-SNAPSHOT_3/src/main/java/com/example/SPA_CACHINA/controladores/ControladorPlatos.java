@@ -151,9 +151,6 @@ public class ControladorPlatos {
     public ResponseEntity<?> realizarPedido(@RequestBody PedidoRequest orderData, Principal principal) {
         try {
             Usuario usuario = obtenerUsuarioLogueado(principal);
-            if (usuario != null && usuario.getEmail() != null) {
-                orderData.setEmail(usuario.getEmail());
-            }
             pedidoService.guardarPedido(orderData, usuario);
             return ResponseEntity.ok().body(new ResponseMessage("success"));
         } catch (Exception e) {
