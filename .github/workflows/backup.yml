@@ -1,4 +1,4 @@
-name: Backup a S3 y Google Drive
+name: Backup a Google Drive
 
 on:
   push:
@@ -10,16 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
-      - name: Subir a AWS S3
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}
-        run: |
-          aws s3 sync . s3://${{ secrets.AWS_S3_BUCKET }}/backups/$(date +%Y-%m-%d)/ \
-            --exclude ".git/*" \
-            --exclude ".github/*"
 
       - name: Subir a Google Drive con rclone
         env:
