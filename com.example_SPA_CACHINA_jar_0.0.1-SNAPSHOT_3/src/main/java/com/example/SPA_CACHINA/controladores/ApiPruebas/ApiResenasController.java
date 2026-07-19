@@ -22,9 +22,15 @@ public class ApiResenasController {
     private UsuarioService usuarioService;
 
     @GetMapping("/{platoId}")
-    public ResponseEntity<?> obtenerResenas(@PathVariable Long platoId) {
-        List<Resena> resenas = resenaService.obtenerResenasAprobadas(platoId);
-        return ResponseEntity.ok(resenas);
+    public ResponseEntity<?> obtenerResenas(@PathVariable Long platoId, Principal principal) {
+        Long usuarioId = null;
+        if (principal != null) {
+            Usuario usuario = usuarioService.getByUsername(principal.getName());
+            if (usuario != null) {
+                usuarioId = usuario.getId();
+            }
+        }
+        return ResponseEntity.ok(resenaService.obtenerResenasConLikeState(platoId, usuarioId));
     }
 
     @PostMapping
@@ -52,10 +58,17 @@ public class ApiResenasController {
     }
 
     @PostMapping("/{id}/like")
-    public ResponseEntity<?> darLike(@PathVariable Long id) {
+    public ResponseEntity<?> darLike(@PathVariable Long id, Principal principal) {
         try {
-            resenaService.darLike(id);
-            return ResponseEntity.ok(Map.of("mensaje", "Like registrado"));
+            Long usuarioId = null;
+            if (principal != null) {
+                Usuario usuario = usuarioService.getByUsername(principal.getName());
+                if (usuario != null) {
+                    usuarioId = usuario.getId();
+                }
+            }
+            Map<String, Object> result = resenaService.darLike(id, usuarioId);
+            return ResponseEntity.ok(result);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }

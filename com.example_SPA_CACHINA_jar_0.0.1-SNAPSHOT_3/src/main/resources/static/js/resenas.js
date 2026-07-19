@@ -14,13 +14,14 @@ function cargarResenas(platoId) {
                 for (let i = 1; i <= 5; i++) {
                     estrellas += i <= r.puntuacion ? '<span class="estrella-llena">★</span>' : '<span class="estrella-vacia">☆</span>';
                 }
+                let likedClass = r.likedByCurrentUser ? 'text-primary' : 'text-muted';
                 html += '<div class="resena-item p-2 mb-1" style="border-bottom: 1px solid #eee;">' +
                     '<div class="d-flex justify-content-between align-items-start">' +
                     '<div>' +
                     '<strong>' + escapeHtml(r.usuarioNombre || 'Anónimo') + '</strong> ' +
                     '<span class="estrellas">' + estrellas + '</span>' +
                     '</div>' +
-                    '<button class="btn btn-sm btn-link p-0 text-muted like-btn" onclick="darLike(' + r.id + ', this)" title="Me gusta">' +
+                    '<button class="btn btn-sm btn-link p-0 ' + likedClass + ' like-btn" onclick="darLike(' + r.id + ', this)" title="Me gusta">' +
                     '<i class="bi bi-hand-thumbs-up"></i> <span class="like-count">' + (r.likes || 0) + '</span>' +
                     '</button>' +
                     '</div>' +
@@ -105,11 +106,20 @@ function darLike(resenaId, btn) {
     fetch('/api/resenas/' + resenaId + '/like', { method: 'POST' })
         .then(res => res.json())
         .then(data => {
-            if (data.mensaje) {
-                const countSpan = btn.querySelector('.like-count');
-                if (countSpan) countSpan.textContent = parseInt(countSpan.textContent) + 1;
-                btn.disabled = true;
-                btn.style.opacity = '0.5';
+            if (data.error) {
+                if (data.error.includes('iniciar sesion')) {
+                    alert('Debes iniciar sesión para dar like.');
+                }
+                return;
+            }
+            const countSpan = btn.querySelector('.like-count');
+            if (countSpan) countSpan.textContent = data.likes;
+            if (data.liked) {
+                btn.classList.remove('text-muted');
+                btn.classList.add('text-primary');
+            } else {
+                btn.classList.remove('text-primary');
+                btn.classList.add('text-muted');
             }
         })
         .catch(err => console.error(err));
