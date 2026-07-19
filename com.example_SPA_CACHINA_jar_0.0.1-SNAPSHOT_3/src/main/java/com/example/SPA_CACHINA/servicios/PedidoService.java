@@ -83,7 +83,7 @@ public class PedidoService {
             // Enviar correo
             String nombresCorreo = (usuario != null) ? usuario.getNombres() + " " + usuario.getApellidos() : orderData.getNombres();
             enviarCorreo(orderData.getEmail(), nombresCorreo, orderData.getPhone(), orderData.getDireccion(), orderData.getReferencia(), total, pedido.getDetalles());
-            enviarNotificacionNuevoPedido();
+            enviarNotificacionNuevoPedido(usuario, pedido);
             
             return new ResponseMessage("Pedido realizado con éxito.");
         } catch (Exception e) {
@@ -272,11 +272,41 @@ public class PedidoService {
 
     }
     
-    public void enviarNotificacionNuevoPedido() {
+    public void enviarNotificacionNuevoPedido(Usuario usuario, Pedido pedido) {
+        String nombres = (usuario != null) ? usuario.getNombres() + " " + usuario.getApellidos() : "Usuario anónimo";
+
+        StringBuilder detallesHtml = new StringBuilder();
+        if (pedido.getDetalles() != null) {
+            for (PedidoDetalle detalle : pedido.getDetalles()) {
+                detallesHtml.append("<tr>")
+                        .append("<td>").append(detalle.getNombre()).append("</td>")
+                        .append("<td>").append(detalle.getCantidad()).append("</td>")
+                        .append("<td>S/. ").append(String.format("%.2f", detalle.getPrecio())).append("</td>")
+                        .append("<td>S/. ").append(String.format("%.2f", detalle.getCantidad() * detalle.getPrecio())).append("</td>")
+                        .append("</tr>");
+            }
+        }
 
         String contenido =
-                "<h3>Nuevo Pedido Realizado</h3>" +
-                "<p>Un nuevo pedido ha sido realizado. Revisa los detalles del pedido en el sistema.</p>";
+                "<h2 style=\"color: #d4a017;\">\uD83D\uDCEA Un usuario ha generado un nuevo pedido</h2>" +
+                "<hr>" +
+                "<h4 style=\"color: #0277bd;\">Datos del usuario</h4>" +
+                "<p><strong>Nombre completo:</strong> " + nombres + "</p>" +
+                "<p><strong>Email:</strong> " + (pedido.getEmail() != null ? pedido.getEmail() : "") + "</p>" +
+                "<p><strong>Teléfono:</strong> " + (pedido.getPhone() != null ? pedido.getPhone() : "") + "</p>" +
+                "<p><strong>Ubicación:</strong> " + (pedido.getDireccion() != null ? pedido.getDireccion() : "") + "</p>" +
+                "<p><strong>Referencia:</strong> " + (pedido.getReferencia() != null && !pedido.getReferencia().isEmpty() ? pedido.getReferencia() : "Ninguna referencia asignada") + "</p>" +
+                "<hr>" +
+                "<h4 style=\"color: #0277bd;\">Pedido realizado</h4>" +
+                "<table border=\"1\" cellpadding=\"8\" cellspacing=\"0\" style=\"border-collapse: collapse; width: 100%;\">" +
+                "<thead style=\"background-color: #f2f2f2;\">" +
+                "<tr><th>Plato</th><th>Cantidad</th><th>Precio</th><th>Subtotal</th></tr>" +
+                "</thead><tbody>" +
+                detallesHtml.toString() +
+                "</tbody></table>" +
+                "<p><strong>Total:</strong> S/. " + String.format("%.2f", pedido.getTotal()) + "</p>" +
+                "<hr>" +
+                "<a href=\"https://cachinafish.onrender.com/pedidos\" style=\"display: inline-block; padding: 10px 20px; background-color: #0277bd; color: white; text-decoration: none; border-radius: 5px;\">Ver pedidos</a>";
 
         brevoService.enviarCorreo(
                 "u22244804@utp.edu.pe",
