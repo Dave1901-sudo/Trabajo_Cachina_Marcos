@@ -14,7 +14,7 @@
     <div class="container my-5">
         <div class="bg-white rounded shadow p-5">
             <h1 class="text-center mb-2 text-warning fw-bold">Platos a editar</h1>
-            <hr class="mt-0 mb-4">
+            <hr class="mt-0 mb-4" style="border: 2px solid #00bfff; opacity: 1;">
             <form th:action="@{/registrarPlatos}" th:object="${platos}" method="post" enctype="multipart/form-data" onsubmit="return validarCategoria() && validarTamañoArchivo()">
                 <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
                     <p th:text="${errorMessage}"></p>

@@ -10,74 +10,80 @@
 </head>
 <body style="background-color: #00bfff">
     <div class="container my-5">
-        <h1 class="text-center mb-4 text-white">Reclamación a editar</h1>
-        <form th:action="@{/registrarReclamaciones}" th:object="${reclamaciones}" method="post">
-            <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
-                <p th:text="${errorMessage}"></p>
-            </div>
+        <div class="bg-white rounded shadow p-5">
+            <h1 class="text-center mb-2 text-warning fw-bold">Reclamación a editar</h1>
+            <hr class="mt-0 mb-4" style="border: 2px solid #00bfff; opacity: 1;">
+            <form th:action="@{/registrarReclamaciones}" th:object="${reclamaciones}" method="post">
+                <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+                    <p th:text="${errorMessage}"></p>
+                </div>
 
-            <h2 class="mt-4 text-white">Información General</h2>
-            <div class="mb-3">
-                <label for="idreclamaciones" class="form-label text-white">Id Reclamaciones:</label>
-                <input type="number" th:field="*{idreclamaciones}" class="form-control bg-transparent border-light text-white" readonly="true"/> 
-            </div>
-            <div class="mb-3">
-                <label for="nombreCompleto" class="form-label text-white">Nombre Completo:</label>
-                <input type="text" th:field="*{nombre_Completo}" class="form-control bg-transparent border-light text-white" required/>
-            </div>
-            <div class="mb-3">
-                <label for="domicilio" class="form-label text-white">Domicilio:</label>
-                <input type="text" th:field="*{domicilio}" class="form-control bg-transparent border-light text-white" required/>
-            </div>
-            <div class="mb-3">
-                <label for="dniCe" class="form-label text-white">DNI/CE:</label>
-                <input type="text" th:field="*{dni_Ce}" class="form-control bg-transparent border-light text-white" required/>
-            </div>
-            <div class="mb-3">
-                <label for="telefono" class="form-label text-white">Número de Teléfono:</label>
-                <input type="text" th:field="*{telefono}" class="form-control bg-transparent border-light text-white" required/>
-            </div>
-            <div class="mb-3">
-                <label for="correoElectronico" class="form-label text-white">Correo Electrónico:</label>
-                <input type="email" th:field="*{correo_Electronico}" class="form-control bg-transparent border-light text-white" required/>
-            </div>
+                <h2 class="mt-4 mb-3 fw-bold fs-4" style="color: #01579b;">Información General</h2>
+                <div class="mb-4">
+                    <label for="idreclamaciones" class="form-label fw-semibold fs-5" style="color: #0277bd;">Id Reclamación:</label>
+                    <input type="number" th:field="*{idreclamaciones}" class="form-control" readonly="true"/> 
+                </div>
+                <div class="mb-4">
+                    <label for="nombreCompleto" class="form-label fw-semibold fs-5" style="color: #0277bd;">Nombre Completo:</label>
+                    <input type="text" th:field="*{nombre_Completo}" class="form-control" required/>
+                </div>
+                <div class="mb-4">
+                    <label for="domicilio" class="form-label fw-semibold fs-5" style="color: #0277bd;">Domicilio:</label>
+                    <input type="text" th:field="*{domicilio}" class="form-control" required/>
+                </div>
+                <div class="mb-4">
+                    <label for="dniCe" class="form-label fw-semibold fs-5" style="color: #0277bd;">DNI/CE:</label>
+                    <input type="text" th:field="*{dni_Ce}" class="form-control" required/>
+                </div>
+                <div class="mb-4">
+                    <label for="telefono" class="form-label fw-semibold fs-5" style="color: #0277bd;">Número de Teléfono:</label>
+                    <input type="text" th:field="*{telefono}" class="form-control" required/>
+                </div>
+                <div class="mb-4">
+                    <label for="correoElectronico" class="form-label fw-semibold fs-5" style="color: #0277bd;">Correo Electrónico:</label>
+                    <input type="email" th:field="*{correo_Electronico}" class="form-control" required/>
+                </div>
 
-            <h2 class="mt-4 text-white">Información del Bien Reclamado</h2>
-            <div class="mb-3">
-                <label for="tipoBien" class="form-label text-white">Tipo de Bien:</label>
-                <input type="text" th:field="*{tipo_Bien}" class="form-control bg-transparent border-light text-white" required/>
-            </div>
-            <div class="mb-3">
-                <label for="montoReclamado" class="form-label text-white">Monto Reclamado:</label>
-                <input type="number" th:field="*{monto_Reclamado}" class="form-control bg-transparent border-light text-white" required/>
-            </div>
-            <div class="mb-3">
-                <label for="descripcionBien" class="form-label text-white">Descripción del Bien:</label>
-                <input type="text" th:field="*{descripcion_Bien}" class="form-control bg-transparent border-light text-white" required/>
-            </div>
+                <h2 class="mt-4 mb-3 fw-bold fs-4" style="color: #01579b;">Información del Bien Reclamado</h2>
+                <div class="mb-4">
+                    <label for="tipoBien" class="form-label fw-semibold fs-5" style="color: #0277bd;">Tipo de Bien:</label>
+                    <input type="text" th:field="*{tipo_Bien}" class="form-control" required/>
+                </div>
+                <div class="mb-4">
+                    <label for="montoReclamado" class="form-label fw-semibold fs-5" style="color: #0277bd;">Monto Reclamado:</label>
+                    <input type="number" th:field="*{monto_Reclamado}" class="form-control" required/>
+                </div>
+                <div class="mb-4">
+                    <label for="descripcionBien" class="form-label fw-semibold fs-5" style="color: #0277bd;">Descripción del Bien:</label>
+                    <input type="text" th:field="*{descripcion_Bien}" class="form-control" required/>
+                </div>
 
-            <h2 class="mt-4 text-white">Detalles de la Reclamación</h2>
-            <div class="mb-3">
-                <label for="tipoReclamacion" class="form-label text-white">Tipo de Reclamación:</label>
-                <input type="text" th:field="*{tipo_Reclamacion}" class="form-control bg-transparent border-light text-white" required/>
-            </div>
-            <div class="mb-3">
-                <label for="detalleReclamacion" class="form-label text-white">Detalles de la Reclamación:</label>
-                <input type="text" th:field="*{detalle_Reclamacion}" class="form-control bg-transparent border-light text-white" required/>
-            </div>
-            <div class="mb-3">
-                <label for="detallePedido" class="form-label text-white">Detalles del Pedido:</label>
-                <input type="text" th:field="*{detalle_Pedido}" class="form-control bg-transparent border-light text-white" required/>
-            </div>
+                <h2 class="mt-4 mb-3 fw-bold fs-4" style="color: #01579b;">Detalles de la Reclamación</h2>
+                <div class="mb-4">
+                    <label for="tipoReclamacion" class="form-label fw-semibold fs-5" style="color: #0277bd;">Tipo de Reclamación:</label>
+                    <input type="text" th:field="*{tipo_Reclamacion}" class="form-control" required/>
+                </div>
+                <div class="mb-4">
+                    <label for="detalleReclamacion" class="form-label fw-semibold fs-5" style="color: #0277bd;">Detalles de la Reclamación:</label>
+                    <input type="text" th:field="*{detalle_Reclamacion}" class="form-control" required/>
+                </div>
+                <div class="mb-4">
+                    <label for="detallePedido" class="form-label fw-semibold fs-5" style="color: #0277bd;">Detalles del Pedido:</label>
+                    <input type="text" th:field="*{detalle_Pedido}" class="form-control" required/>
+                </div>
 
-            <div class="text-center">
-                <button type="submit" class="btn btn-warning btn-block fw-bold py-3" style="border-radius: 2rem;">Actualizar</button>
-                <a th:href="@{/formResultadoReclamaciones}" class="btn btn-warning text-white">Cancelar</a>
-            </div>
-        </form>
+                <div class="d-flex justify-content-center gap-3">
+                    <button type="submit" class="btn btn-warning fw-bold py-2 px-4 shadow-lg" style="border-radius: 2rem; transition: all 0.3s ease-in-out;">
+                        Actualizar
+                    </button>
+                    <a href="/formResultadoReclamaciones" class="btn btn-light text-dark fw-bold py-2 px-4 shadow-lg" style="border-radius: 2rem; transition: all 0.3s ease-in-out;">
+                        Volver sin Guardar
+                    </a>
+                </div>
+            </form>
+        </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.min.js"></script>
 </body>
-
 </html>
