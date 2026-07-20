@@ -220,6 +220,12 @@ public class UsuarioService {
         return userRepository.findAll();
     }
 
+    public List<Usuario> buscarUsuarios(String search, String role) {
+        if ("todos".equals(role)) role = null;
+        if (search != null && search.trim().isEmpty()) search = null;
+        return userRepository.buscarUsuarios(search, role);
+    }
+
     public Usuario save(Usuario usuario) {
         return userRepository.save(usuario);
     }

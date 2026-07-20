@@ -40,6 +40,7 @@ public class SecurityConfig {
                     "/logout",
                     "/realizarPedido",
                     "/updateContactos",
+                    "/mis-pedidos/**",
                     "/api/**"
             ))
 

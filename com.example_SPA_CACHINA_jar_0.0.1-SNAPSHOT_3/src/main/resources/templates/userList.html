@@ -5,10 +5,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <!-- Bootstrap 5.0.2 CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-        <!-- Bootstrap Icons CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
         <style>
@@ -19,7 +16,7 @@
                 padding: 20px;
             }
             .container {
-                max-width: 1200px;
+                max-width: 1400px;
                 margin: 30px auto;
                 padding: 40px;
                 background: #ffffff;
@@ -53,6 +50,17 @@
             .table-wrapper {
                 overflow-x: auto;
             }
+            .filter-section {
+                background: #f8f9fa;
+                border-radius: 10px;
+                padding: 20px;
+                margin-bottom: 25px;
+                border: 1px solid #e9ecef;
+            }
+            .filter-section .form-label {
+                color: #2c3e50;
+                font-weight: 600;
+            }
             @media (max-width: 768px) {
                 body { padding: 10px; }
                 .container { padding: 15px; margin: 10px auto; }
@@ -60,62 +68,93 @@
                 .table { font-size: 0.85rem; }
                 .table th, .table td { padding: 8px 6px; white-space: nowrap; }
                 .no-print { font-size: 0.9rem; padding: 10px 16px; }
+                .filter-section .row > div { margin-bottom: 10px; }
             }
         </style>
     </head>
 
     <body>
         <div class="container">
-            <h1>Lista de Usuarios</h1>
+            <h1><i class="bi bi-people-fill me-2"></i>Lista de Usuarios</h1>
+
+            <!-- Filtros -->
+            <form method="get" action="/admin/userList" class="filter-section">
+                <div class="row align-items-end g-3">
+                    <div class="col-md-5">
+                        <label class="form-label">Buscar</label>
+                        <input type="text" name="search" class="form-control" placeholder="Username, nombres, apellidos, email o teléfono..." th:value="${search}">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Rol</label>
+                        <select name="role" class="form-select">
+                            <option value="todos" th:selected="${role == null or role == 'todos'}">Todos</option>
+                            <option value="USER" th:selected="${role == 'USER'}">USER</option>
+                            <option value="ADMIN" th:selected="${role == 'ADMIN'}">ADMIN</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 d-flex gap-2">
+                        <button type="submit" class="btn btn-primary flex-fill"><i class="bi bi-search"></i> Filtrar</button>
+                        <a href="/admin/userList" class="btn btn-outline-secondary flex-fill"><i class="bi bi-arrow-counterclockwise"></i> Limpiar</a>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Badges de filtros activos -->
+            <div class="mb-3">
+                <span th:if="${search != null and !search.isEmpty()}" class="badge bg-secondary fs-6 me-2">
+                    <i class="bi bi-search"></i> Búsqueda: <span th:text="${search}"></span>
+                </span>
+                <span th:if="${role != null and role != 'todos'}" class="badge bg-primary fs-6 me-2">
+                    <i class="bi bi-funnel"></i> Rol: <span th:text="${role}"></span>
+                </span>
+                <span class="badge bg-success fs-6">
+                    <i class="bi bi-list"></i> <span th:text="${#lists.size(users)}"></span> resultado(s)
+                </span>
+            </div>
 
             <div class="table-wrapper">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Usuario</th>
-                        <th>Nombres</th>
-                        <th>Apellidos</th>
-                        <th>Correo</th>
-                        <th>Teléfono</th>
-                        <th>Dirección</th>
-                        <th>Documento</th>
-                        <th>Rol</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="user : ${users}">
-                        <td th:text="${user.username}"></td>
-                        <td th:text="${user.nombres != null ? user.nombres : '-'}"></td>
-                        <td th:text="${user.apellidos != null ? user.apellidos : '-'}"></td>
-                        <td th:text="${user.email != null ? user.email : '-'}"></td>
-                        <td th:text="${user.telefono != null ? user.telefono : '-'}"></td>
-                        <td th:text="${user.direccion != null ? user.direccion : '-'}"></td>
-                        <td th:text="${user.documentoIdentidad != null ? user.documentoIdentidad : '-'}"></td>
-                        <td th:text="${user.role}"></td>
-                        <td class="text-nowrap">
-                            <a th:href="@{/admin/editUser(id=${user.id})}"
-                               class="btn btn-primary btn-sm">
-                                <i class="bi bi-pencil-square"></i> Editar
-                            </a>
-                            <form action="/admin/deleteUser"
-                                  method="POST"
-                                  style="display:inline">
-                                <input type="hidden"
-                                       name="username"
-                                       th:value="${user.username}"/>
-                                <input type="hidden"
-                                       name="_csrf"
-                                       th:value="${_csrf.token}"/>
-                                <button type="submit"
-                                        class="btn btn-danger btn-sm">
-                                    <i class="bi bi-trash"></i> Eliminar
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Usuario</th>
+                            <th>Nombres</th>
+                            <th>Apellidos</th>
+                            <th>Correo</th>
+                            <th>Teléfono</th>
+                            <th>Dirección</th>
+                            <th>Documento</th>
+                            <th>Rol</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="user : ${users}">
+                            <td th:text="${user.username}"></td>
+                            <td th:text="${user.nombres != null ? user.nombres : '-'}"></td>
+                            <td th:text="${user.apellidos != null ? user.apellidos : '-'}"></td>
+                            <td th:text="${user.email != null ? user.email : '-'}"></td>
+                            <td th:text="${user.telefono != null ? user.telefono : '-'}"></td>
+                            <td th:text="${user.direccion != null ? user.direccion : '-'}"></td>
+                            <td th:text="${user.documentoIdentidad != null ? user.documentoIdentidad : '-'}"></td>
+                            <td th:text="${user.role}"></td>
+                            <td class="text-nowrap">
+                                <a th:href="@{/admin/editUser(id=${user.id})}" class="btn btn-primary btn-sm">
+                                    <i class="bi bi-pencil-square"></i> Editar
+                                </a>
+                                <form action="/admin/deleteUser" method="POST" style="display:inline">
+                                    <input type="hidden" name="username" th:value="${user.username}"/>
+                                    <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+                                    <button type="submit" class="btn btn-danger btn-sm">
+                                        <i class="bi bi-trash"></i> Eliminar
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(users)}">
+                            <td colspan="9" class="text-center text-muted py-4">No se encontraron usuarios con los filtros seleccionados.</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
             <div class="d-flex justify-content-center gap-3 mt-4 flex-wrap">
@@ -123,7 +162,7 @@
                     <i class="bi bi-arrow-left-circle"></i> Volver al Panel de Administración
                 </a>
                 <a th:href="@{/admin/roleForm}" class="btn btn-info no-print">
-                    Actualizar Rol
+                    <i class="bi bi-shield-check"></i> Actualizar Rol
                 </a>
             </div>
         </div>

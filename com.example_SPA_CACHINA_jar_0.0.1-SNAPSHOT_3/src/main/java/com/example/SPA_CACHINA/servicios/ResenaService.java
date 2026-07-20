@@ -121,4 +121,10 @@ public class ResenaService {
     public List<Resena> obtenerTodasLasResenas() {
         return resenaRepository.findAll();
     }
+
+    public List<Resena> buscarResenas(String estado, Long platoId, String search) {
+        if ("todos".equals(estado)) estado = null;
+        if (search != null && search.trim().isEmpty()) search = null;
+        return resenaRepository.buscarResenas(estado, platoId, search);
+    }
 }

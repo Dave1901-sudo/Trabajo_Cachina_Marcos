@@ -9,14 +9,14 @@
     <style>
         body {
             background-color: #f4f8fb;
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             padding: 20px;
         }
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             background: white;
-            padding: 30px;
+            padding: 40px;
             border-radius: 12px;
             box-shadow: 0 15px 40px rgba(0,0,0,0.1);
         }
@@ -48,63 +48,125 @@
         .no-print:hover {
             background-color: #2980b9;
         }
+        .filter-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border: 1px solid #e9ecef;
+        }
+        .filter-section .form-label {
+            color: #2c3e50;
+            font-weight: 600;
+        }
         @media (max-width: 768px) {
             body { padding: 10px; }
             .container { padding: 15px; margin: 10px; }
             h1 { font-size: 1.5rem; margin-top: 15px; }
             .table th, .table td { font-size: 0.85rem; padding: 8px 4px; }
             .acciones a { font-size: 0.8rem; padding: 6px 10px; margin-bottom: 4px; display: inline-block; }
+            .filter-section .row > div { margin-bottom: 10px; }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Gestionar Reseñas</h1>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Plato ID</th>
-                    <th>Usuario</th>
-                    <th>Puntuación</th>
-                    <th>Comentario</th>
-                    <th>Fecha</th>
-                    <th>Likes</th>
-                    <th>Estado</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="r : ${resenas}">
-                    <td th:text="${r.id}"></td>
-                    <td th:text="${r.platoId}"></td>
-                    <td th:text="${r.usuarioNombre}"></td>
-                    <td>
-                        <span th:each="i : ${#numbers.sequence(1, 5)}"
-                              th:text="${i <= r.puntuacion} ? '★' : '☆'"
-                              th:class="${i <= r.puntuacion} ? 'estrella-llena' : 'estrella-vacia'">
-                        </span>
-                    </td>
-                    <td th:text="${r.comentario}"></td>
-                    <td th:text="${#dates.format(r.fecha, 'dd/MM/yyyy HH:mm')}"></td>
-                    <td th:text="${r.likes}"></td>
-                    <td>
-                        <span th:text="${r.estado}" th:class="${r.estado == 'pendiente'} ? 'pendiente' : 'aprobado'"></span>
-                    </td>
-                    <td class="acciones">
-                        <a th:if="${r.estado == 'pendiente'}" th:href="@{/admin/resenas/aprobar/{id}(id=${r.id})}" class="btn btn-sm btn-success" onclick="return confirm('¿Aprobar esta reseña?')">
-                            <i class="bi bi-check-circle"></i> Aprobar
-                        </a>
-                        <a th:href="@{/admin/resenas/eliminar/{id}(id=${r.id})}" class="btn btn-sm btn-danger" onclick="return confirm('¿Eliminar esta reseña?')">
-                            <i class="bi bi-trash"></i> Eliminar
-                        </a>
-                    </td>
-                </tr>
-                <tr th:if="${#lists.isEmpty(resenas)}">
-                    <td colspan="9" class="text-center text-muted">No hay reseñas registradas.</td>
-                </tr>
-            </tbody>
-        </table>
+        <h1><i class="bi bi-star-fill me-2"></i>Gestionar Reseñas</h1>
+
+        <!-- Filtros -->
+        <form method="get" action="/admin/resenas" class="filter-section">
+            <div class="row align-items-end g-3">
+                <div class="col-md-3">
+                    <label class="form-label">Estado</label>
+                    <select name="estado" class="form-select">
+                        <option value="todos" th:selected="${estado == null or estado == 'todos'}">Todos</option>
+                        <option value="pendiente" th:selected="${estado == 'pendiente'}">Pendiente</option>
+                        <option value="aprobado" th:selected="${estado == 'aprobado'}">Aprobado</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Plato</label>
+                    <select name="platoId" class="form-select">
+                        <option value="">Todos</option>
+                        <option th:each="p : ${todosPlatos}" th:value="${p.idplato}" th:text="${p.nombre}" th:selected="${platoId == p.idplato}"></option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Buscar</label>
+                    <input type="text" name="search" class="form-control" placeholder="Usuario o comentario..." th:value="${search}">
+                </div>
+                <div class="col-md-3 d-flex gap-2">
+                    <button type="submit" class="btn btn-primary flex-fill"><i class="bi bi-search"></i> Filtrar</button>
+                    <a href="/admin/resenas" class="btn btn-outline-secondary flex-fill"><i class="bi bi-arrow-counterclockwise"></i> Limpiar</a>
+                </div>
+            </div>
+        </form>
+
+        <!-- Badges -->
+        <div class="mb-3">
+            <span th:if="${estado != null and estado != 'todos'}" class="badge bg-primary fs-6 me-2">
+                <i class="bi bi-funnel"></i> <span th:text="${estado}"></span>
+            </span>
+            <span th:if="${platoId != null}" class="badge bg-info text-dark fs-6 me-2">
+                <i class="bi bi-dish"></i> <span th:text="${platoNombres.get(platoId)}"></span>
+            </span>
+            <span th:if="${search != null and !search.isEmpty()}" class="badge bg-secondary fs-6 me-2">
+                <i class="bi bi-search"></i> <span th:text="${search}"></span>
+            </span>
+            <span class="badge bg-success fs-6">
+                <i class="bi bi-list"></i> <span th:text="${#lists.size(resenas)}"></span> resultado(s)
+            </span>
+        </div>
+
+        <!-- Tabla -->
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Plato</th>
+                        <th>Usuario</th>
+                        <th>Puntuación</th>
+                        <th>Comentario</th>
+                        <th>Fecha</th>
+                        <th>Likes</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="r : ${resenas}">
+                        <td th:text="${r.id}"></td>
+                        <td th:text="${platoNombres.get(r.platoId)}"></td>
+                        <td th:text="${r.usuarioNombre}"></td>
+                        <td>
+                            <span th:each="i : ${#numbers.sequence(1, 5)}"
+                                  th:text="${i <= r.puntuacion} ? '★' : '☆'"
+                                  th:class="${i <= r.puntuacion} ? 'estrella-llena' : 'estrella-vacia'">
+                            </span>
+                        </td>
+                        <td th:text="${r.comentario}"></td>
+                        <td th:text="${#dates.format(r.fecha, 'dd/MM/yyyy HH:mm')}"></td>
+                        <td th:text="${r.likes}"></td>
+                        <td>
+                            <span th:text="${r.estado}" th:class="${r.estado == 'pendiente'} ? 'pendiente' : 'aprobado'"></span>
+                        </td>
+                        <td class="acciones">
+                            <a th:if="${r.estado == 'pendiente'}" th:href="@{/admin/resenas/aprobar/{id}(id=${r.id})}" class="btn btn-sm btn-success" onclick="return confirm('¿Aprobar esta reseña?')">
+                                <i class="bi bi-check-circle"></i> Aprobar
+                            </a>
+                            <a th:href="@{/admin/resenas/eliminar/{id}(id=${r.id})}" class="btn btn-sm btn-danger" onclick="return confirm('¿Eliminar esta reseña?')">
+                                <i class="bi bi-trash"></i> Eliminar
+                            </a>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(resenas)}">
+                        <td colspan="9" class="text-center text-muted py-4">No se encontraron reseñas con los filtros seleccionados.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
         <div class="d-flex justify-content-center mt-4">
             <a th:href="@{/admin}" class="btn btn-warning mb-3 no-print">
                 <i class="bi bi-arrow-left-circle"></i> Volver al Panel de Administración

@@ -7,11 +7,15 @@ package com.example.SPA_CACHINA.controladores;
 import com.example.SPA_CACHINA.entidades.Auditoria;
 import com.example.SPA_CACHINA.entidades.Resena;
 import com.example.SPA_CACHINA.entidades.Usuario;
+import com.example.SPA_CACHINA.entidades.platos;
 import com.example.SPA_CACHINA.servicios.AuditoriaService;
 import com.example.SPA_CACHINA.servicios.ResenaService;
+import com.example.SPA_CACHINA.servicios.Servicioplatos;
 import com.example.SPA_CACHINA.servicios.UsuarioService;
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
@@ -39,6 +43,9 @@ public class AdminController {
 
     @Autowired
     private AuditoriaService auditoriaService;
+
+    @Autowired
+    private Servicioplatos servicioplatos;
 
     @GetMapping("/roleForm")
     public String showRoleUpdateForm(Model model) {
@@ -92,9 +99,25 @@ public class AdminController {
     }
     
      @GetMapping("/resenas")
-    public String gestionarResenas(Model model) {
-        List<Resena> resenas = resenaService.obtenerTodasLasResenas();
+    public String gestionarResenas(
+            @RequestParam(required = false) String estado,
+            @RequestParam(required = false) Long platoId,
+            @RequestParam(required = false) String search,
+            Model model) {
+        List<Resena> resenas = resenaService.buscarResenas(estado, platoId, search);
+
+        Map<Long, String> platoNombres = new HashMap<>();
+        List<platos> todosPlatos = servicioplatos.getList();
+        for (platos p : todosPlatos) {
+            platoNombres.put(p.getIdplato(), p.getNombre());
+        }
+
         model.addAttribute("resenas", resenas);
+        model.addAttribute("platoNombres", platoNombres);
+        model.addAttribute("todosPlatos", todosPlatos);
+        model.addAttribute("estado", estado);
+        model.addAttribute("platoId", platoId);
+        model.addAttribute("search", search);
         return "adminResenas";
     }
 
@@ -121,10 +144,15 @@ public class AdminController {
     }
 
     @GetMapping("/userList")
-    public String showUserList(Model model) {
-        List<Usuario> users = usuarioService.getList();
-        model.addAttribute("users", users); // Pasar la lista de usuarios al modelo
-        return "userList"; // Nombre del archivo Thymeleaf para la lista de usuarios
+    public String showUserList(
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) String role,
+            Model model) {
+        List<Usuario> users = usuarioService.buscarUsuarios(search, role);
+        model.addAttribute("users", users);
+        model.addAttribute("search", search);
+        model.addAttribute("role", role);
+        return "userList";
     }
     
     @GetMapping("/editUser")

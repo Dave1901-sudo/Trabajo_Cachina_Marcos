@@ -354,11 +354,11 @@ function loadOrderNotifications(renderList) {
 
                 empty.classList.add('d-none');
                 pedidos.forEach((pedido, index) => {
-                    const button = document.createElement('button');
-                    button.type = 'button';
-                    button.className = 'pedido-notificacion bg-white text-start p-3 w-100';
-                    button.innerHTML = `
-                        <div class="d-flex justify-content-between gap-3 align-items-start">
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'pedido-notificacion bg-white p-3 w-100 mb-2';
+                    wrapper.style.cursor = 'default';
+                    wrapper.innerHTML = `
+                        <div class="d-flex justify-content-between gap-3 align-items-start" onclick="showOrderDetail(${pedido.id}, ${index + 1})" style="cursor:pointer;">
                             <div>
                                 <div class="fw-bold text-primary">Pedido #${index + 1}</div>
                                 <div class="text-muted small">
@@ -370,9 +370,20 @@ function loadOrderNotifications(renderList) {
                                 <div class="fw-bold">S/. ${formatCurrency(pedido.total)}</div>
                             </div>
                         </div>
+                        <div class="d-flex justify-content-between align-items-center mt-2 pt-2 border-top">
+                            <div class="countdown-timer small text-danger fw-bold" id="notif-timer-${pedido.id}" data-fechanotif="${pedido.fechaRaw || ''}">--:--</div>
+                            <button class="btn btn-outline-danger btn-sm btn-cancelar-pedido rounded-pill" id="notif-cancel-${pedido.id}" onclick="event.stopPropagation();cancelarPedidoNotificacion(${pedido.id})" style="display:none;">
+                                <i class="bi bi-x-circle"></i> Cancelar
+                            </button>
+                        </div>
                     `;
-                    button.addEventListener('click', () => showOrderDetail(pedido.id));
-                    list.appendChild(button);
+                    list.appendChild(wrapper);
+                });
+                // Iniciar contadores para los timers de notificacion
+                pedidos.forEach(function(pedido) {
+                    if (pedido.fechaRaw) {
+                        iniciarContadorNotificacion(pedido.id, pedido.fechaRaw);
+                    }
                 });
             })
             .catch(error => {
@@ -399,7 +410,7 @@ function updateNotificationBadge(count) {
     badge.classList.toggle('d-none', count === 0);
 }
 
-function showOrderDetail(orderId) {
+function showOrderDetail(orderId, numero) {
     const detailBody = document.getElementById('orderDetailBody');
     if (!detailBody) {
         return;
@@ -442,10 +453,21 @@ function showOrderDetail(orderId) {
                     ${item.comentario ? `<tr><td colspan="4" class="text-muted small pt-0">Comentario: ${escapeHtml(item.comentario)}</td></tr>` : ''}
                 `).join('');
 
+                var fechaRaw = pedido.fechaRaw || '';
+                var cancelArea = '';
+                if (fechaRaw) {
+                    cancelArea = '<div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top">' +
+                        '<div class="countdown-timer small text-danger fw-bold" id="detail-timer-' + pedido.id + '" data-fechanotif="' + fechaRaw + '">--:--</div>' +
+                        '<button class="btn btn-outline-danger btn-sm rounded-pill" id="detail-cancel-' + pedido.id + '" onclick="cancelarPedidoDetalle(' + pedido.id + ')" style="display:none;">' +
+                        '<i class="bi bi-x-circle"></i> Cancelar pedido</button>' +
+                        '</div>';
+                }
+
+                var numPedido = numero || pedido.id;
                 detailBody.innerHTML = `
                     <div class="d-flex justify-content-between flex-wrap gap-3 mb-3">
                         <div>
-                            <h5 class="text-primary mb-1">Pedido #${pedido.id}</h5>
+                            <h5 class="text-primary mb-1">Pedido #${numPedido}</h5>
                             <div class="text-muted"><i class="bi bi-clock me-1"></i>${escapeHtml(pedido.fecha || 'Fecha no disponible')}</div>
                         </div>
                         <div class="text-end">
@@ -473,7 +495,11 @@ function showOrderDetail(orderId) {
                             </tbody>
                         </table>
                     </div>
+                    ${cancelArea}
                 `;
+                if (fechaRaw) {
+                    iniciarContadorDetalle(pedido.id, fechaRaw);
+                }
             })
             .catch(error => {
                 console.error(error);
@@ -548,6 +574,96 @@ function showConfirmedOrdersAlert(pedidos) {
 
     alert(text);
 }
+/* ===== CANCELAR PEDIDO Y CONTADORES ===== */
+
+function cancelarPedidoFetch(pedidoId, onSuccess) {
+    fetch('/mis-pedidos/cancelar/' + pedidoId, { method: 'POST' })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data.message && data.message.indexOf('exitosamente') !== -1) {
+                Swal.fire({ icon: 'success', title: 'Cancelado', text: data.message, timer: 2000, showConfirmButton: false });
+                if (onSuccess) onSuccess();
+            } else {
+                Swal.fire({ icon: 'error', title: 'Error', text: data.message || 'No se pudo cancelar' });
+            }
+        })
+        .catch(function() {
+            Swal.fire({ icon: 'error', title: 'Error', text: 'Error de conexión' });
+        });
+}
+
+function cancelarPedidoNotificacion(pedidoId) {
+    Swal.fire({
+        title: '¿Cancelar pedido?',
+        text: 'Esta acción no se puede deshacer.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d9534f',
+        confirmButtonText: 'Sí, cancelar',
+        cancelButtonText: 'No'
+    }).then(function(result) {
+        if (!result.isConfirmed) return;
+        cancelarPedidoFetch(pedidoId, function() {
+            refreshOrderNotifications();
+        });
+    });
+}
+
+function cancelarPedidoDetalle(pedidoId) {
+    Swal.fire({
+        title: '¿Cancelar pedido?',
+        text: 'Esta acción no se puede deshacer.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d9534f',
+        confirmButtonText: 'Sí, cancelar',
+        cancelButtonText: 'No'
+    }).then(function(result) {
+        if (!result.isConfirmed) return;
+        cancelarPedidoFetch(pedidoId, function() {
+            var modalEl = document.getElementById('orderDetailModal');
+            var modal = bootstrap.Modal.getInstance(modalEl);
+            if (modal) modal.hide();
+            refreshOrderNotifications();
+        });
+    });
+}
+
+function iniciarContadorBase(timerEl, cancelBtn, fechaRaw) {
+    if (!timerEl || !fechaRaw) return;
+    var fechaPedido = new Date(fechaRaw.replace(/\//g, '/'));
+    function actualizar() {
+        var ahora = new Date();
+        var diffSeg = Math.floor((ahora.getTime() - fechaPedido.getTime()) / 1000);
+        var restante = 300 - diffSeg;
+        if (restante <= 0) {
+            timerEl.textContent = 'Tiempo expirado';
+            timerEl.style.color = '#999';
+            if (cancelBtn) cancelBtn.style.display = 'none';
+            return;
+        }
+        if (cancelBtn) cancelBtn.style.display = 'inline-block';
+        var min = Math.floor(restante / 60);
+        var seg = restante % 60;
+        timerEl.textContent = String(min).padStart(2, '0') + ':' + String(seg).padStart(2, '0');
+        timerEl.style.color = '#d9534f';
+    }
+    actualizar();
+    setInterval(actualizar, 1000);
+}
+
+function iniciarContadorNotificacion(pedidoId, fechaRaw) {
+    var timerEl = document.getElementById('notif-timer-' + pedidoId);
+    var cancelBtn = document.getElementById('notif-cancel-' + pedidoId);
+    iniciarContadorBase(timerEl, cancelBtn, fechaRaw);
+}
+
+function iniciarContadorDetalle(pedidoId, fechaRaw) {
+    var timerEl = document.getElementById('detail-timer-' + pedidoId);
+    var cancelBtn = document.getElementById('detail-cancel-' + pedidoId);
+    iniciarContadorBase(timerEl, cancelBtn, fechaRaw);
+}
+
 //El camarón :D función
 // Función para desplazarse hacia el principio de la página
 function scrollToTop() {

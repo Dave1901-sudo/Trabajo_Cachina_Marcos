@@ -210,6 +210,21 @@ public class ControladorPlatos {
         }
     }
 
+    @PostMapping("/mis-pedidos/cancelar/{id}")
+    @ResponseBody
+    public ResponseEntity<?> cancelarPedido(@PathVariable("id") Long id, Principal principal) {
+        Usuario usuario = obtenerUsuarioLogueado(principal);
+        if (usuario == null || usuario.getId() == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ResponseMessage("Debes iniciar sesión"));
+        }
+        try {
+            pedidoService.cancelarPedido(id, usuario.getId());
+            return ResponseEntity.ok(new ResponseMessage("Pedido cancelado exitosamente"));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(e.getMessage()));
+        }
+    }
+
     private Usuario obtenerUsuarioLogueado(Principal principal) {
         if (principal == null) {
             return null;
@@ -221,6 +236,7 @@ public class ControladorPlatos {
         Map<String, Object> data = new LinkedHashMap<>();
         data.put("id", pedido.getId());
         data.put("fecha", formatearFecha(pedido.getFechaPedido()));
+        data.put("fechaRaw", new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(pedido.getFechaPedido()));
         data.put("total", pedido.getTotal());
         data.put("estado", pedido.getEstado());
         return data;

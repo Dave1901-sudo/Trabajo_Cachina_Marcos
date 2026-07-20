@@ -32,6 +32,13 @@
                 background-color: #3498db;
                 color: white;
             }
+            .filter-section {
+                background: #f8f9fa;
+                border-radius: 10px;
+                padding: 20px;
+                margin-bottom: 25px;
+                border: 1px solid #e9ecef;
+            }
             .action-buttons {
                 display: flex;
                 gap: 10px;
@@ -63,126 +70,433 @@
             .no-print:hover {
                 background-color: #2980b9;
             }
+            .pagination .page-link {
+                color: #3498db;
+            }
+            .pagination .page-item.active .page-link {
+                background-color: #3498db;
+                border-color: #3498db;
+                color: white;
+            }
             @media (max-width: 768px) {
+                body { padding: 10px; }
+                .container { padding: 15px; margin: 10px auto; }
+                h1 { font-size: 1.5rem; margin-top: 15px; }
+                .table th, .table td { font-size: 0.85rem; padding: 8px 4px; }
+                .action-buttons { flex-direction: column; align-items: stretch; gap: 8px; }
+                .action-buttons form button, .action-buttons a { font-size: 0.85rem; padding: 8px 12px; justify-content: center; }
+                .no-print { font-size: 0.9rem; padding: 10px 16px; }
+                .filter-section .row > div { margin-bottom: 10px; }
+            }
+
+            /* ===== ESTILOS PARA IMPRESIÓN PROFESIONAL ===== */
+            .print-header, .print-footer, .print-watermark { display: none; }
+
+            @media print {
+                @page {
+                    size: landscape;
+                    margin: 1cm 0.6cm 1.5cm 0.6cm;
+                    @bottom-right {
+                        content: "Pág. " counter(page);
+                        font-family: 'Segoe UI', Tahoma, sans-serif;
+                        font-size: 8pt;
+                        color: #777;
+                    }
+                }
+
+                * { box-shadow: none !important; text-shadow: none !important; }
+
                 body {
-                    padding: 10px;
+                    background: white !important;
+                    padding: 0 !important;
+                    margin: 0 !important;
+                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                    font-size: 10pt;
+                    color: #222;
                 }
+
+                .no-print, .filter-section, .pagination, .action-buttons,
+                #filtros-activos, .table-responsive::-webkit-scrollbar { display: none !important; }
+
                 .container {
-                    padding: 15px;
-                    margin: 10px auto;
+                    max-width: 100% !important;
+                    margin: 0 !important;
+                    padding: 0 !important;
+                    border-radius: 0 !important;
+                    box-shadow: none !important;
+                    background: transparent !important;
                 }
-                h1 {
-                    font-size: 1.5rem;
-                    margin-top: 15px;
+
+                /* Cabecera profesional */
+                .print-header {
+                    display: flex !important;
+                    align-items: center;
+                    justify-content: space-between;
+                    border-bottom: 3px double #1a5276;
+                    padding-bottom: 12px;
+                    margin-bottom: 20px;
                 }
-                .table th, .table td {
-                    font-size: 0.85rem;
-                    padding: 8px 4px;
+                .print-header .left {
+                    display: flex;
+                    align-items: center;
+                    gap: 15px;
                 }
-                .action-buttons {
-                    flex-direction: column;
-                    align-items: stretch;
-                    gap: 8px;
+                .print-header .left img {
+                    width: 60px;
+                    height: 60px;
+                    object-fit: contain;
                 }
-                .action-buttons form button,
-                .action-buttons a {
-                    font-size: 0.85rem;
-                    padding: 8px 12px;
-                    justify-content: center;
+                .print-header .left .rest-name {
+                    font-size: 20pt;
+                    font-weight: 700;
+                    color: #1a5276;
+                    letter-spacing: 2px;
                 }
-                .no-print {
-                    font-size: 0.9rem;
-                    padding: 10px 16px;
+                .print-header .left .rest-name small {
+                    font-size: 10pt;
+                    font-weight: 400;
+                    color: #555;
+                    display: block;
+                    letter-spacing: 0;
                 }
+                .print-header .right {
+                    text-align: right;
+                    font-size: 8.5pt;
+                    color: #444;
+                    line-height: 1.5;
+                }
+                .print-header .right strong {
+                    color: #1a5276;
+                }
+
+                /* Título del reporte */
+                .print-title {
+                    text-align: center;
+                    font-size: 16pt;
+                    font-weight: 700;
+                    color: #1a5276;
+                    margin: 0 0 6px 0;
+                    padding: 0;
+                    text-transform: uppercase;
+                    letter-spacing: 3px;
+                }
+                .print-subtitle {
+                    text-align: center;
+                    font-size: 9pt;
+                    color: #666;
+                    margin: 0 0 18px 0;
+                    border-bottom: 1px solid #ccc;
+                    padding-bottom: 10px;
+                }
+
+                /* Tabla */
+                .table-responsive {
+                    overflow: visible !important;
+                }
+                table#tabla-pedidos {
+                    width: 100%;
+                    border-collapse: collapse;
+                    font-size: 8.5pt;
+                    page-break-after: auto;
+                }
+                table#tabla-pedidos thead {
+                    display: table-header-group;
+                }
+                table#tabla-pedidos tbody {
+                    display: table-row-group;
+                }
+                table#tabla-pedidos tr {
+                    page-break-inside: avoid;
+                }
+                table#tabla-pedidos th {
+                    background: #1a5276 !important;
+                    color: white !important;
+                    font-weight: 600;
+                    padding: 7px 6px;
+                    border: 1px solid #1a5276;
+                    text-align: center;
+                    font-size: 8pt;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                }
+                table#tabla-pedidos td {
+                    padding: 5px 6px;
+                    border: 1px solid #bbb;
+                    vertical-align: middle;
+                }
+                table#tabla-pedidos tbody tr:nth-child(even) {
+                    background-color: #f0f4f8 !important;
+                }
+                table#tabla-pedidos tbody tr:hover {
+                    background-color: inherit !important;
+                }
+
+                /* Ocultar columna Acciones */
+                table#tabla-pedidos th:last-child,
+                table#tabla-pedidos td:last-child {
+                    display: none !important;
+                }
+
+                /* Resumen al final */
+                .print-summary {
+                    margin-top: 16px;
+                    padding-top: 10px;
+                    border-top: 2px solid #1a5276;
+                    font-size: 9pt;
+                    color: #333;
+                    display: flex;
+                    justify-content: space-between;
+                }
+                .print-summary .total-pedidos {
+                    font-weight: 600;
+                    color: #1a5276;
+                }
+
+                .print-footer {
+                    display: flex !important;
+                    justify-content: space-between;
+                    margin-top: 25px;
+                    padding-top: 8px;
+                    border-top: 1px solid #aaa;
+                    font-size: 8pt;
+                    color: #666;
+                }
+
+                h1 { display: none !important; }
             }
         </style>
         <script>
-            function printTable() {
-                var printWindow = window.open('/admin/printTemplate', '', 'height=600,width=800');
+            function imprimirPedidos() {
+                var tabla = document.getElementById('tabla-pedidos');
+                var filtros = document.getElementById('filtros-activos');
 
-                printWindow.onload = function () {
-                    var tableClone = document.querySelector('.container').cloneNode(true);
+                var mes = (filtros && filtros.querySelector('.badge.bg-info')?.innerText?.trim()) || '';
+                var busqueda = (filtros && filtros.querySelector('.badge.bg-secondary')?.innerText?.trim()) || '';
+                var pagInfo = (filtros && filtros.querySelector('.badge.bg-success')?.innerText?.trim()) || '';
 
-                    var headers = tableClone.querySelectorAll('thead tr th');
-                    var rows = tableClone.querySelectorAll('tbody tr');
+                var hoy = new Date();
+                var fechaStr = hoy.toLocaleDateString('es-PE', { year: 'numeric', month: 'long', day: 'numeric' });
+                var horaStr = hoy.toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit' });
 
-                    headers[headers.length - 1].remove();
+                var totalFilas = tabla.querySelectorAll('tbody tr').length;
+                // Excluir fila de "no se encontraron"
+                var datos = tabla.querySelectorAll('tbody tr td');
+                var hayDatos = true;
+                if (datos.length === 1 && datos[0].colSpan > 1) hayDatos = false;
 
-                    rows.forEach(row => {
-                        row.lastElementChild.remove();
-                    });
+                var logoSrc = '/imagenes/Logo.jpg';
 
-                    var tableContent = tableClone.querySelector('.table').innerHTML;
-                    var printTable = printWindow.document.querySelector('table');
-                    printTable.innerHTML = tableContent;
+                var encabezado = '<div class="print-header">' +
+                    '<div class="left">' +
+                        '<img src="' + logoSrc + '" alt="Logo">' +
+                        '<div class="rest-name">LA CACHINA FISH<small>Restaurante &amp; Parrilladas</small></div>' +
+                    '</div>' +
+                    '<div class="right">' +
+                        '<strong>Fecha:</strong> ' + fechaStr + '<br>' +
+                        '<strong>Hora:</strong> ' + horaStr + '<br>' +
+                        (mes ? '<strong>Período:</strong> ' + mes.replace('Mostrando:', '').trim() + '<br>' : '') +
+                        (busqueda ? '<strong>Filtro:</strong> ' + busqueda.replace('Búsqueda:', '').trim() + '<br>' : '') +
+                        (pagInfo ? '<strong>' + pagInfo.replace('Página', 'Pag').trim() : '') +
+                    '</div>' +
+                '</div>';
 
-                    printWindow.print();
+                var tituloReporte = '<div class="print-title">Listado de Pedidos</div>' +
+                    '<div class="print-subtitle">Reporte administrativo de pedidos registrados en el sistema</div>';
+
+                var totalText = hayDatos ? totalFilas : 0;
+                var resumen = '<div class="print-summary">' +
+                    '<span class="total-pedidos"><strong>Total de pedidos:</strong> ' + totalText + '</span>' +
+                    '<span><strong>Estado:</strong> ' + (mes || 'Sin filtro de fecha') + '</span>' +
+                '</div>';
+
+                var footer = '<div class="print-footer">' +
+                    '<span>La Cachina Fish - Av. Principal 123, Lima</span>' +
+                    '<span>Tel: (01) 555-1234  |  info@lacachinafish.com</span>' +
+                '</div>';
+
+                var contenidoHtml = tabla.outerHTML;
+                // Reemplazar el contenido para que incluya el encabezado, título, tabla, resumen, footer
+                var cuerpoCompleto = encabezado + tituloReporte + contenidoHtml + resumen + footer;
+
+                var estilo = document.querySelector('style').innerHTML;
+
+                var ventana = window.open('', '_blank', 'height=700,width=1000,scrollbars=yes');
+                ventana.document.write('<!DOCTYPE html>');
+                ventana.document.write('<html><head><meta charset="UTF-8"><title>Listado de Pedidos - Imprimir</title>');
+                ventana.document.write('<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">');
+                ventana.document.write('<style>' + estilo + '</style>');
+                ventana.document.write('</head><body>');
+                ventana.document.write(cuerpoCompleto);
+                ventana.document.write('</body></html>');
+                ventana.document.close();
+
+                ventana.onload = function() {
+                    setTimeout(function() { ventana.print(); }, 400);
                 };
             }
         </script>
     </head>
     <body>
         <div class="container">
-            <h1>Listado de Pedidos</h1>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Fecha de Pedido</th>
-                        <th>Hora</th>
-                        <th>Email</th>
-                        <th>Telefono</th>
-                        <th>Direccion</th>
-                        <th>Usuario</th>
-                        <th>Cliente</th>
-                        <th>Total</th>
-                        <th>Estado</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <th:block th:each="pedido : ${pedidos}">
+            <h1><i class="fas fa-clipboard-list me-2"></i>Listado de Pedidos</h1>
+
+            <!-- Filtros -->
+            <form method="get" action="/pedidos" class="filter-section">
+                <div class="row align-items-end g-3">
+                    <div class="col-md-2">
+                        <label class="form-label fw-semibold" style="color: #2c3e50;">Mes</label>
+                        <select name="mes" class="form-select">
+                            <option value="">Todos</option>
+                            <option value="1" th:selected="${mes == 1}">Enero</option>
+                            <option value="2" th:selected="${mes == 2}">Febrero</option>
+                            <option value="3" th:selected="${mes == 3}">Marzo</option>
+                            <option value="4" th:selected="${mes == 4}">Abril</option>
+                            <option value="5" th:selected="${mes == 5}">Mayo</option>
+                            <option value="6" th:selected="${mes == 6}">Junio</option>
+                            <option value="7" th:selected="${mes == 7}">Julio</option>
+                            <option value="8" th:selected="${mes == 8}">Agosto</option>
+                            <option value="9" th:selected="${mes == 9}">Setiembre</option>
+                            <option value="10" th:selected="${mes == 10}">Octubre</option>
+                            <option value="11" th:selected="${mes == 11}">Noviembre</option>
+                            <option value="12" th:selected="${mes == 12}">Diciembre</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label fw-semibold" style="color: #2c3e50;">Año</label>
+                        <select name="anio" class="form-select">
+                            <option value="">Todos</option>
+                            <option value="2024" th:selected="${anio == 2024}">2024</option>
+                            <option value="2025" th:selected="${anio == 2025}">2025</option>
+                            <option value="2026" th:selected="${anio == 2026}">2026</option>
+                            <option value="2027" th:selected="${anio == 2027}">2027</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label fw-semibold" style="color: #2c3e50;">Estado</label>
+                        <select name="estado" class="form-select">
+                            <option value="todos" th:selected="${estado == null or estado == 'todos'}">Todos</option>
+                            <option value="Pendiente" th:selected="${estado == 'Pendiente'}">Pendiente</option>
+                            <option value="Confirmado" th:selected="${estado == 'Confirmado'}">Confirmado</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-semibold" style="color: #2c3e50;">Buscar por nombre o email</label>
+                        <input type="text" name="search" class="form-control" placeholder="Escriba para buscar..." th:value="${search}">
+                    </div>
+                    <div class="col-md-3 d-flex gap-2">
+                        <button type="submit" class="btn btn-primary flex-fill"><i class="fas fa-search"></i> Filtrar</button>
+                        <a href="/pedidos" class="btn btn-outline-secondary flex-fill"><i class="fas fa-undo"></i> Limpiar</a>
+                    </div>
+                </div>
+            </form>
+
+            <div id="filtros-activos" class="mb-3">
+                <span class="badge bg-info text-dark fs-6" th:if="${mes != null and anio != null}">
+                    <i class="fas fa-calendar-alt"></i> 
+                    <span th:text="${mes} + '/' + ${anio}"></span>
+                </span>
+                <span class="badge bg-info text-dark fs-6" th:if="${mes == null or anio == null}">
+                    <i class="fas fa-calendar-alt"></i> Sin filtro de fecha
+                </span>
+                <span th:if="${estado != null}" class="badge bg-primary fs-6 ms-2">
+                    <i class="fas fa-filter"></i> <span th:text="${estado}"></span>
+                </span>
+                <span th:if="${search != null and !search.isEmpty()}" class="badge bg-secondary fs-6 ms-2">
+                    <i class="fas fa-search"></i> <span th:text="${search}"></span>
+                </span>
+                <span class="badge bg-success fs-6 ms-2">
+                    <i class="fas fa-list"></i> <span th:text="${totalElements}"></span> resultado(s) - Pág. <span th:text="${currentPage + 1}"></span>/<span th:text="${totalPages}"></span>
+                </span>
+            </div>
+
+            <!-- Tabla -->
+            <div class="table-responsive">
+                <table class="table table-striped" id="tabla-pedidos">
+                    <thead>
                         <tr>
-                            <td th:text="${pedido.id}"></td>
-                            <td th:text="${#dates.format(pedido.fechaPedido, 'yyyy-MM-dd')}"></td>
-                            <td th:text="${#dates.format(pedido.fechaPedido, 'HH:mm')}"></td>
-                            <td th:text="${pedido.email}"></td>
-                            <td th:text="${pedido.phone}"></td>
-                            <td th:text="${pedido.direccion}"></td>
-                            <td th:text="${pedido.usuario?.username}"></td>
-                            <td th:text="${pedido.usuario != null ? pedido.usuario.nombres + ' ' + pedido.usuario.apellidos : ''}"></td>
-                            <td th:text="${pedido.total}"></td>
-                            <td th:text="${pedido.estado}"></td>
-                            <td class="action-buttons">
-                                <a th:href="@{/pedidos/editar/{id}(id=${pedido.id})}" class="btn btn-primary">
-                                    <i class="fas fa-edit"></i> Editar
-                                </a>
-                                <a th:href="@{/pedidos/eliminar/{id}(id=${pedido.id})}" class="btn btn-danger">
-                                    <i class="fas fa-trash-alt"></i> Eliminar
-                                </a>
-                                <a th:href="@{/pedidos/detalles/{id}(id=${pedido.id})}" class="btn btn-info">
-                                    <i class="fas fa-info-circle"></i> Ver Detalles
-                                </a>
-                                <form th:action="@{/pedidos/confirmar/{id}(id=${pedido.id})}" method="post" style="display:inline;">
-                                    <button type="submit" class="btn" 
-                                            th:text="${pedido.estado == 'Pendiente' ? 'Confirmar Pedido' : 'Desconfirmar Pedido'}" 
-                                            th:class="${pedido.estado == 'Pendiente' ? 'btn-success' : 'btn-warning'}">
-                                        <i class="fas" th:class="${pedido.estado == 'Pendiente' ? 'fa-check' : 'fa-times'}"></i>
-                                    </button>
-                                </form>
-                            </td>
+                            <th>ID</th>
+                            <th>Fecha de Pedido</th>
+                            <th>Hora</th>
+                            <th>Email</th>
+                            <th>Telefono</th>
+                            <th>Direccion</th>
+                            <th>Usuario</th>
+                            <th>Cliente</th>
+                            <th>Total</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
                         </tr>
-                    </th:block>
-                </tbody>
-            </table>
-            <div class="d-flex justify-content-between">
-                <button class="btn btn-info mb-3 no-print" onclick="printTable()">
+                    </thead>
+                    <tbody>
+                        <th:block th:each="pedido : ${pedidos}">
+                            <tr>
+                                <td th:text="${pedido.id}"></td>
+                                <td th:text="${#dates.format(pedido.fechaPedido, 'yyyy-MM-dd')}"></td>
+                                <td th:text="${#dates.format(pedido.fechaPedido, 'HH:mm')}"></td>
+                                <td th:text="${pedido.email}"></td>
+                                <td th:text="${pedido.phone}"></td>
+                                <td th:text="${pedido.direccion}"></td>
+                                <td th:text="${pedido.usuario?.username}"></td>
+                                <td th:text="${pedido.usuario != null ? pedido.usuario.nombres + ' ' + pedido.usuario.apellidos : ''}"></td>
+                                <td th:text="${pedido.total}"></td>
+                                <td th:text="${pedido.estado}"></td>
+                                <td class="action-buttons">
+                                    <a th:href="@{/pedidos/editar/{id}(id=${pedido.id})}" class="btn btn-primary">
+                                        <i class="fas fa-edit"></i> Editar
+                                    </a>
+                                    <a th:href="@{/pedidos/eliminar/{id}(id=${pedido.id})}" class="btn btn-danger">
+                                        <i class="fas fa-trash-alt"></i> Eliminar
+                                    </a>
+                                    <a th:href="@{/pedidos/detalles/{id}(id=${pedido.id})}" class="btn btn-info">
+                                        <i class="fas fa-info-circle"></i> Ver Detalles
+                                    </a>
+                                    <form th:action="@{/pedidos/confirmar/{id}(id=${pedido.id})}" method="post" style="display:inline;">
+                                        <button type="submit" class="btn" 
+                                                th:text="${pedido.estado == 'Pendiente' ? 'Confirmar Pedido' : 'Desconfirmar Pedido'}" 
+                                                th:class="${pedido.estado == 'Pendiente' ? 'btn-success' : 'btn-warning'}">
+                                            <i class="fas" th:class="${pedido.estado == 'Pendiente' ? 'fa-check' : 'fa-times'}"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </th:block>
+                        <tr th:if="${#lists.isEmpty(pedidos)}">
+                            <td colspan="11" class="text-center text-muted py-4">No se encontraron pedidos para los filtros seleccionados.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Paginacion -->
+            <nav th:if="${totalPages > 1}" aria-label="Navegacion de pedidos">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                        <a class="page-link" th:href="@{/pedidos(mes=${mes}, anio=${anio}, search=${search}, estado=${estado}, page=${currentPage - 1})}">
+                            <i class="fas fa-chevron-left"></i>
+                        </a>
+                    </li>
+                    <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${i == currentPage} ? 'active'">
+                        <a class="page-link" th:href="@{/pedidos(mes=${mes}, anio=${anio}, search=${search}, estado=${estado}, page=${i})}" th:text="${i + 1}"></a>
+                    </li>
+                    <li class="page-item" th:classappend="${currentPage >= totalPages - 1} ? 'disabled'">
+                        <a class="page-link" th:href="@{/pedidos(mes=${mes}, anio=${anio}, search=${search}, estado=${estado}, page=${currentPage + 1})}">
+                            <i class="fas fa-chevron-right"></i>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- Botones -->
+            <div class="d-flex justify-content-between flex-wrap gap-2 mt-3">
+                <button class="btn btn-info no-print" onclick="imprimirPedidos()">
                     <i class="fas fa-print"></i> Imprimir Pedidos
                 </button>
-                <a th:href="@{/admin}" class="btn btn-warning mb-3 no-print">
+                <a th:href="@{/admin}" class="btn btn-warning no-print">
                     <i class="fas fa-arrow-left"></i> Volver al Panel de Administración
                 </a>
             </div>
         </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     </body>
 </html>

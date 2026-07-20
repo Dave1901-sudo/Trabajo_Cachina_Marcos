@@ -9,8 +9,14 @@ import com.example.SPA_CACHINA.entidades.PedidoDetalle;
 import com.example.SPA_CACHINA.servicios.PedidoService;
 import com.example.SPA_CACHINA.servicios.Servicioplatos;
 import com.example.SPA_CACHINA.servicios.UsuarioService;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,10 +43,56 @@ public class PedidoController {
     private UsuarioService usuarioService;
     
     @GetMapping
-    public String listarPedidos(Model model) {
-        List<Pedido> pedidos = pedidoService.obtenerTodosLosPedidos();
-        model.addAttribute("pedidos", pedidos);
-        return "pedidos"; // Vista de la lista de pedidos
+    public String listarPedidos(
+            @RequestParam(required = false) Integer mes,
+            @RequestParam(required = false) Integer anio,
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) String estado,
+            @RequestParam(defaultValue = "0") int page,
+            Model model) {
+
+        Date fechaInicio = null;
+        Date fechaFin = null;
+
+        if (mes != null && anio != null) {
+            Calendar cal = Calendar.getInstance();
+            cal.set(anio, mes - 1, 1, 0, 0, 0);
+            fechaInicio = cal.getTime();
+            cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+            cal.set(Calendar.HOUR_OF_DAY, 23);
+            cal.set(Calendar.MINUTE, 59);
+            cal.set(Calendar.SECOND, 59);
+            fechaFin = cal.getTime();
+        } else if (mes == null && anio == null) {
+            Calendar cal = Calendar.getInstance();
+            mes = cal.get(Calendar.MONTH) + 1;
+            anio = cal.get(Calendar.YEAR);
+            cal.set(Calendar.DAY_OF_MONTH, 1);
+            cal.set(Calendar.HOUR_OF_DAY, 0);
+            cal.set(Calendar.MINUTE, 0);
+            cal.set(Calendar.SECOND, 0);
+            fechaInicio = cal.getTime();
+            cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+            cal.set(Calendar.HOUR_OF_DAY, 23);
+            cal.set(Calendar.MINUTE, 59);
+            cal.set(Calendar.SECOND, 59);
+            fechaFin = cal.getTime();
+        }
+
+        if ("todos".equals(estado)) estado = null;
+
+        Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "fechaPedido"));
+        Page<Pedido> pedidosPage = pedidoService.buscarPedidos(fechaInicio, fechaFin, search, estado, pageable);
+
+        model.addAttribute("pedidos", pedidosPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", pedidosPage.getTotalPages());
+        model.addAttribute("totalElements", pedidosPage.getTotalElements());
+        model.addAttribute("mes", mes);
+        model.addAttribute("anio", anio);
+        model.addAttribute("search", search);
+        model.addAttribute("estado", estado);
+        return "pedidos";
     }
     
     @GetMapping("/editar/{id}")

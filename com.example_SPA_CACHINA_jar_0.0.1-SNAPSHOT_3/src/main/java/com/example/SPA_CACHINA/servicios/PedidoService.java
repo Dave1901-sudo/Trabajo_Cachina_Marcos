@@ -17,6 +17,9 @@ import com.example.SPA_CACHINA.repositorios.PlatosDAO;
 import com.example.SPA_CACHINA.repositorios.UserRepository;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Date;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Date;
@@ -93,7 +96,11 @@ public class PedidoService {
 
     // Nuevo método para obtener todos los pedidos
     public List<Pedido> obtenerTodosLosPedidos() {
-        return pedidoRepository.findAll(); // Recupera todos los pedidos de la base de datos
+        return pedidoRepository.findAll();
+    }
+
+    public Page<Pedido> buscarPedidos(Date fechaInicio, Date fechaFin, String search, String estado, Pageable pageable) {
+        return pedidoRepository.buscarPedidos(fechaInicio, fechaFin, search, estado, pageable);
     }
 
     public List<Pedido> obtenerPedidosPendientesPorUsuario(Long usuarioId) {
@@ -272,6 +279,61 @@ public class PedidoService {
 
     }
     
+    public void cancelarPedido(Long id, Long usuarioId) {
+        Pedido pedido = pedidoRepository.findWithDetallesByIdAndUsuarioIdAndEstado(id, usuarioId, "Pendiente")
+                .orElseThrow(() -> new RuntimeException("Pedido no encontrado o no se puede cancelar"));
+
+        long diffMs = new Date().getTime() - pedido.getFechaPedido().getTime();
+        long diffMin = diffMs / 60000;
+        if (diffMin > 5) {
+            throw new RuntimeException("El tiempo para cancelar el pedido ha expirado (5 minutos).");
+        }
+
+        Usuario usuario = pedido.getUsuario();
+        String nombres = (usuario != null) ? usuario.getNombres() + " " + usuario.getApellidos() : "Usuario anónimo";
+
+        StringBuilder detallesHtml = new StringBuilder();
+        if (pedido.getDetalles() != null) {
+            for (PedidoDetalle detalle : pedido.getDetalles()) {
+                detallesHtml.append("<tr>")
+                        .append("<td>").append(detalle.getNombre()).append("</td>")
+                        .append("<td>").append(detalle.getCantidad()).append("</td>")
+                        .append("<td>S/. ").append(String.format("%.2f", detalle.getPrecio())).append("</td>")
+                        .append("<td>S/. ").append(String.format("%.2f", detalle.getCantidad() * detalle.getPrecio())).append("</td>")
+                        .append("</tr>");
+            }
+        }
+
+        String contenido =
+                "<h2 style=\"color: #d9534f;\">Un pedido ha sido cancelado</h2>" +
+                "<hr>" +
+                "<h4 style=\"color: #0277bd;\">Datos del usuario</h4>" +
+                "<p><strong>Nombre completo:</strong> " + nombres + "</p>" +
+                "<p><strong>Email:</strong> " + (pedido.getEmail() != null ? pedido.getEmail() : "") + "</p>" +
+                "<p><strong>Teléfono:</strong> " + (pedido.getPhone() != null ? pedido.getPhone() : "") + "</p>" +
+                "<p><strong>Ubicación:</strong> " + (pedido.getDireccion() != null ? pedido.getDireccion() : "") + "</p>" +
+                "<p><strong>Referencia:</strong> " + (pedido.getReferencia() != null && !pedido.getReferencia().isEmpty() ? pedido.getReferencia() : "Ninguna referencia asignada") + "</p>" +
+                "<hr>" +
+                "<h4 style=\"color: #0277bd;\">Pedido cancelado</h4>" +
+                "<table border=\"1\" cellpadding=\"8\" cellspacing=\"0\" style=\"border-collapse: collapse; width: 100%;\">" +
+                "<thead style=\"background-color: #f2f2f2;\">" +
+                "<tr><th>Plato</th><th>Cantidad</th><th>Precio</th><th>Subtotal</th></tr>" +
+                "</thead><tbody>" +
+                detallesHtml.toString() +
+                "</tbody></table>" +
+                "<p><strong>Total:</strong> S/. " + String.format("%.2f", pedido.getTotal()) + "</p>" +
+                "<hr>" +
+                "<p style=\"color: #d9534f;\"><strong>Motivo:</strong> Cancelado por el usuario dentro de los 5 minutos posteriores a la creación.</p>";
+
+        brevoService.enviarCorreo(
+                "u22244804@utp.edu.pe",
+                "Notificación de Cancelación de Pedido",
+                contenido
+        );
+
+        pedidoRepository.delete(pedido);
+    }
+
     public void enviarNotificacionNuevoPedido(Usuario usuario, Pedido pedido) {
         String nombres = (usuario != null) ? usuario.getNombres() + " " + usuario.getApellidos() : "Usuario anónimo";
 
