@@ -22,8 +22,7 @@ public class ResenaService {
     private ResenaLikeRepository resenaLikeRepository;
 
     public List<Resena> obtenerResenasAprobadas(Long platoId) {
-        List<Resena> resenas = resenaRepository.findByPlatoIdAndEstadoOrderByLikesDesc(platoId, "aprobado");
-        return resenas.size() > 3 ? resenas.subList(0, 3) : resenas;
+        return resenaRepository.findByPlatoIdAndEstadoOrderByLikesDesc(platoId, "aprobado");
     }
 
     public List<Map<String, Object>> obtenerResenasConLikeState(Long platoId, Long usuarioId) {

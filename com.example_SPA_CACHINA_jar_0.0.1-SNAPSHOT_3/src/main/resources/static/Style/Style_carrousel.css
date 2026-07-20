@@ -299,3 +299,54 @@
     color: #0277bd !important;
 }
 
+.resenas-carrusel {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    position: relative;
+}
+
+.carrusel-slides-wrapper {
+    flex: 1;
+    overflow: hidden;
+    min-height: 60px;
+}
+
+.carrusel-slides {
+    display: flex;
+    transition: transform 0.3s ease;
+}
+
+.carrusel-slide {
+    min-width: 100%;
+    box-sizing: border-box;
+    padding: 6px 6px;
+}
+
+.carrusel-btn {
+    background: #f0f0f0;
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s;
+    flex-shrink: 0;
+    z-index: 1;
+}
+
+.carrusel-btn:hover {
+    background: #0277bd;
+    color: #fff;
+}
+
+.carrusel-btn:disabled {
+    opacity: 0.3;
+    cursor: default;
+    background: #f0f0f0;
+    color: #999;
+}
+

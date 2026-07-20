@@ -53,13 +53,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                                     <!-- Imagen del plato -->
                                                     <img th:src="@{/imagen/{id}(id=${platos.idplato})}" alt="${platos.nombre}" class="img-fluid rounded">
                                                 </div>
-                                                <div class="col-md-6 d-flex flex-column justify-content-between">
+                                                <div class="col-md-6 d-flex flex-column">
                                                     <!-- Descripción y opciones -->
                                                     <div>
                                                         <p th:text="${platos.descripcion}"></p>
                                                         <h4>S/. <span th:text="${platos.precio}"></span></h4>
                                                         <hr>
-                                                        <div th:replace="~{vistas/fragments/resenas-fragment::resenas(${platos.idplato})}"></div>
                                                         <div class="mb-3">
                                                             <label for="comentarios" class="form-label">Comentarios</label>
                                                             <textarea class="form-control text-muted" id="comentarios" rows="3" placeholder="Especifica si deseas algún cambio en el plato (Por alergias, gustos,etc)"></textarea>
@@ -80,6 +79,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div th:replace="~{vistas/fragments/resenas-fragment::resenas(${platos.idplato})}"></div>
                                         </div>
                                     </div>
                                 </div>

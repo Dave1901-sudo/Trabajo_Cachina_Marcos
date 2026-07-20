@@ -288,7 +288,7 @@ public class PedidoService {
         }
 
         String contenido =
-                "<h2 style=\"color: #d4a017;\">\uD83D\uDCEA Un usuario ha generado un nuevo pedido</h2>" +
+                "<h2 style=\"color: #d4a017;\">Un usuario ha generado un nuevo pedido</h2>" +
                 "<hr>" +
                 "<h4 style=\"color: #0277bd;\">Datos del usuario</h4>" +
                 "<p><strong>Nombre completo:</strong> " + nombres + "</p>" +

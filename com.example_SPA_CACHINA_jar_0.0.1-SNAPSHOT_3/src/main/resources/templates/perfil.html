@@ -2,7 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Mi Perfil · Cachina Fish</title>
+    <title>Mi Perfil</title>
+    <link rel="icon" href="imagenes/Logo.jpg" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Bootstrap 5.0.2 CSS -->
@@ -125,11 +126,12 @@
         }
 
         .perfil-hero .descripcion {
-            max-width: 620px;
+            max-width: 820px;
             margin: 0 auto 1.15rem;
             font-size: 1.04rem;
             line-height: 1.65;
             opacity: 0.95;
+            white-space: nowrap;
         }
 
         .perfil-usuario {
@@ -189,6 +191,12 @@
 
             .perfil-hero h1 {
                 font-size: 1.9rem;
+            }
+
+            .perfil-hero .descripcion {
+                white-space: normal;
+                max-width: 100%;
+                font-size: 0.95rem;
             }
         }
 
