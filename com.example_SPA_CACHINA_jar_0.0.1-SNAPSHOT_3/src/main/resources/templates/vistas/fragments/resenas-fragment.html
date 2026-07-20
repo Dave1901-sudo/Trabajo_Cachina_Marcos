@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body th:fragment="resenas(platoId)">
+    <div th:id="'resenas-container-' + ${platoId}" class="resenas-container mb-2">
+        <div class="d-flex justify-content-between align-items-center">
+            <strong class="form-label">Reseñas</strong>
+            <button type="button" class="btn btn-sm btn-outline-primary" th:id="'btn-resena-' + ${platoId}" onclick="mostrarFormularioResena(this)">
+                <i class="bi bi-star"></i> Calificar
+            </button>
+        </div>
+        <div th:id="'resenas-lista-' + ${platoId}" class="resenas-lista mt-1">
+            <small class="text-muted">Cargando reseñas...</small>
+        </div>
+        <div th:id="'form-resena-' + ${platoId}" class="form-resena d-none mt-2 p-2" style="background: #f8f9fa; border-radius: 8px;">
+            <div class="mb-1">
+                <div class="estrellas-input" th:data-id="${platoId}">
+                    <span class="estrella-input" data-valor="1" onclick="seleccionarEstrella(this)">☆</span>
+                    <span class="estrella-input" data-valor="2" onclick="seleccionarEstrella(this)">☆</span>
+                    <span class="estrella-input" data-valor="3" onclick="seleccionarEstrella(this)">☆</span>
+                    <span class="estrella-input" data-valor="4" onclick="seleccionarEstrella(this)">☆</span>
+                    <span class="estrella-input" data-valor="5" onclick="seleccionarEstrella(this)">☆</span>
+                    <input type="hidden" class="puntuacion-input" value="0">
+                </div>
+            </div>
+            <textarea class="form-control form-control-sm mb-1" rows="2" placeholder="Escribe tu comentario..."></textarea>
+            <div class="d-flex gap-2">
+                <button type="button" class="btn btn-sm btn-primary" onclick="enviarResena(this)">Enviar</button>
+                <button type="button" class="btn btn-sm btn-secondary" onclick="cancelarResena(this)">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

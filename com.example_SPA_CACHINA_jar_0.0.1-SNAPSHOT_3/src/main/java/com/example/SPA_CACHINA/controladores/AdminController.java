@@ -4,10 +4,13 @@
  */
 package com.example.SPA_CACHINA.controladores;
 
+import com.example.SPA_CACHINA.entidades.Auditoria;
 import com.example.SPA_CACHINA.entidades.Resena;
 import com.example.SPA_CACHINA.entidades.Usuario;
+import com.example.SPA_CACHINA.servicios.AuditoriaService;
 import com.example.SPA_CACHINA.servicios.ResenaService;
 import com.example.SPA_CACHINA.servicios.UsuarioService;
+import java.security.Principal;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -34,6 +37,9 @@ public class AdminController {
     @Autowired
     private ResenaService resenaService;
 
+    @Autowired
+    private AuditoriaService auditoriaService;
+
     @GetMapping("/roleForm")
     public String showRoleUpdateForm(Model model) {
 
@@ -57,7 +63,8 @@ public class AdminController {
             @RequestParam(required = false) String password,
             @RequestParam(required = false) String confirmPassword,
             @RequestParam String role,
-            Model model) {
+            Model model,
+            Principal principal) {
 
         try {
 
@@ -69,13 +76,15 @@ public class AdminController {
                     role
             );
 
+            String admin = (principal != null) ? principal.getName() : "desconocido";
+            auditoriaService.registrar(admin, "Actualizar rol", "Usuario: " + username + " -> Rol: " + role);
+
             return "redirect:/admin";
 
         } catch (IllegalArgumentException e) {
 
             model.addAttribute("errorMessage", e.getMessage());
 
-            // Volver a cargar la lista de usuarios
             model.addAttribute("users", usuarioService.getList());
 
             return "updateRole";
@@ -90,14 +99,18 @@ public class AdminController {
     }
 
     @GetMapping("/resenas/aprobar/{id}")
-    public String aprobarResena(@PathVariable Long id) {
+    public String aprobarResena(@PathVariable Long id, Principal principal) {
         resenaService.aprobarResena(id);
+        String admin = (principal != null) ? principal.getName() : "desconocido";
+        auditoriaService.registrar(admin, "Aprobar reseña", "Reseña ID: " + id);
         return "redirect:/admin/resenas";
     }
 
     @GetMapping("/resenas/eliminar/{id}")
-    public String eliminarResena(@PathVariable Long id) {
+    public String eliminarResena(@PathVariable Long id, Principal principal) {
         resenaService.eliminarResena(id);
+        String admin = (principal != null) ? principal.getName() : "desconocido";
+        auditoriaService.registrar(admin, "Eliminar reseña", "Reseña ID: " + id);
         return "redirect:/admin/resenas";
     }
 
@@ -173,14 +186,15 @@ public class AdminController {
     }
 
     @PostMapping("/deleteUser")
-    public String deleteUser(@RequestParam String username) {
+    public String deleteUser(@RequestParam String username, Principal principal) {
         try {
             usuarioService.deleteUserByUsername(username);
+            String admin = (principal != null) ? principal.getName() : "desconocido";
+            auditoriaService.registrar(admin, "Eliminar usuario", "Usuario eliminado: " + username);
         } catch (UsernameNotFoundException e) {
-            // Puedes agregar una forma de manejar el error si el usuario no existe
-            return "redirect:/admin/userList?error=userNotFound"; // Redirige con un mensaje de error
+            return "redirect:/admin/userList?error=userNotFound";
         }
-        return "redirect:/admin/userList"; // Redirige a la lista de usuarios después de eliminar
+        return "redirect:/admin/userList";
     }
 
 }
