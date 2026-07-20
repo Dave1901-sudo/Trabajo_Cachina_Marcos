@@ -1,108 +1,65 @@
- <html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
     <head>
         <title>Lista de Usuarios</title>
         <link rel="icon" href="imagenes/Logo.jpg" type="image/x-icon">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        
+
         <!-- Bootstrap 5.0.2 CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-        
+
         <!-- Bootstrap Icons CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
         <style>
-            /* General body styling */
             body {
                 background-color: #f4f8fb;
-                font-family: 'Arial', sans-serif;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
                 margin: 0;
-                padding: 0;
+                padding: 20px;
             }
-
-            /* Main container */
             .container {
-                margin-top: 50px;
-                padding: 30px;
                 max-width: 1200px;
-                background-color: white;
+                margin: 30px auto;
+                padding: 40px;
+                background: #ffffff;
                 border-radius: 12px;
-                box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+                box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
             }
-
-            /* Title styles */
             h1 {
-                color: #003a63;
                 text-align: center;
-                font-size: 36px;
-                font-weight: bold;
-                margin-bottom: 40px;
-                text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.1);
+                margin-top: 30px;
+                margin-bottom: 30px;
+                font-size: 2.5rem;
+                color: #2c3e50;
+                text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
             }
-
-            /* Table styles */
-            table {
-                width: 100%;
-                border-collapse: collapse;
-                margin-top: 20px;
-            }
-
-            table thead {
-                background-color: #0054a0;
+            .table th {
+                background-color: #3498db;
                 color: white;
             }
-
-            table th, table td {
-                padding: 15px;
-                text-align: center;
-                border: 1px solid #ddd;
-            }
-
-            table tbody tr:nth-child(even) {
-                background-color: #f7f7f7;
-            }
-
-            table tbody tr:hover {
-                background-color: #e3f2fd;
-                cursor: pointer;
-            }
-
-            /* Button styles for "Eliminar" */
-            button {
-                background-color: #f6a945;
+            .no-print {
+                display: inline-block;
+                font-size: 1.1rem;
+                padding: 12px 20px;
+                border-radius: 50px;
+                background-color: #3498db;
                 color: white;
-                padding: 8px 12px;
-                border: none;
-                border-radius: 6px;
-                font-weight: bold;
-                transition: background-color 0.3s;
-            }
-
-            button:hover {
-                background-color: #003a63;
-            }
-
-            /* Link styling */
-            .footer-link {
                 text-decoration: none;
-                color: #0054a0;
-                font-weight: bold;
-                font-size: 18px;
-                display: block;
-                text-align: center;
-                margin-top: 40px;
             }
-
-            .footer-link:hover {
-                color: #f6a945;
+            .no-print:hover {
+                background-color: #2980b9;
             }
-
-            /* Footer styling */
-            .footer {
-                text-align: center;
-                color: #003a63;
-                font-size: 16px;
-                margin-top: 40px;
+            .table-wrapper {
+                overflow-x: auto;
+            }
+            @media (max-width: 768px) {
+                body { padding: 10px; }
+                .container { padding: 15px; margin: 10px auto; }
+                h1 { font-size: 1.5rem; margin-top: 15px; }
+                .table { font-size: 0.85rem; }
+                .table th, .table td { padding: 8px 6px; white-space: nowrap; }
+                .no-print { font-size: 0.9rem; padding: 10px 16px; }
             }
         </style>
     </head>
@@ -111,8 +68,8 @@
         <div class="container">
             <h1>Lista de Usuarios</h1>
 
-            <!-- User Table -->
-            <table>
+            <div class="table-wrapper">
+            <table class="table table-striped">
                 <thead>
                     <tr>
                         <th>Usuario</th>
@@ -136,44 +93,41 @@
                         <td th:text="${user.direccion != null ? user.direccion : '-'}"></td>
                         <td th:text="${user.documentoIdentidad != null ? user.documentoIdentidad : '-'}"></td>
                         <td th:text="${user.role}"></td>
-                        <td>
-                            <!-- Botón Editar -->
+                        <td class="text-nowrap">
                             <a th:href="@{/admin/editUser(id=${user.id})}"
-                               class="btn btn-primary btn-sm"
-                               style="margin-right:5px;">
+                               class="btn btn-primary btn-sm">
                                 <i class="bi bi-pencil-square"></i> Editar
                             </a>
-
-                            <!-- Botón Eliminar -->
                             <form action="/admin/deleteUser"
                                   method="POST"
                                   style="display:inline">
-
                                 <input type="hidden"
                                        name="username"
                                        th:value="${user.username}"/>
-
                                 <input type="hidden"
                                        name="_csrf"
                                        th:value="${_csrf.token}"/>
-
                                 <button type="submit"
                                         class="btn btn-danger btn-sm">
                                     <i class="bi bi-trash"></i> Eliminar
                                 </button>
-
                             </form>
                         </td>
                     </tr>
                 </tbody>
             </table>
+            </div>
 
-            <!-- Return Link -->
-            <a class="footer-link" th:href="@{/admin}">Volver al Panel de Administración</a>
-            <a class="footer-link" th:href="@{/admin/roleForm}">Actualizar Rol de Usuario</a>
+            <div class="d-flex justify-content-center gap-3 mt-4 flex-wrap">
+                <a th:href="@{/admin}" class="btn btn-warning no-print">
+                    <i class="bi bi-arrow-left-circle"></i> Volver al Panel de Administración
+                </a>
+                <a th:href="@{/admin/roleForm}" class="btn btn-info no-print">
+                    Actualizar Rol
+                </a>
+            </div>
         </div>
 
-        <!-- Bootstrap 5.0.2 JS -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     </body>
 </html>

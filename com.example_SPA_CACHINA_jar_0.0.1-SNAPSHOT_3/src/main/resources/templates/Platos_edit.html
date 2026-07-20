@@ -44,7 +44,7 @@
                     <label for="categoriaSelect" class="form-label fw-semibold fs-5" style="color: #0277bd;">Categoría</label>
                     <div class="input-group" onclick="document.getElementById('categoriaSelect').focus();">
                         <select class="form-control" id="categoriaSelect" onchange="toggleNuevaCategoria(this)" required>
-                            <option value="" disabled selected hidden>-- Seleccionar categoría --</option>
+                            <option value="" disabled selected hidden>Seleccionar categoría</option>
                             <option th:each="cat : ${categorias}" th:value="${cat}" th:text="${cat}" th:selected="${cat == platos.categoria}"></option>
                             <option value="__NUEVA__">+ Agregar categoría nueva</option>
                         </select>

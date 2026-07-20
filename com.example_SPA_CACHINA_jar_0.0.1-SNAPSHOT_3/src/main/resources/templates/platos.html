@@ -45,39 +45,46 @@
                         </div>
 
                         <div class="mb-3">
+                            <label class="form-label fw-semibold fs-6" style="color: #0277bd;">Nombre del plato</label>
                             <input type="text" 
                                    class="form-control form-control-lg border-primary"
-                                   placeholder="Nombre del plato"
+                                   placeholder="Ej: Ceviche Mixto"
                                    name="nombre" th:field="*{nombre}" required="true">
                         </div>
 
                         <div class="mb-3">
+                            <label class="form-label fw-semibold fs-6" style="color: #0277bd;">Descripción del plato</label>
                             <input type="text" 
                                    class="form-control form-control-lg border-primary"
-                                   placeholder="Descripcion del plato"
+                                   placeholder="Ej: Ceviche de pescado con camote y choclo"
                                    name="descripcion" th:field="*{descripcion}" required="true">
                         </div>
 
                         <div class="mb-3">
+                            <label class="form-label fw-semibold fs-6" style="color: #0277bd;">Precio del plato</label>
                             <input type="number" 
                                    class="form-control form-control-lg border-primary"
-                                   placeholder="Precio del plato"
+                                   placeholder="Ej: 25.00"
                                    name="precio" th:field="*{precio}" required="true" step="0.01">
                         </div>
 
                         <div class="mb-3">
+                            <label class="form-label fw-semibold fs-6" style="color: #0277bd;">Imagen del plato</label>
                             <input type="file" 
                                    class="form-control form-control-lg border-primary"
-                                   th:placeholder="#{imagen URL}"
                                    name="imagenArchivo" id="imagenArchivo" accept="image/*" required="true">
                         </div>
 
                         <div class="mb-3">
-                            <select class="form-control form-control-lg border-primary" id="categoriaSelect" onchange="toggleNuevaCategoria(this)">
-                                <option value="">-- Seleccionar categoría --</option>
-                                <option th:each="cat : ${categorias}" th:value="${cat}" th:text="${cat}"></option>
-                                <option value="__NUEVA__">+ Agregar categoría nueva</option>
-                            </select>
+                            <label class="form-label fw-semibold fs-6" style="color: #0277bd;">Categoría del plato</label>
+                            <div class="input-group">
+                                <select class="form-control form-control-lg border-primary" id="categoriaSelect" onchange="toggleNuevaCategoria(this)" required>
+                                    <option value="" disabled selected hidden>Seleccionar categoría</option>
+                                    <option th:each="cat : ${categorias}" th:value="${cat}" th:text="${cat}"></option>
+                                    <option value="__NUEVA__">+ Agregar categoría nueva</option>
+                                </select>
+                                <span class="input-group-text bg-white border-primary" style="cursor:pointer;" onclick="var s=document.getElementById('categoriaSelect'); s.focus(); s.click();">▼</span>
+                            </div>
                             <input type="text" 
                                    class="form-control form-control-lg border-primary mt-2"
                                    placeholder="Escriba la nueva categoría"

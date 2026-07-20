@@ -56,12 +56,9 @@
             document.body.style.opacity = '1'; // Transición suave para mostrar el contenido
         };
 
-        // Recuperar los datos de sessionStorage
-        const data = JSON.parse(sessionStorage.getItem('listaContactos'));
-
-        if (data) {
+        function renderContactos(data) {
             const container = document.getElementById('listaContactosContainer');
-            container.innerHTML = ''; // Limpiar el contenedor antes de agregar nuevos elementos
+            container.innerHTML = '';
 
             data.forEach(contacto => {
                 // Crear estructura HTML para cada contacto
@@ -94,8 +91,21 @@
                 `;
                 container.appendChild(div);
             });
+        }
+
+        const stored = JSON.parse(sessionStorage.getItem('listaContactos'));
+        if (stored) {
+            renderContactos(stored);
         } else {
-            console.error("No hay datos en sessionStorage");
+            fetch('/getListJSON')
+                .then(res => res.json())
+                .then(data => {
+                    sessionStorage.setItem('listaContactos', JSON.stringify(data));
+                    renderContactos(data);
+                })
+                .catch(() => {
+                    document.getElementById('listaContactosContainer').innerHTML = '<p class="text-center text-muted">Error al cargar contactos.</p>';
+                });
         }
     </script>
     <script>

@@ -2,201 +2,98 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Actualizar Rol</title>
-    <link rel="icon" href="imagenes/Logo.jpg" type="image/x-icon">
+    <link rel="icon" href="/imagenes/Logo.jpg" type="image/x-icon">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- Bootstrap 5.0.2 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Bootstrap Icons CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-
-    <style>
-        /* General body styling */
-        body {
-            background-color: #f4f8fb;
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-
-        /* Main container */
-        .container {
-            max-width: 800px;
-            margin: 50px auto;
-            padding: 30px;
-            background-color: white;
-            border-radius: 12px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Title */
-        h3 {
-            color: #003a63;
-            font-size: 32px;
-            font-weight: bold;
-            text-align: center;
-            margin-bottom: 40px;
-            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Form styling */
-        label {
-            color: #003a63;
-            font-weight: bold;
-            font-size: 18px;
-        }
-
-        input, select {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-            font-size: 16px;
-            transition: border-color 0.3s ease;
-        }
-
-        input:focus, select:focus {
-            border-color: #0054a0;
-            outline: none;
-        }
-
-        /* Button styling */
-        button {
-            width: 100%;
-            background-color: #f6a945;
-            color: white;
-            padding: 12px;
-            font-size: 18px;
-            font-weight: bold;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.3s, transform 0.3s;
-        }
-
-        button:hover {
-            background-color: #003a63;
-            transform: scale(1.05);
-        }
-
-        /* Link styling */
-        a {
-            text-decoration: none;
-            color: #0054a0;
-            font-weight: bold;
-            font-size: 18px;
-            display: block;
-            text-align: center;
-            margin-top: 30px;
-        }
-
-        a:hover {
-            color: #f6a945;
-        }
-    </style>
+    <link rel="stylesheet" href="/Style/Style_carrousel.css">
 </head>
+<body class="d-flex flex-column min-vh-100 bg-custom-2">
 
-<body>
-    <div class="container">
-        <h3>Administrar Credenciales del Usuario</h3>
-        
-        <div class="alert alert-danger"
-            th:if="${errorMessage}"
-            th:text="${errorMessage}">
-       </div>
-        <!-- Form for updating user credentials -->
-        <form th:action="@{/admin/updateRole}" method="post">
-            <div class="form-group">
+    <div th:replace="~{vistas/navbar::encabezado}"></div>
 
-                <label for="username">
-                    Seleccione un usuario:
-                </label>
+    <div class="container my-5" style="max-width: 90%;">
+        <div class="row justify-content-center">
+            <div class="col-md-8 bg-light shadow-lg rounded p-4">
+                <h5 class="card-title text-warning text-center mb-3" style="font-size: 1.75rem;">Administrar Credenciales del Usuario</h5>
+                <p class="card-text text-primary text-center fs-5 mb-4">Actualice los datos del usuario seleccionado.</p>
 
-                <select
-                        id="username"
-                        name="username"
-                        class="form-control"
-                        required>
+                <div class="alert alert-danger" th:if="${errorMessage}" th:text="${errorMessage}"></div>
 
-                    <option value="">
-                        -- Seleccione un usuario --
-                    </option>
-
-                    <option
-                            th:each="user : ${users}"
-                            th:value="${user.username}"
-                            th:text="${user.username + ' - ' + user.nombres + ' ' + user.apellidos}">
-                    </option>
-
-                </select>
-
+                <form th:action="@{/admin/updateRole}" method="post">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold fs-6" style="color: #0277bd;">Seleccione un usuario</label>
+                        <div class="input-group">
+                            <select id="username" name="username" class="form-control form-control-lg border-primary" required>
+                                <option value="" disabled selected hidden>Seleccione un usuario</option>
+                                <option th:each="user : ${users}" th:value="${user.username}" th:text="${user.username + ' - ' + user.nombres + ' ' + user.apellidos}"></option>
+                            </select>
+                            <span class="input-group-text bg-white border-primary" style="cursor:pointer;" onclick="var s=document.getElementById('username'); s.focus(); s.click();">▼</span>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold fs-6" style="color: #0277bd;">Nuevo nombre de usuario</label>
+                        <input type="text" id="nuevoUsername" name="nuevoUsername" class="form-control form-control-lg border-primary" placeholder="Nombre de usuario"/>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold fs-6" style="color: #0277bd;">Nueva contraseña</label>
+                        <input type="password" id="password" name="password" class="form-control form-control-lg border-primary" placeholder="Contraseña"/>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold fs-6" style="color: #0277bd;">Confirmar contraseña</label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" class="form-control form-control-lg border-primary" placeholder="Repita la contraseña"/>
+                        <small class="text-muted">Deje ambos campos vacíos si no desea cambiar la contraseña.</small>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold fs-6" style="color: #0277bd;">Nuevo Rol</label>
+                        <select id="role" name="role" class="form-control form-control-lg border-primary">
+                            <option value="USER">USER</option>
+                            <option value="ADMIN">ADMIN</option>
+                        </select>
+                    </div>
+                    <div class="d-flex justify-content-center gap-2">
+                        <button type="submit" class="btn btn-success btn-lg" style="font-size: 1.2rem;">
+                            <i class="bi bi-check-circle"></i> Guardar cambios
+                        </button>
+                        <a th:href="@{/admin}" class="btn btn-secondary btn-lg" style="font-size: 1.2rem;">
+                            <i class="bi bi-arrow-left-circle"></i> Volver
+                        </a>
+                    </div>
+                </form>
             </div>
-            <div class="form-group">
-                <label for="nuevoUsername">Nuevo nombre de usuario:</label>
-                <input type="text" id="nuevoUsername" name="nuevoUsername" class="form-control" placeholder="Nombre de usuario"/>
-            </div>
-            <div class="form-group">
-                <label for="password">Nueva contraseña:</label>
-                <input type="password" id="password" name="password" class="form-control" />
-            </div>
-            <div class="form-group">
-                <label for="confirmPassword">Confirmar contraseña:</label>
-                <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" />
-                <small class="text-muted">
-                    Deje ambos campos vacíos si no desea cambiar la contraseña.
-                </small>
-            </div>
-            <div class="form-group">
-                <label for="role">Nuevo Rol:</label>
-                <select id="role" name="role" class="form-control">
-                    <option value="USER">USER</option>
-                    <option value="ADMIN">ADMIN</option>
-                </select>
-            </div>
-            <button type="submit" class="btn btn-primary">Guardar cambios</button>
-        </form>
-
-        <!-- Link to return to the admin panel -->
-        <a th:href="@{/admin}"><i class="bi bi-arrow-left-circle"></i> Volver al Panel de Administración</a>
+        </div>
     </div>
-    
+
+    <div th:replace="~{vistas/footer::footer}"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-
-    document.getElementById("username").addEventListener("change", function () {
-
-        const username = this.value;
-
-        if (username === "") {
-
-            document.getElementById("nuevoUsername").value = "";
-            document.getElementById("password").value = "";
-            document.getElementById("confirmPassword").value = "";
-            document.getElementById("role").value = "USER";
-
-            return;
-        }
-
-        fetch("/admin/getUser?username=" + username)
-            .then(response => response.json())
-            .then(user => {
-
-                document.getElementById("role").value = user.role;
-
-                document.getElementById("nuevoUsername").value = user.username;
-
+        window.onload = function () {
+            var loader = document.getElementById('loader');
+            if (loader) loader.style.display = 'none';
+            document.body.style.visibility = 'visible';
+            document.body.style.opacity = '1';
+        };
+        document.getElementById("username").addEventListener("change", function () {
+            const username = this.value;
+            if (username === "") {
+                document.getElementById("nuevoUsername").value = "";
                 document.getElementById("password").value = "";
                 document.getElementById("confirmPassword").value = "";
-
-            })
-            .catch(error => console.error(error));
-
-    });
-
+                document.getElementById("role").value = "USER";
+                return;
+            }
+            fetch("/admin/getUser?username=" + username)
+                .then(response => response.json())
+                .then(user => {
+                    document.getElementById("role").value = user.role;
+                    document.getElementById("nuevoUsername").value = user.username;
+                    document.getElementById("password").value = "";
+                    document.getElementById("confirmPassword").value = "";
+                })
+                .catch(error => console.error(error));
+        });
     </script>
-    <!-- Bootstrap 5.0.2 JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

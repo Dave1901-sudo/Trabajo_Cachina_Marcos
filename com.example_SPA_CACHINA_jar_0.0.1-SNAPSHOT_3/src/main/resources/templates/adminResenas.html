@@ -21,9 +21,11 @@
             box-shadow: 0 15px 40px rgba(0,0,0,0.1);
         }
         h1 {
-            color: #003a63;
             text-align: center;
-            margin-bottom: 30px;
+            margin-top: 30px;
+            font-size: 2.5rem;
+            color: #2c3e50;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
         }
         .table th {
             background-color: #3498db;
@@ -34,11 +36,30 @@
         .estrella-llena { color: #ff8c00; }
         .estrella-vacia { color: #ccc; }
         .acciones { white-space: nowrap; }
+        .no-print {
+            display: inline-block;
+            font-size: 1.1rem;
+            padding: 12px 20px;
+            border-radius: 50px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+        }
+        .no-print:hover {
+            background-color: #2980b9;
+        }
+        @media (max-width: 768px) {
+            body { padding: 10px; }
+            .container { padding: 15px; margin: 10px; }
+            h1 { font-size: 1.5rem; margin-top: 15px; }
+            .table th, .table td { font-size: 0.85rem; padding: 8px 4px; }
+            .acciones a { font-size: 0.8rem; padding: 6px 10px; margin-bottom: 4px; display: inline-block; }
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1><i class="bi bi-star me-2"></i>Gestionar Reseñas</h1>
+        <h1>Gestionar Reseñas</h1>
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -84,8 +105,10 @@
                 </tr>
             </tbody>
         </table>
-        <div class="text-center mt-4">
-            <a th:href="@{/admin}" class="btn btn-warning"><i class="bi bi-arrow-left-circle"></i> Volver al Panel</a>
+        <div class="d-flex justify-content-center mt-4">
+            <a th:href="@{/admin}" class="btn btn-warning mb-3 no-print">
+                <i class="bi bi-arrow-left-circle"></i> Volver al Panel de Administración
+            </a>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
