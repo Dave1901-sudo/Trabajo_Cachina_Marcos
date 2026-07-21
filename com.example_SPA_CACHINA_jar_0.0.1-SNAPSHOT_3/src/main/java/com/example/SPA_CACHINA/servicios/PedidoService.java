@@ -292,6 +292,14 @@ public class PedidoService {
         Usuario usuario = pedido.getUsuario();
         String nombres = (usuario != null) ? usuario.getNombres() + " " + usuario.getApellidos() : "Usuario anónimo";
 
+        String template;
+        try {
+            template = new String(Files.readAllBytes(Paths.get("src/main/resources/templates/pedido-cancelacion.html")));
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error al cargar la plantilla de cancelación");
+        }
+
         StringBuilder detallesHtml = new StringBuilder();
         if (pedido.getDetalles() != null) {
             for (PedidoDetalle detalle : pedido.getDetalles()) {
@@ -304,26 +312,14 @@ public class PedidoService {
             }
         }
 
-        String contenido =
-                "<h2 style=\"color: #d9534f;\">Un pedido ha sido cancelado</h2>" +
-                "<hr>" +
-                "<h4 style=\"color: #0277bd;\">Datos del usuario</h4>" +
-                "<p><strong>Nombre completo:</strong> " + nombres + "</p>" +
-                "<p><strong>Email:</strong> " + (pedido.getEmail() != null ? pedido.getEmail() : "") + "</p>" +
-                "<p><strong>Teléfono:</strong> " + (pedido.getPhone() != null ? pedido.getPhone() : "") + "</p>" +
-                "<p><strong>Ubicación:</strong> " + (pedido.getDireccion() != null ? pedido.getDireccion() : "") + "</p>" +
-                "<p><strong>Referencia:</strong> " + (pedido.getReferencia() != null && !pedido.getReferencia().isEmpty() ? pedido.getReferencia() : "Ninguna referencia asignada") + "</p>" +
-                "<hr>" +
-                "<h4 style=\"color: #0277bd;\">Pedido cancelado</h4>" +
-                "<table border=\"1\" cellpadding=\"8\" cellspacing=\"0\" style=\"border-collapse: collapse; width: 100%;\">" +
-                "<thead style=\"background-color: #f2f2f2;\">" +
-                "<tr><th>Plato</th><th>Cantidad</th><th>Precio</th><th>Subtotal</th></tr>" +
-                "</thead><tbody>" +
-                detallesHtml.toString() +
-                "</tbody></table>" +
-                "<p><strong>Total:</strong> S/. " + String.format("%.2f", pedido.getTotal()) + "</p>" +
-                "<hr>" +
-                "<p style=\"color: #d9534f;\"><strong>Motivo:</strong> Cancelado por el usuario dentro de los 5 minutos posteriores a la creación.</p>";
+        String contenido = template
+                .replace("{{nombres}}", nombres != null ? nombres : "")
+                .replace("{{email}}", pedido.getEmail() != null ? pedido.getEmail() : "")
+                .replace("{{telefono}}", pedido.getPhone() != null ? pedido.getPhone() : "")
+                .replace("{{direccion}}", pedido.getDireccion() != null ? pedido.getDireccion() : "")
+                .replace("{{referencia}}", pedido.getReferencia() != null && !pedido.getReferencia().isEmpty() ? pedido.getReferencia() : "Ninguna referencia asignada")
+                .replace("{{total}}", String.format("%.2f", pedido.getTotal()))
+                .replace("<!-- Detalles del pedido serán insertados aquí -->", detallesHtml.toString());
 
         brevoService.enviarCorreo(
                 "u22244804@utp.edu.pe",
@@ -337,6 +333,14 @@ public class PedidoService {
     public void enviarNotificacionNuevoPedido(Usuario usuario, Pedido pedido) {
         String nombres = (usuario != null) ? usuario.getNombres() + " " + usuario.getApellidos() : "Usuario anónimo";
 
+        String template;
+        try {
+            template = new String(Files.readAllBytes(Paths.get("src/main/resources/templates/pedido-nuevo.html")));
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error al cargar la plantilla de nuevo pedido");
+        }
+
         StringBuilder detallesHtml = new StringBuilder();
         if (pedido.getDetalles() != null) {
             for (PedidoDetalle detalle : pedido.getDetalles()) {
@@ -349,26 +353,14 @@ public class PedidoService {
             }
         }
 
-        String contenido =
-                "<h2 style=\"color: #d4a017;\">Un usuario ha generado un nuevo pedido</h2>" +
-                "<hr>" +
-                "<h4 style=\"color: #0277bd;\">Datos del usuario</h4>" +
-                "<p><strong>Nombre completo:</strong> " + nombres + "</p>" +
-                "<p><strong>Email:</strong> " + (pedido.getEmail() != null ? pedido.getEmail() : "") + "</p>" +
-                "<p><strong>Teléfono:</strong> " + (pedido.getPhone() != null ? pedido.getPhone() : "") + "</p>" +
-                "<p><strong>Ubicación:</strong> " + (pedido.getDireccion() != null ? pedido.getDireccion() : "") + "</p>" +
-                "<p><strong>Referencia:</strong> " + (pedido.getReferencia() != null && !pedido.getReferencia().isEmpty() ? pedido.getReferencia() : "Ninguna referencia asignada") + "</p>" +
-                "<hr>" +
-                "<h4 style=\"color: #0277bd;\">Pedido realizado</h4>" +
-                "<table border=\"1\" cellpadding=\"8\" cellspacing=\"0\" style=\"border-collapse: collapse; width: 100%;\">" +
-                "<thead style=\"background-color: #f2f2f2;\">" +
-                "<tr><th>Plato</th><th>Cantidad</th><th>Precio</th><th>Subtotal</th></tr>" +
-                "</thead><tbody>" +
-                detallesHtml.toString() +
-                "</tbody></table>" +
-                "<p><strong>Total:</strong> S/. " + String.format("%.2f", pedido.getTotal()) + "</p>" +
-                "<hr>" +
-                "<a href=\"https://cachinafish.onrender.com/pedidos\" style=\"display: inline-block; padding: 10px 20px; background-color: #0277bd; color: white; text-decoration: none; border-radius: 5px;\">Ver pedidos</a>";
+        String contenido = template
+                .replace("{{nombres}}", nombres != null ? nombres : "")
+                .replace("{{email}}", pedido.getEmail() != null ? pedido.getEmail() : "")
+                .replace("{{telefono}}", pedido.getPhone() != null ? pedido.getPhone() : "")
+                .replace("{{direccion}}", pedido.getDireccion() != null ? pedido.getDireccion() : "")
+                .replace("{{referencia}}", pedido.getReferencia() != null && !pedido.getReferencia().isEmpty() ? pedido.getReferencia() : "Ninguna referencia asignada")
+                .replace("{{total}}", String.format("%.2f", pedido.getTotal()))
+                .replace("<!-- Detalles del pedido serán insertados aquí -->", detallesHtml.toString());
 
         brevoService.enviarCorreo(
                 "u22244804@utp.edu.pe",

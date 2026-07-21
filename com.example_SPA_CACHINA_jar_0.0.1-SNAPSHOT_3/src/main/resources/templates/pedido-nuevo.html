@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Nuevo Pedido</title>
+        <style>
+            body {
+                font-family: 'Arial', sans-serif;
+                background-color: #f1faff;
+                margin: 0;
+                padding: 0;
+            }
+            .container {
+                max-width: 700px;
+                margin: 40px auto;
+                background: #ffffff;
+                border-radius: 12px;
+                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+                overflow: hidden;
+                border: 1px solid #ddd;
+            }
+            .header {
+                background-color: #d4a017;
+                color: white;
+                text-align: center;
+                padding: 30px 10px;
+                border-bottom: 4px solid #ff6f00;
+            }
+            .header h1 {
+                margin: 10px 0;
+                font-size: 2rem;
+            }
+            .header p {
+                margin: 5px 0 0;
+                opacity: 0.9;
+            }
+            .content {
+                padding: 30px;
+                color: #333;
+            }
+            .content p {
+                font-size: 1.1rem;
+                margin: 10px 0;
+            }
+            .info-box {
+                background-color: #f5f5f5;
+                border-radius: 8px;
+                padding: 15px;
+                margin-bottom: 16px;
+            }
+            .info-box p {
+                margin: 4px 0;
+                font-size: 1rem;
+            }
+            .details table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 20px;
+            }
+            .details th, .details td {
+                padding: 12px;
+                border: 1px solid #e0e0e0;
+                text-align: center;
+            }
+            .details th {
+                background-color: #f5f5f5;
+                color: #0277bd;
+                font-weight: bold;
+            }
+            .details td {
+                font-size: 0.9rem;
+            }
+            .total {
+                text-align: right;
+                margin-top: 20px;
+                font-size: 1.3rem;
+                font-weight: bold;
+                color: #d4a017;
+            }
+            .btn-container {
+                text-align: center;
+                margin-top: 25px;
+            }
+            .btn-container a {
+                display: inline-block;
+                padding: 12px 30px;
+                background-color: #0277bd;
+                color: white;
+                text-decoration: none;
+                border-radius: 5px;
+                font-size: 1.1rem;
+            }
+            .footer {
+                text-align: center;
+                font-size: 0.9rem;
+                color: #999999;
+                padding: 15px;
+                background-color: #f5f5f5;
+                border-top: 1px solid #e0e0e0;
+            }
+            .footer p {
+                margin: 0;
+            }
+            .footer a {
+                color: #0277bd;
+                text-decoration: none;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <h1>Nuevo Pedido</h1>
+                <p>Un usuario ha generado un nuevo pedido</p>
+            </div>
+            <div class="content">
+                <h3 style="color: #d4a017; margin-bottom: 8px;">Datos del usuario</h3>
+                <hr style="border: 1px solid #d4a017; margin-bottom: 16px;">
+                <div class="info-box">
+                    <p><strong>Nombre completo:</strong> {{nombres}}</p>
+                    <p><strong>Email:</strong> {{email}}</p>
+                    <p><strong>Teléfono:</strong> {{telefono}}</p>
+                    <p><strong>Ubicación:</strong> {{direccion}}</p>
+                    <p><strong>Referencia:</strong> {{referencia}}</p>
+                </div>
+
+                <h3 style="color: #0277bd; margin-bottom: 8px;">Pedido realizado</h3>
+                <hr style="border: 1px solid #0277bd; margin-bottom: 16px;">
+                <div class="details">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Plato</th>
+                                <th>Cantidad</th>
+                                <th>Precio Unitario</th>
+                                <th>Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Detalles del pedido serán insertados aquí -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="total">Total: S/. {{total}}</div>
+
+                <div class="btn-container">
+                    <a href="https://cachinafish.onrender.com/pedidos">Ver pedidos</a>
+                </div>
+            </div>
+            <div class="footer">
+                <p>© 2026 La Cachina Fish Bar. Todos los derechos reservados.</p>
+                <p>Prd. 15, Las Flores, San Juan de Lurigancho, Lima, Perú</p>
+                <p>Contacto: <a href="mailto:Lacachinafish.barracevichera@gmail.com">Lacachinafish.barracevichera@gmail.com</a></p>
+            </div>
+        </div>
+    </body>
+</html>
