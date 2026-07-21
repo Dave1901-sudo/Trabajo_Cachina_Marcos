@@ -172,6 +172,7 @@ public class AdminController {
     @PostMapping("/updateUser")
     public String updateUser(
             @RequestParam Long id,
+            @RequestParam(required = false) String newUsername,
             @RequestParam String nombres,
             @RequestParam String apellidos,
             @RequestParam String email,
@@ -184,6 +185,7 @@ public class AdminController {
 
             usuarioService.updateUser(
                     id,
+                    newUsername,
                     nombres,
                     apellidos,
                     email,
@@ -211,6 +213,12 @@ public class AdminController {
 
             return "editUser";
         }
+    }
+
+    @GetMapping("/confirmarEliminarUsuario")
+    public String confirmarEliminarUsuario(@RequestParam String username, Model model) {
+        model.addAttribute("username", username);
+        return "confirmarEliminarUsuario";
     }
 
     @PostMapping("/deleteUser")

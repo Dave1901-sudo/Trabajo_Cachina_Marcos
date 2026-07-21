@@ -141,13 +141,9 @@
                                 <a th:href="@{/admin/editUser(id=${user.id})}" class="btn btn-primary btn-sm">
                                     <i class="bi bi-pencil-square"></i> Editar
                                 </a>
-                                <form action="/admin/deleteUser" method="POST" style="display:inline">
-                                    <input type="hidden" name="username" th:value="${user.username}"/>
-                                    <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
-                                    <button type="submit" class="btn btn-danger btn-sm">
-                                        <i class="bi bi-trash"></i> Eliminar
-                                    </button>
-                                </form>
+                                <a th:href="@{/admin/confirmarEliminarUsuario(username=${user.username})}" class="btn btn-danger btn-sm">
+                                    <i class="bi bi-trash"></i> Eliminar
+                                </a>
                             </td>
                         </tr>
                         <tr th:if="${#lists.isEmpty(users)}">

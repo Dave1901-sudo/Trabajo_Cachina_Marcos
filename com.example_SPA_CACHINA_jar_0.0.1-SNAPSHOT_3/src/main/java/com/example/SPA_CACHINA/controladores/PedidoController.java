@@ -79,10 +79,14 @@ public class PedidoController {
             fechaFin = cal.getTime();
         }
 
-        if ("todos".equals(estado)) estado = null;
+        if (estado == null) estado = "todos";
 
-        Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "fechaPedido"));
-        Page<Pedido> pedidosPage = pedidoService.buscarPedidos(fechaInicio, fechaFin, search, estado, pageable);
+        String estadoQuery = estado;
+        if ("todos".equals(estadoQuery)) estadoQuery = null;
+
+        Sort sort = Sort.by(Sort.Direction.DESC, "fechaPedido").and(Sort.by(Sort.Direction.DESC, "id"));
+        Pageable pageable = PageRequest.of(page, 10, sort);
+        Page<Pedido> pedidosPage = pedidoService.buscarPedidos(fechaInicio, fechaFin, search, estadoQuery, pageable);
 
         model.addAttribute("pedidos", pedidosPage.getContent());
         model.addAttribute("currentPage", page);

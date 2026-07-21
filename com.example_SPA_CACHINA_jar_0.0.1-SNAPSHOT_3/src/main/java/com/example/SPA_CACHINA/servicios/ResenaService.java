@@ -111,6 +111,7 @@ public class ResenaService {
     }
 
     public void eliminarResena(Long resenaId) {
+        resenaLikeRepository.deleteByResenaId(resenaId);
         resenaRepository.deleteById(resenaId);
     }
 

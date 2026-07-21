@@ -130,6 +130,7 @@ public class UsuarioService {
     
     public void updateUser(
             Long id,
+            String newUsername,
             String nombres,
             String apellidos,
             String email,
@@ -139,6 +140,14 @@ public class UsuarioService {
 
             Usuario usuario = userRepository.findById(id)
                     .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
+
+            if (newUsername != null && !newUsername.trim().isEmpty()) {
+                Usuario existente = userRepository.findByUsername(newUsername.trim());
+                if (existente != null && !existente.getId().equals(id)) {
+                    throw new IllegalArgumentException("El nombre de usuario ya está en uso.");
+                }
+                usuario.setUsername(newUsername.trim());
+            }
 
             // Validar correo
             Usuario usuarioCorreo = userRepository.findByEmail(email);

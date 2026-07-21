@@ -14,4 +14,6 @@ public interface ResenaLikeRepository extends JpaRepository<ResenaLike, Long> {
     List<ResenaLike> findByResenaIdInAndUsuarioId(List<Long> resenaIds, Long usuarioId);
 
     void deleteByResenaIdAndUsuarioId(Long resenaId, Long usuarioId);
+
+    void deleteByResenaId(Long resenaId);
 }
