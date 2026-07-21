@@ -19,7 +19,14 @@ function botonMas() {
 }
 //Funcion carrito
 function initializeCart() {
-    let cart = [];
+    let cart = JSON.parse(localStorage.getItem('laCachinaCart')) || [];
+    function guardarCart() {
+        localStorage.setItem('laCachinaCart', JSON.stringify(cart));
+    }
+    // Reflejar items guardados al cargar la página
+    if (cart.length > 0) {
+        updateCartModal();
+    }
     // Función para agregar un plato al carrito
     document.querySelectorAll('#addToCart').forEach(button => {
         button.addEventListener('click', function () {
@@ -52,7 +59,8 @@ function initializeCart() {
                     return;
                 }
                 existingItem.cantidad = nuevaCantidad;
-                existingItem.comentario = comentario; // Actualizar comentario
+                existingItem.comentario = comentario;
+                guardarCart();
             } else {
                 // Agregar nuevo plato al carrito
                 let item = {
@@ -64,6 +72,7 @@ function initializeCart() {
                     comentario: comentario
                 };
                 cart.push(item);
+                guardarCart();
             }
             updateCartModal();
             // Mostrar notificación de que se agregó el plato
@@ -127,7 +136,8 @@ function initializeCart() {
                         setTimeout(() => {
                             loadingModal.hide();
                             showSuccessAlert("Pedido realizado con éxito. Verifica tu email para pagar.");
-                            cart = [];  // Limpiar el carrito
+                            cart = [];
+                            localStorage.removeItem('laCachinaCart');
                             updateCartModal();
                             if (typeof refreshOrderNotifications === 'function') {
                                 refreshOrderNotifications();
@@ -252,6 +262,7 @@ function initializeCart() {
                 let item = cart.find(item => item.id === id);
                 if (item.cantidad < 10) {
                     item.cantidad++;
+                    guardarCart();
                     updateCartModal();
                 } else {
                     showErrorAlert();
@@ -264,6 +275,7 @@ function initializeCart() {
                 let item = cart.find(item => item.id === id);
                 if (item.cantidad > 1) {
                     item.cantidad--;
+                    guardarCart();
                     updateCartModal();
                 } else {
                     showWarningAlert2();
@@ -274,6 +286,7 @@ function initializeCart() {
             button.addEventListener('click', function () {
                 let id = this.getAttribute('data-id');
                 cart = cart.filter(item => item.id !== id);
+                guardarCart();
                 updateCartModal();
             });
         });
@@ -284,6 +297,7 @@ function initializeCart() {
                 let item = cart.find(item => item.id === id);
                 if (item) {
                     item.comentario = this.value;
+                    guardarCart();
                 }
             });
         });
