@@ -41,6 +41,7 @@ public class SecurityConfig {
                     "/realizarPedido",
                     "/updateContactos",
                     "/mis-pedidos/**",
+                    "/cancelarMiReserva",
                     "/api/**"
             ))
 

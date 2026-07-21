@@ -1,110 +1,240 @@
 <!DOCTYPE html>
-<html lang="es"  xmlns:th="http://www.thymeleaf.org">
-
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Formulario sugerencias</title>
+        <title>Sugerencias</title>
         <link rel="icon" href="imagenes/Logo.jpg" type="image/x-icon">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-              integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-        <link rel="stylesheet" href="/Style/Style_form.css">
-        <link rel="stylesheet" href="/Style/Style_carrousel.css">
         <style>
+            #loader {
+                position: fixed;
+                z-index: 99999;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: #1e90ff;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
             .spinner {
-                width: 150px; /* Tamaño de la imagen del camarón */
+                width: 150px;
                 height: 150px;
-                background-image: url('imagenes/vecteezy_shrimp-png-clipart_27738778.png');
+                background-image: url('/imagenes/vecteezy_shrimp-png-clipart_27738778.png');
                 background-size: contain;
                 background-repeat: no-repeat;
                 animation: spin 1s linear infinite;
             }
-        </style>    
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                margin: 0;
+                padding: 0;
+            }
+            .page-content {
+                padding-bottom: 3rem;
+            }
+            .sug-card {
+                border: none;
+                border-radius: 16px;
+                box-shadow: 0 8px 24px rgba(2, 119, 189, 0.1);
+                overflow: hidden;
+            }
+            .sug-card .info-panel {
+                background: linear-gradient(180deg, #0277bd, #01579b);
+                color: white;
+                padding: 2rem 1.5rem;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                height: 100%;
+            }
+            .sug-card .info-panel .info-item {
+                padding: 1rem 0;
+                border-bottom: 1px solid rgba(255,255,255,0.15);
+            }
+            .sug-card .info-panel .info-item:last-child {
+                border-bottom: none;
+            }
+            .sug-card .info-panel .info-item i {
+                font-size: 2rem;
+                color: #ffc107;
+                margin-bottom: 0.5rem;
+            }
+            .sug-card .info-panel .info-item h5 {
+                font-weight: 700;
+                font-size: 1.1rem;
+                margin-bottom: 0.2rem;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+            .sug-card .info-panel .info-item p {
+                opacity: 0.9;
+                margin: 0;
+                font-size: 0.95rem;
+            }
+            .sug-card .form-panel {
+                background: white;
+                padding: 2rem 2rem 1.5rem;
+            }
+            .sug-card .form-panel h3 {
+                color: #0277bd;
+                font-weight: 700;
+                margin-bottom: 0.3rem;
+            }
+            .sug-card .form-panel .subtitle {
+                color: #777;
+                font-size: 0.95rem;
+                margin-bottom: 1.5rem;
+            }
+            .sug-card .form-control {
+                border-radius: 12px;
+                border: 2px solid #e0eef5;
+                padding: 0.8rem 1rem;
+                font-size: 1rem;
+                transition: border-color 0.2s, box-shadow 0.2s;
+                background: #fafcfe;
+            }
+            .sug-card .form-control:focus {
+                border-color: #0277bd;
+                box-shadow: 0 0 0 4px rgba(2, 119, 189, 0.12);
+            }
+            .sug-card .form-control::placeholder {
+                color: #adb5bd;
+            }
+            .sug-card textarea.form-control {
+                resize: vertical;
+            }
+            .btn-sug {
+                border-radius: 50px;
+                padding: 0.7rem 2rem;
+                font-weight: 600;
+                transition: transform 0.2s;
+            }
+            .btn-sug:hover {
+                transform: translateY(-2px);
+            }
+            .btn-sug-primary {
+                background: #0277bd;
+                border: none;
+                color: white;
+            }
+            .btn-sug-primary:hover {
+                background: #01579b;
+                color: white;
+            }
+            .btn-sug-outline {
+                border: 2px solid #0277bd;
+                color: #0277bd;
+                background: transparent;
+            }
+            .btn-sug-outline:hover {
+                background: #0277bd;
+                color: white;
+            }
+            .lang-links a {
+                color: #0277bd;
+                text-decoration: none;
+                font-weight: 500;
+                margin-right: 1rem;
+                font-size: 0.9rem;
+            }
+            .lang-links a:hover {
+                text-decoration: underline;
+            }
+            @media (max-width: 767px) {
+                .sug-card .info-panel {
+                    border-radius: 16px 16px 0 0;
+                    padding: 1.5rem;
+                }
+                .sug-card .form-panel {
+                    padding: 1.5rem;
+                }
+                .page-header h1 { font-size: 1.5rem; }
+            }
+        </style>
     </head>
-
     <body class="d-flex flex-column min-vh-100 bg-custom-2">
-
-
-        <!-- Navbar -->
         <div th:replace="~{vistas/navbar::encabezado}"></div>
 
-        <!-- Main Content -->
-        <div class="container my-5" style="max-width: 90%;">
+        <div class="container page-content" style="margin-top: 2rem;">
             <div class="row justify-content-center">
-                <div class="col-lg-11">
-                    <div class="card shadow-lg" style="background-color: #ffffff; color: #0277bd;">
-                        <div class="row g-0">
-                            <div class="col-md-4 text-center p-4 d-flex flex-column custom-divider">
-                                <div class="mt-4">
-                                    <i class="bi bi-geo-alt-fill text-warning" style="font-size: 2.8rem;"></i>
-                                    <h5 th:text="#{form.sugerencias.titulo.dirección}"
-                                        class="card-title" style="font-size: 1.4rem; color: #0277bd;">Dirección</h5>
-                                    <p class="card-text fs-5 fw-light">Prd. 15, Las Flores, San Juan de Lurigancho<br> Lima,
-                                        Perú</p>
+                <div class="col-lg-11 col-xl-10">
+                    <div class="sug-card row g-0">
+                        <!-- Info panel -->
+                        <div class="col-md-4">
+                            <div class="info-panel">
+                                <div class="info-item text-center">
+                                    <i class="bi bi-geo-alt-fill"></i>
+                                    <h5>Dirección</h5>
+                                    <p>Prd. 15, Las Flores<br>San Juan de Lurigancho, Lima</p>
                                 </div>
-                                <div class="mt-3">
-                                    <i class="bi bi-telephone-fill text-warning" style="font-size: 2.8rem;"></i>
-                                    <h5 th:text="#{form.sugerencias.titulo.telefono}"
-                                        class="card-title" style="font-size: 1.4rem; color: #0277bd;">Teléfono</h5>
-                                    <p class="card-text fs-5 fw-light">920 826 294</p>
+                                <div class="info-item text-center">
+                                    <i class="bi bi-telephone-fill"></i>
+                                    <h5>Teléfono</h5>
+                                    <p>920 826 294</p>
                                 </div>
-                                <div class="mt-3 mb-3">
-                                    <i class="bi bi-envelope-fill text-warning" style="font-size: 2.8rem;"></i>
-                                    <h5 th:text="#{form.sugerencias.correo}"
-                                        class="card-title" style="font-size: 1.4rem; color: #0277bd;">Correo</h5>
-                                    <p class="card-text fs-5 fw-light mb-4">Lacachinafish.barracevichera@gmail.com</p>
+                                <div class="info-item text-center">
+                                    <i class="bi bi-envelope-fill"></i>
+                                    <h5>Correo</h5>
+                                    <p>Lacachinafish.barracevichera<br>@gmail.com</p>
                                 </div>
                             </div>
+                        </div>
 
-                            <div class="col-md-8 mt-3 p-4 d-flex flex-column" style="background-color: #f5f5f5;">
-                                <h5 th:text="#{form.sugerencias.titulo.sugerencias}"
-                                    class="ms-3 card-title text-warning" style="font-size: 1.75rem;">Sugerencias</h5>
-                                <p th:text="#{form.sugerencias.titulo.info}"
-                                   class="ms-3 card-text fs-5 mb-3" style="color: #0277bd; font-size: 1rem;">Coloque sus
-                                    sugerencias.</p>
+                        <!-- Form panel -->
+                        <div class="col-md-8">
+                            <div class="form-panel">
+                                <h3><i class="bi bi-pencil-square text-warning me-2"></i>Déjanos tu sugerencia</h3>
+                                <p class="subtitle">Tus comentarios nos ayudan a brindarte un mejor servicio.</p>
+
                                 <form th:action="@{/registrarS}" method="post" th:object="${sugerencias}">
                                     <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
-                                        <i class="bi bi-exclamation-triangle-fill"></i> 
+                                        <i class="bi bi-exclamation-triangle-fill me-1"></i>
                                         <span th:text="${errorMessage}"></span>
                                     </div>
-                                    <!-- Mostrar mensaje de éxito -->
                                     <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
-                                        <i class="bi bi-check-circle-fill"></i> 
+                                        <i class="bi bi-check-circle-fill me-1"></i>
                                         <span th:text="${successMessage}"></span>
                                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                     </div>
-                                    <div class="mb-4">
-                                        <input type="text" class="ms-3 form-control form-control-lg"
-                                               style="background-color: #ffffff; color: #0277bd; border-color: #0277bd; font-size: 1.25rem; width: 90%;"
-                                               th:placeholder="#{form.sugerencias.nombre.su}"
-                                               name="nombre" th:field="*{nombre}" required="true">
-                                    </div>
-                                    <div class="mb-4">
-                                        <input type="email" class="ms-3 form-control form-control-lg"
-                                               style="background-color: #ffffff; color: #0277bd; border-color: #0277bd; font-size: 1.25rem; width: 90%;"
-                                               th:placeholder="#{form.sugerencias.email.su}"
-                                               name="email" th:field="*{correo}" required="true">
+
+                                    <div class="mb-3">
+                                        <input type="text" class="form-control"
+                                               placeholder="Tu nombre completo"
+                                               name="nombre" th:value="${currentUserData != null ? currentUserData.nombres + ' ' + currentUserData.apellidos : ''}" required="true">
                                     </div>
                                     <div class="mb-3">
-                                        <textarea class="ms-3 form-control form-control-lg"
-                                                  style="background-color: #ffffff; color: #0277bd; border-color: #0277bd; font-size: 1.25rem; width: 90%;"
-                                                  rows="5" 
-                                                  th:placeholder="#{form.sugerencias.mensaje.su}"
-                                                  name="mensaje" th:field="*{mensaje}" required="true">        
-                                        </textarea>
+                                        <input type="email" class="form-control"
+                                               placeholder="Tu correo electrónico"
+                                               name="email" th:value="${currentUserData?.email}" required="true">
+                                    </div>
+                                    <div class="mb-3">
+                                        <textarea class="form-control" rows="5"
+                                                  placeholder="Escribe tu sugerencia aquí..."
+                                                  name="mensaje" th:field="*{mensaje}" required="true"></textarea>
                                     </div>
 
-                                    <button th:value="#{form.boton.registrar.su}"  th:text="#{form.boton.registrar.text.su}" type="submit" class="ms-3 mt-3 btn custom-btn"
-                                            style="font-size: 1.2rem; padding: 0.5rem 1rem;">Enviar</button>
-                                    <button type="button" onclick="window.location.href = '/formResultadoSugerencias'" 
-                                            class="ms-3 mt-3 btn custom-btn" style="font-size: 1.2rem; padding: 0.5rem 1rem;"
-                                            th:text="#{form.boton.ver.text.su}">Ver sugerencias
-                                    </button>
+                                    <div class="d-flex flex-wrap gap-2 mt-4">
+                                        <button type="submit" class="btn btn-sug btn-sug-primary">
+                                            <i class="bi bi-send me-1"></i> Enviar sugerencia
+                                        </button>
+                                        <button type="button" th:if="${isAdmin}" onclick="window.location.href = '/formResultadoSugerencias'"
+                                                class="btn btn-sug btn-sug-outline">
+                                            <i class="bi bi-list me-1"></i> Ver sugerencias
+                                        </button>
+                                    </div>
                                 </form>
-                                <div class="ms-3">
-                                    <a th:href="@{/sugerencias(lang='en')}" th:text="#{idioma.ingles}">Inglés</a>
-                                    <a th:href="@{/sugerencias(lang='es')}" th:text="#{idioma.castellano}">Castellano</a>
+
+                                <div class="lang-links mt-4 pt-3 border-top">
+                                    <a th:href="@{/sugerencias(lang='en')}"><i class="bi bi-globe me-1"></i>English</a>
+                                    <a th:href="@{/sugerencias(lang='es')}"><i class="bi bi-globe me-1"></i>Castellano</a>
                                 </div>
                             </div>
                         </div>
@@ -113,23 +243,15 @@
             </div>
         </div>
 
-        <!-- Footer -->
         <div th:replace="~{vistas/footer::footer}"></div>
 
-        <!-- Bootstrap JS -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-                integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-        crossorigin="anonymous"></script>
-
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
         <script src="/js/funtion_ex.js"></script>
         <script>
-                                        // Función para ocultar la pantalla de carga y mostrar el contenido
-                                        window.onload = function () {
-                                            document.getElementById('loader').style.display = 'none'; // Oculta el loader
-                                            document.body.style.visibility = 'visible'; // Muestra el contenido de la página
-                                            document.body.style.opacity = '1'; // Transición suave para mostrar el contenido
-                                        };
-        </script>    
+            window.onload = function () {
+                var loader = document.getElementById('loader');
+                if (loader) loader.style.display = 'none';
+            };
+        </script>
     </body>
-
 </html>

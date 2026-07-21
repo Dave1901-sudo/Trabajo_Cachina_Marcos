@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ServicioReservas {
-    // Dave
 
     @Autowired
     private ReservasDAO reservasDAO;
@@ -35,5 +34,15 @@ public class ServicioReservas {
 
     public void delete(Long id) {
         reservasDAO.deleteById(id);
+    }
+
+    public long contarPorFechaYHora(String fecha, String hora) {
+        String horaInicio = hora.split(":")[0] + ":00";
+        String horaFin = hora.split(":")[0] + ":59";
+        return reservasDAO.countByFechaAndHoraBetween(fecha, horaInicio, horaFin);
+    }
+
+    public List<Reservas> obtenerPorCorreo(String correo) {
+        return reservasDAO.findByCorreoOrderByFechaAscHoraAsc(correo);
     }
 }

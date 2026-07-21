@@ -637,7 +637,7 @@ function iniciarContadorBase(timerEl, cancelBtn, fechaRaw) {
         var diffSeg = Math.floor((ahora.getTime() - fechaPedido.getTime()) / 1000);
         var restante = 300 - diffSeg;
         if (restante <= 0) {
-            timerEl.textContent = 'Tiempo expirado';
+            timerEl.textContent = 'Tiempo expirado para su cancelación';
             timerEl.style.color = '#999';
             if (cancelBtn) cancelBtn.style.display = 'none';
             return;

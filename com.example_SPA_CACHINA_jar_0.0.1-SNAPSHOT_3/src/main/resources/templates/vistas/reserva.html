@@ -30,27 +30,28 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 <div class="col-lg-6">
                     <div class="text-center p-5 bg-primary text-white" style="border-radius: 0 0.375rem 0.375rem 0; animation: pulse 2s infinite;">
                         <h1 class="text-white mb-4 display-4">Reserva Tu Mesa</h1>
-                        <form  th:action="@{/registrarReservas}" method="post" th:object="${reservas}">
+                        <form th:action="@{/registrarReservas}" method="post" th:object="${reservas}" onsubmit="return validarFormulario(event)">
                             <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
                                 <i class="bi bi-exclamation-triangle-fill"></i> 
                                 <span th:text="${errorMessage}"></span>
                             </div>
                             <div class="mb-3">
-                                <input type="text" class="form-control bg-transparent border-light text-white p-3" th:placeholder="#{form.sugerencias.nombre.placeholder}" name="nombre" th:field="*{nombre}" required="true">
+                                <input type="text" class="form-control bg-transparent border-light text-white p-3" th:placeholder="#{form.sugerencias.nombre.placeholder}" name="nombre" th:value="${currentUserData != null ? currentUserData.nombres + ' ' + currentUserData.apellidos : ''}" readonly required="true">
                             </div>
                             <div class="mb-3">
-                                <input type="email" class="form-control bg-transparent border-light text-white p-3" th:placeholder="#{form.sugerencias.correo.placeholder}" name="correo" th:field="*{correo}" required="true">
+                                <input type="email" class="form-control bg-transparent border-light text-white p-3" th:placeholder="#{form.sugerencias.correo.placeholder}" name="correo" th:value="${currentUserData?.email}" readonly required="true">
                             </div>
                             <div class="mb-3">
                                 <input type="date" class="form-control bg-transparent border-light text-white p-3 datetimepicker-input" 
-                                       th:placeholder="#{form.sugerencias.fecha.placeholder}" name="fecha" th:field="*{fecha}" required="true"
-                                       data-target="#date" data-toggle="datetimepicker">
+                                       th:placeholder="#{form.sugerencias.fecha.placeholder}" name="fecha" id="reservaFecha" th:field="*{fecha}" required="true"
+                                       data-target="#date" data-toggle="datetimepicker" onchange="verificarDisponibilidad()">
                             </div>
                             <div class="mb-3">
                                 <input type="time" class="form-control bg-transparent border-light text-white p-3 datetimepicker-input" 
-                                       th:placeholder="#{form.sugerencias.hora.placeholder}" name="hora" th:field="*{hora}" required="true"
-                                       data-target="#time" data-toggle="datetimepicker">
+                                       th:placeholder="#{form.sugerencias.hora.placeholder}" name="hora" id="reservaHora" th:field="*{hora}" required="true"
+                                       data-target="#time" data-toggle="datetimepicker" onchange="verificarDisponibilidad()">
                             </div>
+                            <div id="disponibilidadMsg" class="mb-3 text-white fw-bold" style="display:none;"></div>
                             <div class="mb-4">
                                 <select class="form-select bg-transparent border-danger text-danger p-3"
                                          name="personas" th:field="*{personas}" required="true">
@@ -72,5 +73,101 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
     </div>
 </div>
 <!-- Reservación Fin -->
+<script>
+function getHoyLocal() {
+    var d = new Date();
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+}
+
+function getHoraLocal() {
+    var d = new Date();
+    return String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+}
+
+function mostrarMensaje(msg, tipo) {
+    var el = document.getElementById('disponibilidadMsg');
+    if (!el) return;
+    el.style.display = 'block';
+    el.className = 'mb-3 fw-bold text-' + tipo;
+    el.textContent = msg;
+}
+
+function verificarDisponibilidad() {
+    const fecha = document.getElementById('reservaFecha')?.value;
+    const horaInput = document.getElementById('reservaHora');
+    const hora = horaInput?.value;
+    if (!fecha || !hora) return;
+
+    const hoy = getHoyLocal();
+    const horaActual = getHoraLocal();
+    if (fecha < hoy) {
+        mostrarMensaje('⚠️ No puedes reservar en una fecha pasada.', 'warning');
+        return;
+    }
+    if (fecha === hoy && hora <= horaActual) {
+        mostrarMensaje('⚠️ No puedes reservar en una hora pasada.', 'warning');
+        return;
+    }
+
+    mostrarMensaje('⏳ Verificando disponibilidad...', 'light');
+    fetch('/disponibilidad?fecha=' + encodeURIComponent(fecha) + '&hora=' + encodeURIComponent(hora))
+        .then(r => r.json())
+        .then(data => {
+            if (data.disponibles > 0) {
+                mostrarMensaje('✅ Mesas disponibles: ' + data.disponibles + ' / ' + data.total, 'success');
+            } else {
+                mostrarMensaje('❌ No hay mesas disponibles para esta fecha y hora.', 'danger');
+            }
+        })
+        .catch(() => {});
+}
+
+function validarFormulario(e) {
+    const fecha = document.getElementById('reservaFecha')?.value;
+    const hora = document.getElementById('reservaHora')?.value;
+    if (!fecha || !hora) {
+        mostrarMensaje('⚠️ Selecciona fecha y hora.', 'warning');
+        e.preventDefault();
+        return false;
+    }
+    const hoy = getHoyLocal();
+    const horaActual = getHoraLocal();
+
+    if (fecha < hoy) {
+        mostrarMensaje('⚠️ No puedes reservar en una fecha pasada.', 'warning');
+        e.preventDefault();
+        return false;
+    }
+    if (fecha === hoy && hora <= horaActual) {
+        mostrarMensaje('⚠️ No puedes reservar en una hora pasada.', 'warning');
+        e.preventDefault();
+        return false;
+    }
+    return true;
+}
+
+(function() {
+    var hoy = getHoyLocal();
+    var fechaInput = document.getElementById('reservaFecha');
+    if (fechaInput) {
+        fechaInput.setAttribute('min', hoy);
+        fechaInput.value = hoy;
+    }
+})();
+
+</script>
+<script th:inline="javascript">
+/* SweetAlert al crear reserva */
+var reservaCreada = /*[[${reservaCreada}]]*/ false;
+if (reservaCreada) {
+    Swal.fire({
+        icon: 'success',
+        title: '¡Reserva creada!',
+        text: 'Tu reserva se ha registrado correctamente.',
+        timer: 3000,
+        showConfirmButton: true
+    });
+}
+</script>
     </body>
 </html>

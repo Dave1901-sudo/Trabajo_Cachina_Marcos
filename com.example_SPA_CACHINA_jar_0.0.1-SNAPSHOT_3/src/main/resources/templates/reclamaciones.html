@@ -13,12 +13,22 @@
     <link rel="stylesheet" href="/Style/Style_carrousel.css">
     <style>
             .spinner {
-                width: 150px; /* Tamaño de la imagen del camarón */
+                width: 150px;
                 height: 150px;
                 background-image: url('imagenes/vecteezy_shrimp-png-clipart_27738778.png');
                 background-size: contain;
                 background-repeat: no-repeat;
                 animation: spin 1s linear infinite;
+            }
+            .lang-links a {
+                color: #0277bd;
+                text-decoration: none;
+                font-weight: 500;
+                margin-right: 1rem;
+                font-size: 0.9rem;
+            }
+            .lang-links a:hover {
+                text-decoration: underline;
             }
     </style>        
 </head>
@@ -181,9 +191,9 @@
                                     </button>
                                 </div>
                             </form>
-                        <div>
-                            <a th:href="@{/reclamaciones(lang='en')}" th:text="#{idioma.ingles}">Inglés</a>
-                            <a th:href="@{/reclamaciones(lang='es')}" th:text="#{idioma.castellano}">Castellano</a>
+                        <div class="lang-links mt-3 pt-3 border-top">
+                            <a th:href="@{/reclamaciones(lang='en')}"><i class="bi bi-globe me-1"></i>English</a>
+                            <a th:href="@{/reclamaciones(lang='es')}"><i class="bi bi-globe me-1"></i>Castellano</a>
                         </div>
                         </div>
                     </div>

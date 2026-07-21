@@ -9,7 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <style>
         body {
-            background: linear-gradient(180deg, #e0f7fa 0%, #f8fdff 45%, #ffffff 100%);
+            background-color: #e0f7fa;
             min-height: 100vh;
             font-family: 'Segoe UI', Arial, sans-serif;
             margin: 0;
@@ -227,7 +227,7 @@
                     var restante = 300 - diffSeg; // 5 minutos = 300 segundos
 
                     if (restante <= 0) {
-                        timerEl.textContent = 'Expirado';
+                        timerEl.textContent = 'Tiempo expirado para su cancelación';
                         timerEl.classList.add('expirado');
                         cancelBtn.style.display = 'none';
                         return;
