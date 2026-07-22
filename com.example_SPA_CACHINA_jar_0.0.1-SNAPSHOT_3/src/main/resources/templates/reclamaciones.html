@@ -211,13 +211,25 @@
         crossorigin="anonymous"></script>
 
         <script src="/js/funtion_ex.js"></script>
-        <script>
-            // Función para ocultar la pantalla de carga y mostrar el contenido
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script th:inline="javascript">
             window.onload = function () {
-                document.getElementById('loader').style.display = 'none'; // Oculta el loader
-                document.body.style.visibility = 'visible'; // Muestra el contenido de la página
-                document.body.style.opacity = '1'; // Transición suave para mostrar el contenido
+                document.getElementById('loader').style.display = 'none';
+                document.body.style.visibility = 'visible';
+                document.body.style.opacity = '1';
             };
+            document.addEventListener('DOMContentLoaded', function() {
+                var successMsg = [[${successMessage}]];
+                if (successMsg) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Enviado',
+                        text: successMsg,
+                        timer: 3000,
+                        showConfirmButton: false
+                    });
+                }
+            });
         </script>        
 </body>
 

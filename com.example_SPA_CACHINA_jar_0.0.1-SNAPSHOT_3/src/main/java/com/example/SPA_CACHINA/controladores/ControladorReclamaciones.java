@@ -22,30 +22,32 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @author David
  */
 @Controller
-public class ControladorReclamaciones {
-    
+public class ControladorReclamaciones { // Controlador CRUD de reclamaciones
+     
      @Autowired
     ServicioReclamaciones servicioReclamaciones;
 
     @GetMapping("/formResultadoReclamaciones")
-    public String listarReclamos(Model model) {
+    public String listarReclamos(Model model) { // Muestra todas las reclamaciones
         List<Reclamaciones> lista = servicioReclamaciones.getList();
         model.addAttribute("lista", lista);
         return "formResultadoReclamaciones";
     }
 
     @GetMapping("/reclamaciones")
-    public String formReclamos(Model model) {
+    public String formReclamos(Model model) { // Muestra formulario de reclamación
         model.addAttribute("reclamaciones", new Reclamaciones());
         return "reclamaciones";
     }
     
     
     @PostMapping("/registrarReclamaciones")
-    public String grabarReclamos(
+    public String grabarReclamos( // Guarda nueva reclamación
             @ModelAttribute Reclamaciones reclamaciones, Model model) {
         try {
             servicioReclamaciones.save(reclamaciones);
+            model.addAttribute("successMessage", "Reclamación enviada exitosamente");
+            model.addAttribute("reclamaciones", new Reclamaciones());
             return "reclamaciones";
         } catch (DataIntegrityViolationException e) {
             model.addAttribute("errorMessage", e.getMessage().toString());
@@ -56,7 +58,7 @@ public class ControladorReclamaciones {
     }
     
     @GetMapping("/getEditReclamaciones/{codigoReclamaciones}")
-    public String editFormReclamos(Model model,
+    public String editFormReclamos(Model model, // Muestra formulario de edición de reclamación
             @PathVariable("codigoReclamaciones") Long id){
         Reclamaciones reclamaciones = servicioReclamaciones.get(id);
         model.addAttribute("reclamaciones", reclamaciones);
@@ -64,7 +66,7 @@ public class ControladorReclamaciones {
     }
     
     @GetMapping("/deleteReclamaciones")
-    public String deleteFormReclamos(Model model,
+    public String deleteFormReclamos(Model model, // Elimina una reclamación
             @RequestParam("id") Long id){
         servicioReclamaciones.delete(id);
         return "redirect:/formResultadoReclamaciones";
