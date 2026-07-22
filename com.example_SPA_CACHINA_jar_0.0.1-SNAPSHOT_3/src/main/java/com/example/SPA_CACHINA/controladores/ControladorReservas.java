@@ -32,7 +32,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  * @author David
  */
 @Controller
-public class ControladorReservas {
+public class ControladorReservas { // Controlador de reservas
 
     @Autowired
     ServicioReservas servicioReservas;
@@ -41,14 +41,14 @@ public class ControladorReservas {
     private UsuarioService usuarioService;
 
     @GetMapping("/formResultadoReservas")
-    public String listarReservas(Model model) {
+    public String listarReservas(Model model) { // Muestra todas las reservas
         List<Reservas> lista = servicioReservas.getList();
         model.addAttribute("lista", lista);
         return "formResultadoReservas";
     }
 
     @PostMapping("/registrarReservas")
-    public String grabarContactos(
+    public String grabarContactos( // Guarda nueva reserva con validación
             @ModelAttribute Reservas reservas, Principal principal, RedirectAttributes redirectAttributes) {
         if (principal != null) {
             reservas.setNombre(usuarioService.getByUsername(principal.getName()).getNombres()
@@ -83,7 +83,7 @@ public class ControladorReservas {
     }
 
     @GetMapping("/getEditReservas/{codigoReservas}")
-    public String editFormContactos(Model model,
+    public String editFormContactos(Model model, // Muestra formulario de edición de reserva
             @PathVariable("codigoReservas") Long id){
         Reservas reservas = servicioReservas.get(id);
         model.addAttribute("reservas", reservas);
@@ -91,7 +91,7 @@ public class ControladorReservas {
     }
 
     @GetMapping("/deleteReservas")
-    public String deleteFormColaborador(Model model,
+    public String deleteFormColaborador(Model model, // Elimina una reserva
             @RequestParam("id") Long id){
         servicioReservas.delete(id);
         return "redirect:/formResultadoReservas";
@@ -99,7 +99,7 @@ public class ControladorReservas {
 
     @GetMapping("/disponibilidad")
     @ResponseBody
-    public ResponseEntity<Map<String, Object>> disponibilidad(
+    public ResponseEntity<Map<String, Object>> disponibilidad( // Verifica disponibilidad de mesas
             @RequestParam String fecha, @RequestParam String hora) {
         long count = servicioReservas.contarPorFechaYHora(fecha, hora);
         long disponibles = 10 - count;
@@ -112,7 +112,7 @@ public class ControladorReservas {
 
     @GetMapping("/mis-reservas")
     @ResponseBody
-    public ResponseEntity<List<Reservas>> misReservas(Principal principal) {
+    public ResponseEntity<List<Reservas>> misReservas(Principal principal) { // Obtiene reservas del usuario
         if (principal == null) return ResponseEntity.ok(List.of());
         String email = usuarioService.getByUsername(principal.getName()).getEmail();
         return ResponseEntity.ok(servicioReservas.obtenerPorCorreo(email));
@@ -120,7 +120,7 @@ public class ControladorReservas {
 
     @PostMapping("/cancelarMiReserva")
     @ResponseBody
-    public ResponseEntity<Map<String, Object>> cancelarMiReserva(
+    public ResponseEntity<Map<String, Object>> cancelarMiReserva( // Cancela reserva propia dentro de 5 min
             @RequestParam Long id, Principal principal) {
         Map<String, Object> res = new LinkedHashMap<>();
         if (principal == null) {

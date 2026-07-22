@@ -16,7 +16,7 @@ import org.springframework.stereotype.Repository;
  * @author David
  */
 @Repository
-public interface UserRepository extends JpaRepository<Usuario, Long>{
+public interface UserRepository extends JpaRepository<Usuario, Long>{ // Repositorio para entidad Usuario
 
     @Query("SELECT u FROM Usuario u WHERE " +
            "(:search IS NULL OR LOWER(u.username) LIKE LOWER(CONCAT('%', :search, '%')) OR " +
@@ -25,18 +25,18 @@ public interface UserRepository extends JpaRepository<Usuario, Long>{
            "LOWER(u.email) LIKE LOWER(CONCAT('%', :search, '%')) OR " +
            "LOWER(u.telefono) LIKE LOWER(CONCAT('%', :search, '%'))) AND " +
            "(:role IS NULL OR u.role = :role)")
-    List<Usuario> buscarUsuarios(@Param("search") String search, @Param("role") String role);
+    List<Usuario> buscarUsuarios(@Param("search") String search, @Param("role") String role); // Busca usuarios por nombre/email/teléfono
 
-    Usuario findByUsername(String username);
-    
-    Usuario findByEmail(String email);
+    Usuario findByUsername(String username); // Busca usuario por nombre de usuario
 
-    Usuario findByDocumentoIdentidad(String documentoIdentidad);
+    Usuario findByEmail(String email); // Busca usuario por correo
 
-    boolean existsByUsername(String username);
+    Usuario findByDocumentoIdentidad(String documentoIdentidad); // Busca usuario por documento de identidad
 
-    boolean existsByEmail(String email);
+    boolean existsByUsername(String username); // Verifica si existe nombre de usuario
 
-    boolean existsByDocumentoIdentidad(String documentoIdentidad);
+    boolean existsByEmail(String email); // Verifica si existe correo
+
+    boolean existsByDocumentoIdentidad(String documentoIdentidad); // Verifica si existe documento de identidad
 
 }

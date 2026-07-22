@@ -8,7 +8,7 @@ package com.example.SPA_CACHINA.locale;
  *
  * @author David
  */
-public class CarritoItem {
+public class CarritoItem { // DTO de ítem del carrito
     private Long idPlato;
     private String nombre;
     private double precio;

@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name = "Userneg")
-public class Usuario {
+public class Usuario { // Entidad de usuario
 @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")

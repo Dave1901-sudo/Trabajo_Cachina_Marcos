@@ -14,6 +14,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface SugerenciasDAO 
-            extends JpaRepository<Sugerencias, Long> {
+            extends JpaRepository<Sugerencias, Long> { // Repositorio para entidad Sugerencias
     // Dave
 }

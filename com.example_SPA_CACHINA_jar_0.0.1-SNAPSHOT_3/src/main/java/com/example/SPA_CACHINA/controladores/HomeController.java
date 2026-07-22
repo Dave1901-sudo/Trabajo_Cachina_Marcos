@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
  * @author David
  */
 @Controller
-public class HomeController {
+public class HomeController { // Controlador para enrutamiento de páginas
 
     /*@GetMapping("/home")
     public String home() {
@@ -27,7 +27,7 @@ public class HomeController {
     }*/
 
     @GetMapping("/admin")
-    public String admin() {
+    public String admin() { // Redirige al panel admin
         return "paginaAdmin";
     }
     

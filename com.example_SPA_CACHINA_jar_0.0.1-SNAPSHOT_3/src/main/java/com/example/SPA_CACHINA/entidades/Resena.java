@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import java.util.Date;
 
 @Entity
-public class Resena {
+public class Resena { // Entidad de reseña
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

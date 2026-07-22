@@ -17,13 +17,13 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/platos")
-public class ApiPlatosController {
+public class ApiPlatosController { // API para platos
 
     @Autowired
     private Servicioplatos servicioplatos;
 
     @PostMapping("/registrar")
-    public ResponseEntity<?> registrarPlato(@RequestBody platos plato) {
+    public ResponseEntity<?> registrarPlato(@RequestBody platos plato) { // Registra un plato vía API
         try {
             platos platoGuardado = servicioplatos.save(plato);
 
@@ -41,7 +41,7 @@ public class ApiPlatosController {
     }
 
     @GetMapping("/listar")
-    public ResponseEntity<?> listarPlatos() {
+    public ResponseEntity<?> listarPlatos() { // Lista todos los platos vía API
         return ResponseEntity.ok(servicioplatos.getList());
     }
 }

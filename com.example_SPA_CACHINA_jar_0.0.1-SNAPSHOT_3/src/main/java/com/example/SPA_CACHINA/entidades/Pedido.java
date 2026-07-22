@@ -23,7 +23,7 @@ import org.springframework.format.annotation.DateTimeFormat;
  * @author David
  */
 @Entity
-public class Pedido {
+public class Pedido { // Entidad de pedido
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

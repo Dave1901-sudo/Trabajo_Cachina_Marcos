@@ -17,17 +17,17 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.support.ResourceBundleMessageSource;
 
 @Configuration
-public class WebConfig implements WebMvcConfigurer {
+public class WebConfig implements WebMvcConfigurer { // Configuración de internacionalización
 
     @Bean
-    public LocaleResolver localeResolver() {
+    public LocaleResolver localeResolver() { // Establece español como idioma por defecto
         SessionLocaleResolver localeResolver = new SessionLocaleResolver();
         localeResolver.setDefaultLocale(new Locale("es"));  // Idioma por defecto español
         return localeResolver;
     }
 
     @Bean
-    public LocaleChangeInterceptor localeChangeInterceptor() {
+    public LocaleChangeInterceptor localeChangeInterceptor() { // Interceptor para parámetro lang
         LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
         localeChangeInterceptor.setParamName("lang");  // Este es el nombre del parámetro de URL
         return localeChangeInterceptor;

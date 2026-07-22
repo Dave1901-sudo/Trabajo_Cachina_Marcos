@@ -21,13 +21,13 @@ import org.springframework.stereotype.Repository;
  * @author David
  */
 @Repository
-public interface PedidoRepository extends JpaRepository<Pedido, Long> {
-    List<Pedido> findByUsuarioIdAndEstadoOrderByFechaPedidoDesc(Long usuarioId, String estado);
+public interface PedidoRepository extends JpaRepository<Pedido, Long> { // Repositorio para entidad Pedido
+    List<Pedido> findByUsuarioIdAndEstadoOrderByFechaPedidoDesc(Long usuarioId, String estado); // Busca por usuario y estado
 
-    List<Pedido> findByUsuarioIdAndEstadoOrderByFechaPedidoAsc(Long usuarioId, String estado);
+    List<Pedido> findByUsuarioIdAndEstadoOrderByFechaPedidoAsc(Long usuarioId, String estado); // Busca pedidos de usuario ascendente
 
     @EntityGraph(attributePaths = "detalles")
-    Optional<Pedido> findWithDetallesByIdAndUsuarioIdAndEstado(Long id, Long usuarioId, String estado);
+    Optional<Pedido> findWithDetallesByIdAndUsuarioIdAndEstado(Long id, Long usuarioId, String estado); // Busca pedido con detalles
 
     @Query(value = "SELECT p FROM Pedido p LEFT JOIN FETCH p.usuario u WHERE " +
            "(:fechaInicio IS NULL OR p.fechaPedido >= :fechaInicio) AND " +

@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name = "reclamaciones")
-public class Reclamaciones {
+public class Reclamaciones { // Entidad de reclamación
         @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="idreclamaciones")

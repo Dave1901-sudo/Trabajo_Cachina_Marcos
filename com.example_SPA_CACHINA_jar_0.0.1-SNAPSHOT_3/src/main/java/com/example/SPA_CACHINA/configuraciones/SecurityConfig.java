@@ -26,12 +26,12 @@ import org.springframework.security.web.session.HttpSessionEventPublisher;
 public class SecurityConfig {
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    public PasswordEncoder passwordEncoder() { // Bean codificador BCrypt
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception { // Configura reglas de seguridad HTTP
 
         return http
 
@@ -110,14 +110,14 @@ public class SecurityConfig {
 
     // 🔵 Redirección segura tras login
     @Bean
-    public AuthenticationSuccessHandler successHandlerOK() {
+    public AuthenticationSuccessHandler successHandlerOK() { // Redirige a raíz tras login
         return (request, response, authentication) -> {
             response.sendRedirect("/"); // Redirigir después de un login exitoso
         };
     }
 
     @Bean
-    public HttpSessionListener httpSessionListener() {
+    public HttpSessionListener httpSessionListener() { // Registra creación/destrucción de sesión
         return new HttpSessionListener() {
             @Override
             public void sessionCreated(HttpSessionEvent se) {
@@ -133,8 +133,8 @@ public class SecurityConfig {
     }
 
     @Bean
-    public HttpSessionEventPublisher httpSessionEventPublisher() {
-        return new HttpSessionEventPublisher(); // Para registrar eventos de sesión
+    public HttpSessionEventPublisher httpSessionEventPublisher() { // Publica eventos de sesión para Spring
+        return new HttpSessionEventPublisher();
     }
 
     /*@Bean

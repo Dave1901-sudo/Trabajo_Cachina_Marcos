@@ -15,26 +15,26 @@ import org.springframework.security.core.userdetails.UserDetails;
  *
  * @author David
  */
-public class SecurityUser implements UserDetails {
+public class SecurityUser implements UserDetails { // Adapta Usuario a UserDetails de Spring Security
 
     private Usuario user;
 
-      public SecurityUser(Usuario user) {
+      public SecurityUser(Usuario user) { // Constructor que envuelve Usuario
         this.user = user;
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
+    public Collection<? extends GrantedAuthority> getAuthorities() { // Retorna rol del usuario como autoridad
         return Collections.singleton(new SimpleGrantedAuthority(user.getRole()));
     }
 
      @Override
-    public String getPassword() {
+    public String getPassword() { // Delega contraseña al usuario envuelto
         return user.getPassword();
     }
 
     @Override
-    public String getUsername() {
+    public String getUsername() { // Delega username al usuario envuelto
         return user.getUsername();
     }
 

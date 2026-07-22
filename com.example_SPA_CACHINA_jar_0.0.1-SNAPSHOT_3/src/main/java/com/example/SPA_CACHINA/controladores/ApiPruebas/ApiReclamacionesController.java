@@ -17,13 +17,13 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/reclamaciones")
-public class ApiReclamacionesController {
+public class ApiReclamacionesController { // API para reclamaciones
 
     @Autowired
     private ServicioReclamaciones servicioReclamaciones;
 
     @PostMapping("/registrar")
-    public ResponseEntity<?> registrarReclamacion(@RequestBody Reclamaciones reclamaciones) {
+    public ResponseEntity<?> registrarReclamacion(@RequestBody Reclamaciones reclamaciones) { // Envía reclamación vía API
         try {
             Reclamaciones reclamacionGuardada = servicioReclamaciones.save(reclamaciones);
 
@@ -41,7 +41,7 @@ public class ApiReclamacionesController {
     }
 
     @GetMapping("/listar")
-    public ResponseEntity<?> listarReclamaciones() {
+    public ResponseEntity<?> listarReclamaciones() { // Lista reclamaciones vía API
         return ResponseEntity.ok(servicioReclamaciones.getList());
     }
 }

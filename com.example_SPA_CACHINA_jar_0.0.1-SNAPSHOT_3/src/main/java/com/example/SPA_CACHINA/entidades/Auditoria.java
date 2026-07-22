@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import java.util.Date;
 
 @Entity
-public class Auditoria {
+public class Auditoria { // Entidad de registro de auditoría
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,7 +20,7 @@ public class Auditoria {
     public Auditoria() {
     }
 
-    public Auditoria(String usuario, String accion, String detalle) {
+    public Auditoria(String usuario, String accion, String detalle) { // Crea entrada de auditoría con timestamp
         this.usuario = usuario;
         this.accion = accion;
         this.detalle = detalle;

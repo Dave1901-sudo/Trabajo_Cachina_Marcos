@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
  * @author David
  */
 @Service
-public class UsuarioService {
+public class UsuarioService { // Servicio para gestión de usuarios
     // Chicana
        @Autowired
     private UserRepository userRepository;
@@ -26,7 +26,7 @@ public class UsuarioService {
     private PasswordEncoder passwordEncoder;
     
     
-    public void createUser(
+    public void createUser( // Crea un nuevo usuario con validación
             String username,
             String nombres,
             String apellidos,
@@ -68,7 +68,7 @@ public class UsuarioService {
     }
     
     
-    public void updateRole(String username, String newRole) {
+    public void updateRole(String username, String newRole) { // Actualiza rol de usuario
         Usuario user = userRepository.findByUsername(username);
         if (user != null) {
             user.setRole(newRole);
@@ -78,7 +78,7 @@ public class UsuarioService {
         }
     }
     
-    public void updateCredentials(
+    public void updateCredentials( // Actualiza username, contraseña y rol
             String username,
             String nuevoUsername,
             String password,
@@ -119,7 +119,7 @@ public class UsuarioService {
         userRepository.save(usuario);
     }
     
-    public void deleteUserByUsername(String username) {
+    public void deleteUserByUsername(String username) { // Elimina usuario por username
         Usuario user = userRepository.findByUsername(username);
         if (user != null) {
             userRepository.delete(user); // Elimina el usuario de la base de datos
@@ -128,7 +128,7 @@ public class UsuarioService {
         }
     }
     
-    public void updateUser(
+    public void updateUser( // Actualiza datos de perfil de usuario
             Long id,
             String newUsername,
             String nombres,
@@ -171,7 +171,7 @@ public class UsuarioService {
             userRepository.save(usuario);
     }
     
-    public void actualizarCampoPerfil(
+    public void actualizarCampoPerfil( // Actualiza un campo del perfil con verificación de seguridad
             String usernameLogueado,
             Long id,
             String campo,
@@ -225,28 +225,28 @@ public class UsuarioService {
         userRepository.save(usuario);
     }
     
-    public List<Usuario> getList() {
+    public List<Usuario> getList() { // Obtiene todos los usuarios
         return userRepository.findAll();
     }
 
-    public List<Usuario> buscarUsuarios(String search, String role) {
+    public List<Usuario> buscarUsuarios(String search, String role) { // Busca usuarios con filtros
         if ("todos".equals(role)) role = null;
         if (search != null && search.trim().isEmpty()) search = null;
         return userRepository.buscarUsuarios(search, role);
     }
 
-    public Usuario save(Usuario usuario) {
+    public Usuario save(Usuario usuario) { // Guarda o actualiza usuario
         return userRepository.save(usuario);
     }
-    public Usuario get(Long id){
+    public Usuario get(Long id){ // Obtiene usuario por ID
         return userRepository.findById(id).orElse(null);
     }
     
-    public Usuario getByUsername(String username){
+    public Usuario getByUsername(String username){ // Obtiene usuario por username
         return userRepository.findByUsername(username);
     }
     
-    public void delete(Long id){
+    public void delete(Long id){ // Elimina usuario por ID
         userRepository.deleteById(id);
     }
 }

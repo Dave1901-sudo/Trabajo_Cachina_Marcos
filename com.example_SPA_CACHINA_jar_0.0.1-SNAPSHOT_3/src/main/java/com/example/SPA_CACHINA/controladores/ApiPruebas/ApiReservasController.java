@@ -18,13 +18,13 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/reservas")
-public class ApiReservasController {
+public class ApiReservasController { // API para reservas
 
     @Autowired
     private ServicioReservas servicioReservas;
 
     @PostMapping("/registrar")
-    public ResponseEntity<?> registrarReserva(@RequestBody Reservas reservas) {
+    public ResponseEntity<?> registrarReserva(@RequestBody Reservas reservas) { // Envía reserva vía API
 
         try {
 
@@ -45,7 +45,7 @@ public class ApiReservasController {
         }
     }
     @GetMapping("/listar")
-        public ResponseEntity<?> listarReservas() {
+        public ResponseEntity<?> listarReservas() { // Lista reservas vía API
             return ResponseEntity.ok(servicioReservas.getList());
         }
 }

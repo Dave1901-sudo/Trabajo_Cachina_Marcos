@@ -17,7 +17,7 @@ import jakarta.persistence.ManyToOne;
  * @author David
  */
 @Entity
-public class PedidoDetalle {
+public class PedidoDetalle { // Entidad de línea de detalle de pedido
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

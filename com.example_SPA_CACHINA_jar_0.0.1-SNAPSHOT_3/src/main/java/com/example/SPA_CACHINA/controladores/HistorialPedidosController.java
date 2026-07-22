@@ -12,7 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class HistorialPedidosController {
+public class HistorialPedidosController { // Controlador para la página de historial de pedidos
 
     @Autowired
     private PedidoService pedidoService;
@@ -21,7 +21,7 @@ public class HistorialPedidosController {
     private UsuarioService usuarioService;
 
     @GetMapping("/historial-pedidos")
-    public String verHistorialPedidos(Model model, Principal principal) {
+    public String verHistorialPedidos(Model model, Principal principal) { // Muestra historial de pedidos del usuario
         Usuario usuario = usuarioService.getByUsername(principal.getName());
 
         List<Pedido> pedidosConfirmados = pedidoService.obtenerPedidosConfirmadosPorUsuario(usuario.getId());

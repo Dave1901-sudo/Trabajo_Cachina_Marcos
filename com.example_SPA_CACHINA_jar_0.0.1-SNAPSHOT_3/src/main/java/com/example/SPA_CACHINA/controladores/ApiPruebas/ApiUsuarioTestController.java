@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/registrar")
-public class ApiUsuarioTestController {
+public class ApiUsuarioTestController { // API para pruebas de registro de usuario
 
     @Autowired
     private UsuarioService usuarioService;
 
     @PostMapping("/register")
-    public ResponseEntity<?> registrarUsuario(@RequestBody Map<String, String> body) {
+    public ResponseEntity<?> registrarUsuario(@RequestBody Map<String, String> body) { // Registra usuario vía API
         try {
             String username = body.get("username");
             String nombres = body.get("nombres");
@@ -57,7 +57,7 @@ public class ApiUsuarioTestController {
     }
 
     @GetMapping("/listar")
-    public ResponseEntity<?> listarUsuarios() {
+    public ResponseEntity<?> listarUsuarios() { // Lista usuarios vía API
         return ResponseEntity.ok(usuarioService.getList());
     }
 }

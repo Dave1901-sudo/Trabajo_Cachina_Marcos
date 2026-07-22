@@ -1,6 +1,6 @@
 package com.example.SPA_CACHINA.locale;
 
-public class ResenaDTO {
+public class ResenaDTO { // DTO de reseña para API
 
     private Long id;
     private Long platoId;

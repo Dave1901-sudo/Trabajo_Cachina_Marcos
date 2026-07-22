@@ -17,13 +17,13 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/contactos")
-public class ApiContactosController {
+public class ApiContactosController { // API para contactos
 
     @Autowired
     private ServicioContactos servicioContactos;
 
     @PostMapping("/registrar")
-    public ResponseEntity<?> registrarContacto(@RequestBody Contactos contactos) {
+    public ResponseEntity<?> registrarContacto(@RequestBody Contactos contactos) { // Envía un contacto vía API
 
         try {
 
@@ -45,7 +45,7 @@ public class ApiContactosController {
     }
 
     @GetMapping("/listar")
-    public ResponseEntity<?> listarContactos() {
+    public ResponseEntity<?> listarContactos() { // Lista todos los contactos vía API
         return ResponseEntity.ok(servicioContactos.getList());
     }
 }

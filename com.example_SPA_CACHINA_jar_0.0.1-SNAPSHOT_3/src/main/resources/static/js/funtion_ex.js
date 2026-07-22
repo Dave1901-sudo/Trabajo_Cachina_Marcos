@@ -1,4 +1,4 @@
-function botonMas() {
+function botonMas() { // Alterna mostrar más/menos tarjetas
     const btnShowMore = document.getElementById("btn-show-more");
     const btnShowLess = document.getElementById("btn-show-less");
     const extraCards = document.querySelectorAll(".extra-card");
@@ -18,9 +18,9 @@ function botonMas() {
     });
 }
 //Funcion carrito
-function initializeCart() {
+function initializeCart() { // Inicializa funcionalidad del carrito de compras
     let cart = JSON.parse(localStorage.getItem('laCachinaCart')) || [];
-    function guardarCart() {
+    function guardarCart() { // Persiste carrito en localStorage
         localStorage.setItem('laCachinaCart', JSON.stringify(cart));
     }
     // Reflejar items guardados al cargar la página
@@ -155,7 +155,7 @@ function initializeCart() {
                 });
     });
 //mensajes
-    function showWarningAlert() {
+    function showWarningAlert() { // Muestra advertencia de carrito vacío
         Swal.fire({
             toast: true,
             position: 'bottom-end',
@@ -166,7 +166,7 @@ function initializeCart() {
             timerProgressBar: false
         });
     }
-    function showInfoAlert() {
+    function showInfoAlert() { // Muestra alerta de campos incompletos
         Swal.fire({
             toast: true,
             position: 'bottom-end',
@@ -177,7 +177,7 @@ function initializeCart() {
             timerProgressBar: false
         });
     }
-    function showSuccessAlert(message) {
+    function showSuccessAlert(message) { // Muestra notificación de éxito
         Swal.fire({
             title: '¡Éxito!',
             text: message,
@@ -189,7 +189,7 @@ function initializeCart() {
             buttonsStyling: false
         });
     }
-    function showErrorAlert2(message) {
+    function showErrorAlert2(message) { // Muestra notificación de error
         Swal.fire({
             title: 'Error',
             text: message,
@@ -201,7 +201,7 @@ function initializeCart() {
             buttonsStyling: false
         });
     }
-    function showErrorAlert() {
+    function showErrorAlert() { // Muestra error de cantidad máxima
         Swal.fire({
             toast: true,
             position: 'bottom-end',
@@ -212,7 +212,7 @@ function initializeCart() {
             timerProgressBar: false
         });
     }
-    function showWarningAlert2() {
+    function showWarningAlert2() { // Muestra advertencia de cantidad mínima
         Swal.fire({
             toast: true,
             position: 'bottom-end',
@@ -224,7 +224,7 @@ function initializeCart() {
         });
     }
     // Función para actualizar el modal del carrito
-    function updateCartModal() {
+    function updateCartModal() { // Refresca UI del modal del carrito desde localStorage
         let cartItemsContainer = document.getElementById('cartItems');
         cartItemsContainer.innerHTML = '';
         let totalPrice = 0;
@@ -304,7 +304,7 @@ function initializeCart() {
     }
 }
 
-function initializeOrderNotifications() {
+function initializeOrderNotifications() { // Configura polling de pedidos y modal de notificaciones
     const notificationButton = document.getElementById('notificationButton');
     const notificationsModal = document.getElementById('notificationsModal');
 
@@ -324,11 +324,11 @@ function initializeOrderNotifications() {
     }, 30000);
 }
 
-function refreshOrderNotifications() {
+function refreshOrderNotifications() { // Refresca contador de notificaciones
     loadOrderNotifications(false);
 }
 
-function loadOrderNotifications(renderList) {
+function loadOrderNotifications(renderList) { // Obtiene pedidos pendientes y renderiza lista de notificaciones
     const badge = document.getElementById('notificationBadge');
     const loading = document.getElementById('notificationsLoading');
     const empty = document.getElementById('notificationsEmpty');
@@ -414,7 +414,7 @@ function loadOrderNotifications(renderList) {
             });
 }
 
-function updateNotificationBadge(count) {
+function updateNotificationBadge(count) { // Actualiza insignia de notificaciones
     const badge = document.getElementById('notificationBadge');
     if (!badge) {
         return;
@@ -424,7 +424,7 @@ function updateNotificationBadge(count) {
     badge.classList.toggle('d-none', count === 0);
 }
 
-function showOrderDetail(orderId, numero) {
+function showOrderDetail(orderId, numero) { // Obtiene y muestra modal de detalle de pedido
     const detailBody = document.getElementById('orderDetailBody');
     if (!detailBody) {
         return;
@@ -526,12 +526,12 @@ function showOrderDetail(orderId, numero) {
             });
 }
 
-function formatCurrency(value) {
+function formatCurrency(value) { // Formatea número como moneda
     const number = Number(value || 0);
     return number.toFixed(2);
 }
 
-function escapeHtml(value) {
+function escapeHtml(value) { // Escapa entidades HTML para renderizado seguro
     return String(value)
             .replace(/&/g, '&amp;')
             .replace(/</g, '&lt;')
@@ -540,7 +540,7 @@ function escapeHtml(value) {
             .replace(/'/g, '&#039;');
 }
 
-function checkConfirmedOrderNotifications() {
+function checkConfirmedOrderNotifications() { // Consulta pedidos recién confirmados
     fetch('/mis-pedidos/confirmados')
             .then(response => {
                 if (!response.ok) {
@@ -562,7 +562,7 @@ function checkConfirmedOrderNotifications() {
             .catch(error => console.error(error));
 }
 
-function showConfirmedOrdersAlert(pedidos) {
+function showConfirmedOrdersAlert(pedidos) { // Muestra alerta de pedidos recién confirmados
     const plural = pedidos.length > 1;
     const title = plural ? 'Tus pedidos fueron confirmados' : 'Tu pedido fue confirmado';
     const text = plural
@@ -590,7 +590,7 @@ function showConfirmedOrdersAlert(pedidos) {
 }
 /* ===== CANCELAR PEDIDO Y CONTADORES ===== */
 
-function cancelarPedidoFetch(pedidoId, onSuccess) {
+function cancelarPedidoFetch(pedidoId, onSuccess) { // Envía solicitud de cancelación y maneja respuesta
     fetch('/mis-pedidos/cancelar/' + pedidoId, { method: 'POST' })
         .then(function(r) { return r.json(); })
         .then(function(data) {
@@ -606,7 +606,7 @@ function cancelarPedidoFetch(pedidoId, onSuccess) {
         });
 }
 
-function cancelarPedidoNotificacion(pedidoId) {
+function cancelarPedidoNotificacion(pedidoId) { // Confirma y cancela pedido desde notificación
     Swal.fire({
         title: '¿Cancelar pedido?',
         text: 'Esta acción no se puede deshacer.',
@@ -623,7 +623,7 @@ function cancelarPedidoNotificacion(pedidoId) {
     });
 }
 
-function cancelarPedidoDetalle(pedidoId) {
+function cancelarPedidoDetalle(pedidoId) { // Confirma y cancela pedido desde modal de detalle
     Swal.fire({
         title: '¿Cancelar pedido?',
         text: 'Esta acción no se puede deshacer.',
@@ -643,7 +643,7 @@ function cancelarPedidoDetalle(pedidoId) {
     });
 }
 
-function iniciarContadorBase(timerEl, cancelBtn, fechaRaw) {
+function iniciarContadorBase(timerEl, cancelBtn, fechaRaw) { // Contador regresivo para ventana de cancelación
     if (!timerEl || !fechaRaw) return;
     var fechaPedido = new Date(fechaRaw.replace(/\//g, '/'));
     function actualizar() {
@@ -666,13 +666,13 @@ function iniciarContadorBase(timerEl, cancelBtn, fechaRaw) {
     setInterval(actualizar, 1000);
 }
 
-function iniciarContadorNotificacion(pedidoId, fechaRaw) {
+function iniciarContadorNotificacion(pedidoId, fechaRaw) { // Inicia contador para timer de notificación
     var timerEl = document.getElementById('notif-timer-' + pedidoId);
     var cancelBtn = document.getElementById('notif-cancel-' + pedidoId);
     iniciarContadorBase(timerEl, cancelBtn, fechaRaw);
 }
 
-function iniciarContadorDetalle(pedidoId, fechaRaw) {
+function iniciarContadorDetalle(pedidoId, fechaRaw) { // Inicia contador para timer de modal de detalle
     var timerEl = document.getElementById('detail-timer-' + pedidoId);
     var cancelBtn = document.getElementById('detail-cancel-' + pedidoId);
     iniciarContadorBase(timerEl, cancelBtn, fechaRaw);
@@ -680,7 +680,7 @@ function iniciarContadorDetalle(pedidoId, fechaRaw) {
 
 //El camarón :D función
 // Función para desplazarse hacia el principio de la página
-function scrollToTop() {
+function scrollToTop() { // Desplazamiento suave al inicio con animación del botón
     const btn = document.getElementById("backToTopBtn");
 
     // Añade la clase de rotación
@@ -704,7 +704,7 @@ window.onscroll = function () {
     }
 };
 //Botón de cargar  modales
-function initializeModalButtons() {
+function initializeModalButtons() { // Carga perezosa de modales desde archivo externo al hacer clic
     document.querySelectorAll('button[data-bs-toggle="modal"]').forEach(button => {
         button.addEventListener('click', function () {
             const targetModalId = this.getAttribute('data-bs-target').substring(1);

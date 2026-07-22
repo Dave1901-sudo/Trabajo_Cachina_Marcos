@@ -13,10 +13,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 
 @Configuration
-public class RestTemplateConfig {
+public class RestTemplateConfig { // Bean RestTemplate para llamadas HTTP
 
     @Bean
-    public RestTemplate restTemplate() {
+    public RestTemplate restTemplate() { // Bean RestTemplate para APIs externas
         return new RestTemplate();
     }
 }

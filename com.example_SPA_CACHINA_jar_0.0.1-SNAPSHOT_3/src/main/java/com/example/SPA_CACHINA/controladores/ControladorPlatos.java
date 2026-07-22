@@ -46,7 +46,7 @@ import org.springframework.web.multipart.MultipartFile;
  * @author David
  */
 @Controller
-public class ControladorPlatos {
+public class ControladorPlatos { // Controlador principal de platos, carrito y pedidos
 
     @Autowired
     Servicioplatos servicioplatos;
@@ -65,7 +65,7 @@ public class ControladorPlatos {
         return "index"; // Retorna la vista index
     }*/
     @GetMapping("/")
-    public String listarPlatosVerticales(Model model) {
+    public String listarPlatosVerticales(Model model) { // Muestra inicio con platos habilitados agrupados por categoría
         List<platos> lista = servicioplatos.getList().stream()
                 .filter(platos::isHabilitado)
                 .collect(Collectors.toList());
@@ -94,21 +94,21 @@ public class ControladorPlatos {
     }*/
 
     @GetMapping("/formResultadoPlatos")
-    public String listarPlatos(Model model) {
+    public String listarPlatos(Model model) { // Muestra todos los platos para admin
         List<platos> lista = servicioplatos.getList();
         model.addAttribute("lista", lista);
         return "formResultadoPlatos";
     }
 
     @GetMapping("/platos")
-    public String formPlatos(Model model) {
+    public String formPlatos(Model model) { // Muestra formulario de creación de plato
         model.addAttribute("platos", new platos());
         model.addAttribute("categorias", servicioplatos.getCategoriasDistinct());
         return "platos";
     }
 
     @PostMapping("/registrarPlatos")
-    public String grabarPlatos(
+    public String grabarPlatos( // Guarda o actualiza un plato con imagen
             @ModelAttribute platos platos,
             @RequestParam("imagenArchivo") MultipartFile imagenArchivo,
             Model model) {
@@ -133,7 +133,7 @@ public class ControladorPlatos {
     }
 
     @GetMapping("/getEditPlatos/{codigos}")
-    public String editFormPlatos(Model model,
+    public String editFormPlatos(Model model, // Muestra formulario de edición de plato
             @PathVariable("codigos") Long id) {
         platos platos = servicioplatos.get(id);
         model.addAttribute("platos", platos);
@@ -142,21 +142,21 @@ public class ControladorPlatos {
     }
 
     @GetMapping("/deletePlatos")
-    public String deleteFormPlatos(Model model,
+    public String deleteFormPlatos(Model model, // Elimina un plato
             @RequestParam("id") Long id) {
         servicioplatos.delete(id);
         return "redirect:/formResultadoPlatos";
     }
 
     @GetMapping("/toggleHabilitado")
-    public String toggleHabilitado(@RequestParam("id") Long id) {
+    public String toggleHabilitado(@RequestParam("id") Long id) { // Alterna habilitación del plato
         servicioplatos.toggleHabilitado(id);
         return "redirect:/formResultadoPlatos";
     }
 
     @PostMapping("/realizarPedido")
     @ResponseBody
-    public ResponseEntity<?> realizarPedido(@RequestBody PedidoRequest orderData, Principal principal) {
+    public ResponseEntity<?> realizarPedido(@RequestBody PedidoRequest orderData, Principal principal) { // Procesa envío de pedido
         try {
             Usuario usuario = obtenerUsuarioLogueado(principal);
             pedidoService.guardarPedido(orderData, usuario);
@@ -170,7 +170,7 @@ public class ControladorPlatos {
 
     @GetMapping("/mis-pedidos/pendientes")
     @ResponseBody
-    public ResponseEntity<?> listarPedidosPendientes(Principal principal) {
+    public ResponseEntity<?> listarPedidosPendientes(Principal principal) { // Lista pedidos pendientes del usuario
         Usuario usuario = obtenerUsuarioLogueado(principal);
         if (usuario == null || usuario.getId() == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -187,7 +187,7 @@ public class ControladorPlatos {
 
     @GetMapping("/mis-pedidos/confirmados")
     @ResponseBody
-    public ResponseEntity<?> listarPedidosConfirmados(Principal principal) {
+    public ResponseEntity<?> listarPedidosConfirmados(Principal principal) { // Lista pedidos confirmados del usuario
         Usuario usuario = obtenerUsuarioLogueado(principal);
         if (usuario == null || usuario.getId() == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -204,7 +204,7 @@ public class ControladorPlatos {
 
     @GetMapping("/mis-pedidos/{id}")
     @ResponseBody
-    public ResponseEntity<?> obtenerMiPedido(@PathVariable("id") Long id, Principal principal) {
+    public ResponseEntity<?> obtenerMiPedido(@PathVariable("id") Long id, Principal principal) { // Obtiene detalle de pedido por ID
         Usuario usuario = obtenerUsuarioLogueado(principal);
         if (usuario == null || usuario.getId() == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -220,7 +220,7 @@ public class ControladorPlatos {
 
     @PostMapping("/mis-pedidos/cancelar/{id}")
     @ResponseBody
-    public ResponseEntity<?> cancelarPedido(@PathVariable("id") Long id, Principal principal) {
+    public ResponseEntity<?> cancelarPedido(@PathVariable("id") Long id, Principal principal) { // Cancela un pedido pendiente
         Usuario usuario = obtenerUsuarioLogueado(principal);
         if (usuario == null || usuario.getId() == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ResponseMessage("Debes iniciar sesión"));
@@ -233,14 +233,14 @@ public class ControladorPlatos {
         }
     }
 
-    private Usuario obtenerUsuarioLogueado(Principal principal) {
+    private Usuario obtenerUsuarioLogueado(Principal principal) { // Obtiene usuario autenticado desde principal
         if (principal == null) {
             return null;
         }
         return usuarioService.getByUsername(principal.getName());
     }
 
-    private Map<String, Object> resumenPedido(Pedido pedido) {
+    private Map<String, Object> resumenPedido(Pedido pedido) { // Construye mapa resumen del pedido
         Map<String, Object> data = new LinkedHashMap<>();
         data.put("id", pedido.getId());
         data.put("fecha", formatearFecha(pedido.getFechaPedido()));
@@ -250,7 +250,7 @@ public class ControladorPlatos {
         return data;
     }
 
-    private Map<String, Object> detallePedido(Pedido pedido) {
+    private Map<String, Object> detallePedido(Pedido pedido) { // Construye mapa detallado del pedido
         Map<String, Object> data = resumenPedido(pedido);
         data.put("email", pedido.getEmail());
         data.put("phone", pedido.getPhone());
@@ -272,7 +272,7 @@ public class ControladorPlatos {
         return data;
     }
 
-    private String formatearFecha(java.util.Date fecha) {
+    private String formatearFecha(java.util.Date fecha) { // Formatea fecha para mostrar
         if (fecha == null) {
             return "";
         }
@@ -280,7 +280,7 @@ public class ControladorPlatos {
     }
 
     @GetMapping("/imagen/{id}")
-    public ResponseEntity<byte[]> obtenerImagen(@PathVariable("id") Long id) {
+    public ResponseEntity<byte[]> obtenerImagen(@PathVariable("id") Long id) { // Sirve imagen del plato
         platos plato = servicioplatos.get(id);
         byte[] imagen = plato.getImagen();
 
@@ -296,7 +296,7 @@ public class ControladorPlatos {
         return new ResponseEntity<>(imagen, headers, HttpStatus.OK);
     }
 
-    private String identificarTipoDeImagen(byte[] imagen) {
+    private String identificarTipoDeImagen(byte[] imagen) { // Adivina content-type desde bytes de imagen
         try {
             String contentType = URLConnection.guessContentTypeFromStream(new ByteArrayInputStream(imagen));
             return contentType;

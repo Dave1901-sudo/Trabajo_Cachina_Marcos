@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
  * @author David
  */
 @ControllerAdvice
-public class GlobalControllerAdvice {
+public class GlobalControllerAdvice { // Atributos globales del modelo para todas las vistas
 
     @Autowired
     private UsuarioService usuarioService;
 
     @ModelAttribute("isAdmin")
-    public boolean isAdmin(Authentication authentication) {
+    public boolean isAdmin(Authentication authentication) { // Expone estado admin a todas las vistas
         if (authentication != null && authentication.isAuthenticated()) {
             return authentication.getAuthorities().stream()
                     .anyMatch(auth -> auth.getAuthority().equals("ADMIN"));
@@ -32,7 +32,7 @@ public class GlobalControllerAdvice {
     
 
     @ModelAttribute("currentUser")
-    public String getCurrentUser(Authentication authentication) {
+    public String getCurrentUser(Authentication authentication) { // Expone nombre de usuario a todas las vistas
         if (authentication != null && authentication.isAuthenticated()) {
             return authentication.getName();
         }
@@ -40,7 +40,7 @@ public class GlobalControllerAdvice {
     }
 
     @ModelAttribute("currentUserData")
-    public Usuario getCurrentUserData(Authentication authentication) {
+    public Usuario getCurrentUserData(Authentication authentication) { // Expone datos completos del usuario a todas las vistas
         if (authentication != null && authentication.isAuthenticated()) {
             return usuarioService.getByUsername(authentication.getName());
         }

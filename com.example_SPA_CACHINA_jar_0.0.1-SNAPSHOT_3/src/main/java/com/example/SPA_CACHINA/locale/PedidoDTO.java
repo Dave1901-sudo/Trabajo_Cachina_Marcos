@@ -2,7 +2,7 @@ package com.example.SPA_CACHINA.locale;
 
 import java.util.List;
 
-public class PedidoDTO {
+public class PedidoDTO { // DTO de pedido para respuestas API
 
     private Long id;
     private String fechaPedido;

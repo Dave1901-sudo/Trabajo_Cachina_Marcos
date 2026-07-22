@@ -13,6 +13,6 @@ import org.springframework.stereotype.Repository;
  * @author David
  */
 @Repository
-public interface PedidoDetalleRepository extends JpaRepository<PedidoDetalle, Long> {
+public interface PedidoDetalleRepository extends JpaRepository<PedidoDetalle, Long> { // Repositorio para entidad PedidoDetalle
     // Aquí puedes añadir métodos personalizados si es necesario
 }

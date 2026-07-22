@@ -14,6 +14,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface ReclamacionesDAO
-        extends JpaRepository<Reclamaciones, Long> {
+        extends JpaRepository<Reclamaciones, Long> { // Repositorio para entidad Reclamaciones
     // Dave
 }

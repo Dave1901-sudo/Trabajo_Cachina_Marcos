@@ -7,13 +7,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ResenaLikeRepository extends JpaRepository<ResenaLike, Long> {
+public interface ResenaLikeRepository extends JpaRepository<ResenaLike, Long> { // Repositorio para likes de reseñas
 
-    Optional<ResenaLike> findByResenaIdAndUsuarioId(Long resenaId, Long usuarioId);
+    Optional<ResenaLike> findByResenaIdAndUsuarioId(Long resenaId, Long usuarioId); // Busca like por reseña y usuario
 
-    List<ResenaLike> findByResenaIdInAndUsuarioId(List<Long> resenaIds, Long usuarioId);
+    List<ResenaLike> findByResenaIdInAndUsuarioId(List<Long> resenaIds, Long usuarioId); // Busca likes para múltiples reseñas
 
-    void deleteByResenaIdAndUsuarioId(Long resenaId, Long usuarioId);
+    void deleteByResenaIdAndUsuarioId(Long resenaId, Long usuarioId); // Elimina like por reseña y usuario
 
-    void deleteByResenaId(Long resenaId);
+    void deleteByResenaId(Long resenaId); // Elimina todos los likes de una reseña
 }

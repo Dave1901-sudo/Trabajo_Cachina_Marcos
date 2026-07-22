@@ -18,13 +18,13 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/pedidos")
-public class ApiPedidosController {
+public class ApiPedidosController { // API para pedidos
 
     @Autowired
     private PedidoService pedidoService;
 
     @PostMapping("/registrar")
-    public ResponseEntity<?> registrarPedido(@RequestBody PedidoRequest pedidoRequest) {
+    public ResponseEntity<?> registrarPedido(@RequestBody PedidoRequest pedidoRequest) { // Registra un pedido vía API
         try {
             ResponseMessage respuesta = pedidoService.guardarPedido(pedidoRequest);
 
@@ -42,7 +42,7 @@ public class ApiPedidosController {
     }
 
     @GetMapping("/listar")
-    public ResponseEntity<?> listarPedidos() {
+    public ResponseEntity<?> listarPedidos() { // Lista todos los pedidos vía API
         return ResponseEntity.ok(pedidoService.obtenerTodosLosPedidos());
     }
 }

@@ -16,8 +16,8 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface PlatosDAO 
-            extends JpaRepository<platos, Long> {
+            extends JpaRepository<platos, Long> { // Repositorio para entidad platos
 
     @Query("SELECT DISTINCT p.categoria FROM platos p ORDER BY p.categoria")
-    List<String> findCategoriasDistinct();
+    List<String> findCategoriasDistinct(); // Obtiene categorías de platos distintas
 }

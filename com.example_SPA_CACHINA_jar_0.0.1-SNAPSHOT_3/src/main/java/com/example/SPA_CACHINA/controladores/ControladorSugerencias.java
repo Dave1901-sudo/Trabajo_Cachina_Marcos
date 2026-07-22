@@ -22,27 +22,27 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @author David
  */
 @Controller
-public class ControladorSugerencias {
+public class ControladorSugerencias { // Controlador CRUD de sugerencias
     
     @Autowired
     ServicioSugerencias servicioSugerencias;
     
     @GetMapping("/formResultadoSugerencias")
-    public String listarSugerencias(Model model) {
+    public String listarSugerencias(Model model) { // Muestra todas las sugerencias
         List<Sugerencias> lista = servicioSugerencias.getList();
         model.addAttribute("lista", lista);
         return "formResultadoSugerencias";
     }
 
     @GetMapping("/sugerencias")
-    public String formSugerencias(Model model) {
+    public String formSugerencias(Model model) { // Muestra formulario de sugerencia
         model.addAttribute("sugerencias", new Sugerencias());
         return "sugerencias";
     }
     
 
     @PostMapping("/registrarS")
-    public String grabarSugerencias(
+    public String grabarSugerencias( // Guarda una nueva sugerencia
             @ModelAttribute Sugerencias sugerencias, Model model) {
         try {
             servicioSugerencias.save(sugerencias);
@@ -57,7 +57,7 @@ public class ControladorSugerencias {
     }
     
     @GetMapping("/getEditS/{codigos}")
-    public String editFormSugerencias(Model model,
+    public String editFormSugerencias(Model model, // Muestra formulario de edición de sugerencia
             @PathVariable("codigos") Long id){
         Sugerencias sugerencias = servicioSugerencias.get(id);
         model.addAttribute("sugerencias", sugerencias);
@@ -65,7 +65,7 @@ public class ControladorSugerencias {
     }
     
     @GetMapping("/deleteS")
-    public String deleteFormSugerencias(Model model,
+    public String deleteFormSugerencias(Model model, // Elimina una sugerencia
             @RequestParam("id") Long id){
         servicioSugerencias.delete(id);
         return "redirect:/formResultadoSugerencias";

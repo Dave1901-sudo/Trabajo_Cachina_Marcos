@@ -17,27 +17,27 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-public class ControladorContactos {
+public class ControladorContactos { // Controlador CRUD de formulario de contacto
 
     @Autowired
     ServicioContactos servicioContactos;
 
     @GetMapping("/formResultadoContactos")
-    public String listarContactos(Model model) {
+    public String listarContactos(Model model) { // Muestra todos los contactos
         List<Contactos> lista = servicioContactos.getList();
         model.addAttribute("lista", lista);
         return "formResultadoContactos";
     }
 
     @GetMapping("/contactos")
-    public String formContactos(Model model) {
+    public String formContactos(Model model) { // Muestra formulario de contacto
         model.addAttribute("contactos", new Contactos());
         return "contactos";
     }
     
 
     @PostMapping("/registrar")
-    public String grabarContactos(
+    public String grabarContactos( // Guarda nuevo contacto con manejo de éxito/error
             @ModelAttribute Contactos contactos, Model model) {
         try {
             servicioContactos.save(contactos);
@@ -52,7 +52,7 @@ public class ControladorContactos {
     }
     
     @GetMapping("/getEdit/{codigo}")
-    public String editFormContactos(Model model,
+    public String editFormContactos(Model model, // Muestra formulario de edición de contacto
             @PathVariable("codigo") Long id){
         Contactos contactos = servicioContactos.get(id);
         model.addAttribute("contactos", contactos);
@@ -60,19 +60,19 @@ public class ControladorContactos {
     }
     
     @GetMapping("/delete")
-    public String deleteFormColaborador(Model model,
+    public String deleteFormColaborador(Model model, // Elimina un contacto
             @RequestParam("id") Long id){
         servicioContactos.delete(id);
         return "redirect:/formResultadoContactos";
     }
     @GetMapping("/getListJSON")
-    public ResponseEntity<List<Contactos>> listarContactosJSON (Model model){
+    public ResponseEntity<List<Contactos>> listarContactosJSON (Model model){ // Retorna contactos como JSON
             List<Contactos> lista = servicioContactos.getList();
             //model.addAttribute("lista", lista);
         return ResponseEntity.ok(lista);
 }   
     @PostMapping("/updateContactos")
-    public ResponseEntity<String> updateContactos(@RequestBody Contactos contactos) {
+    public ResponseEntity<String> updateContactos(@RequestBody Contactos contactos) { // Actualiza contacto vía AJAX
         try {
             servicioContactos.save(contactos); // Llama al servicio para actualizar el contacto
             return ResponseEntity.ok("Contacto actualizado correctamente");

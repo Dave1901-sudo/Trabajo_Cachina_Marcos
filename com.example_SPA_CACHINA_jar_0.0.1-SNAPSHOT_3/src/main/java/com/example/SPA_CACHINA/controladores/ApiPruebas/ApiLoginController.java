@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/login")
-public class ApiLoginController {
+public class ApiLoginController { // API para validación de login
 
     @Autowired
     private UserRepository userRepository;
@@ -27,7 +27,7 @@ public class ApiLoginController {
     private PasswordEncoder passwordEncoder;
 
     @PostMapping("/validar")
-    public ResponseEntity<?> validarLogin(@RequestBody Map<String, String> body) {
+    public ResponseEntity<?> validarLogin(@RequestBody Map<String, String> body) { // Valida credenciales vía API
         String username = body.get("username");
         String password = body.get("password");
 
@@ -56,7 +56,7 @@ public class ApiLoginController {
     }
 
     @GetMapping("/verificar")
-    public ResponseEntity<?> verificarApiLogin() {
+    public ResponseEntity<?> verificarApiLogin() { // Verifica disponibilidad de API login
         return ResponseEntity.ok(Map.of(
             "estado", "success",
             "mensaje", "API de login disponible"

@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name = "platos")
-public class platos {
+public class platos { // Entidad de plato
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

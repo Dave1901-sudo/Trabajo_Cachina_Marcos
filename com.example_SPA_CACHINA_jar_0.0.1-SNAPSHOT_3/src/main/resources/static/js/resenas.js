@@ -1,6 +1,6 @@
 var autoSlideTimers = {};
 
-function cargarResenas(platoId) {
+function cargarResenas(platoId) { // Obtiene y renderiza reseñas de un plato
     const slidesContainer = document.getElementById('resenas-lista-' + platoId);
     if (!slidesContainer) return;
     fetch('/api/resenas/' + platoId)
@@ -43,7 +43,7 @@ function cargarResenas(platoId) {
         });
 }
 
-function iniciarAutoSlide(platoId) {
+function iniciarAutoSlide(platoId) { // Inicia auto-desplazamiento del carrusel
     detenerAutoSlide(platoId);
     const container = document.getElementById('resenas-lista-' + platoId);
     if (!container) return;
@@ -60,19 +60,19 @@ function iniciarAutoSlide(platoId) {
     }, 60000);
 }
 
-function detenerAutoSlide(platoId) {
+function detenerAutoSlide(platoId) { // Detiene auto-desplazamiento del carrusel
     if (autoSlideTimers[platoId]) {
         clearInterval(autoSlideTimers[platoId]);
         delete autoSlideTimers[platoId];
     }
 }
 
-function reiniciarAutoSlide(platoId) {
+function reiniciarAutoSlide(platoId) { // Reinicia auto-desplazamiento del carrusel
     detenerAutoSlide(platoId);
     iniciarAutoSlide(platoId);
 }
 
-function actualizarCarrusel(platoId) {
+function actualizarCarrusel(platoId) { // Actualiza posición del carrusel y botones
     const slidesContainer = document.getElementById('resenas-lista-' + platoId);
     if (!slidesContainer) return;
     const slides = slidesContainer.querySelectorAll('.carrusel-slide');
@@ -93,7 +93,7 @@ function actualizarCarrusel(platoId) {
     }
 }
 
-function carruselAnterior(btn) {
+function carruselAnterior(btn) { // Navega al slide anterior de reseñas
     const platoId = btn.getAttribute('data-id');
     const container = document.getElementById('resenas-lista-' + platoId);
     if (!container) return;
@@ -105,7 +105,7 @@ function carruselAnterior(btn) {
     }
 }
 
-function carruselSiguiente(btn) {
+function carruselSiguiente(btn) { // Navega al siguiente slide de reseñas
     const platoId = btn.getAttribute('data-id');
     const container = document.getElementById('resenas-lista-' + platoId);
     if (!container) return;
@@ -118,7 +118,7 @@ function carruselSiguiente(btn) {
     }
 }
 
-function mostrarFormularioResena(btn) {
+function mostrarFormularioResena(btn) { // Muestra formulario de envío de reseña
     const container = btn.closest('.resenas-container');
     if (!container) return;
     const form = container.querySelector('.form-resena');
@@ -127,7 +127,7 @@ function mostrarFormularioResena(btn) {
     btn.classList.add('d-none');
 }
 
-function cancelarResena(btn) {
+function cancelarResena(btn) { // Oculta formulario de reseña y reinicia campos
     const container = btn.closest('.resenas-container');
     if (!container) return;
     const form = container.querySelector('.form-resena');
@@ -141,7 +141,7 @@ function cancelarResena(btn) {
     if (btnResena) btnResena.classList.remove('d-none');
 }
 
-function seleccionarEstrella(el) {
+function seleccionarEstrella(el) { // Selecciona calificación con estrellas
     const container = el.closest('.estrellas-input');
     const valor = parseInt(el.getAttribute('data-valor'));
     container.querySelectorAll('.estrella-input').forEach(e => {
@@ -151,7 +151,7 @@ function seleccionarEstrella(el) {
     container.querySelector('.puntuacion-input').value = valor;
 }
 
-function enviarResena(btn) {
+function enviarResena(btn) { // Envía reseña a la API
     const container = btn.closest('.resenas-container');
     if (!container) return;
     const idMatch = container.id.match(/resenas-container-(\d+)/);
@@ -185,7 +185,7 @@ function enviarResena(btn) {
         .catch(err => alert('Error al enviar reseña.'));
 }
 
-function darLike(resenaId, btn) {
+function darLike(resenaId, btn) { // Alterna like en una reseña
     fetch('/api/resenas/' + resenaId + '/like', { method: 'POST' })
         .then(res => res.json())
         .then(data => {

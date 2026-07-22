@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class ResenaService {
+public class ResenaService { // Servicio para gestión de reseñas
 
     @Autowired
     private ResenaRepository resenaRepository;
@@ -21,11 +21,11 @@ public class ResenaService {
     @Autowired
     private ResenaLikeRepository resenaLikeRepository;
 
-    public List<Resena> obtenerResenasAprobadas(Long platoId) {
+    public List<Resena> obtenerResenasAprobadas(Long platoId) { // Obtiene reseñas aprobadas de un plato
         return resenaRepository.findByPlatoIdAndEstadoOrderByLikesDesc(platoId, "aprobado");
     }
 
-    public List<Map<String, Object>> obtenerResenasConLikeState(Long platoId, Long usuarioId) {
+    public List<Map<String, Object>> obtenerResenasConLikeState(Long platoId, Long usuarioId) { // Obtiene reseñas con estado de like del usuario
         List<Resena> resenas = obtenerResenasAprobadas(platoId);
         if (usuarioId == null) {
             return resenas.stream().map(r -> {
@@ -62,7 +62,7 @@ public class ResenaService {
         }).collect(Collectors.toList());
     }
 
-    public Resena crearResena(Long platoId, Long usuarioId, String usuarioNombre, int puntuacion, String comentario) {
+    public Resena crearResena(Long platoId, Long usuarioId, String usuarioNombre, int puntuacion, String comentario) { // Crea una nueva reseña
         Resena resena = new Resena();
         resena.setPlatoId(platoId);
         resena.setUsuarioId(usuarioId);
@@ -76,7 +76,7 @@ public class ResenaService {
     }
 
     @Transactional
-    public Map<String, Object> darLike(Long resenaId, Long usuarioId) {
+    public Map<String, Object> darLike(Long resenaId, Long usuarioId) { // Alterna like en una reseña
         Resena resena = resenaRepository.findById(resenaId)
                 .orElseThrow(() -> new RuntimeException("Resena no encontrada"));
         if (usuarioId == null) {
@@ -103,27 +103,27 @@ public class ResenaService {
         return result;
     }
 
-    public void aprobarResena(Long resenaId) {
+    public void aprobarResena(Long resenaId) { // Aprueba una reseña pendiente
         Resena resena = resenaRepository.findById(resenaId)
                 .orElseThrow(() -> new RuntimeException("Resena no encontrada"));
         resena.setEstado("aprobado");
         resenaRepository.save(resena);
     }
 
-    public void eliminarResena(Long resenaId) {
+    public void eliminarResena(Long resenaId) { // Elimina reseña y sus likes
         resenaLikeRepository.deleteByResenaId(resenaId);
         resenaRepository.deleteById(resenaId);
     }
 
-    public List<Resena> obtenerResenasPendientes() {
+    public List<Resena> obtenerResenasPendientes() { // Obtiene todas las reseñas pendientes
         return resenaRepository.findByEstadoOrderByFechaDesc("pendiente");
     }
 
-    public List<Resena> obtenerTodasLasResenas() {
+    public List<Resena> obtenerTodasLasResenas() { // Obtiene todas las reseñas
         return resenaRepository.findAll();
     }
 
-    public List<Resena> buscarResenas(String estado, Long platoId, String search) {
+    public List<Resena> buscarResenas(String estado, Long platoId, String search) { // Busca reseñas con filtros
         if ("todos".equals(estado)) estado = null;
         if (search != null && search.trim().isEmpty()) search = null;
         return resenaRepository.buscarResenas(estado, platoId, search);

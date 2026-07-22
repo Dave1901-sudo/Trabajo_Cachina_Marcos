@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name = "contactos")
-public class Contactos {
+public class Contactos { // Entidad de formulario de contacto
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="idcontactos")

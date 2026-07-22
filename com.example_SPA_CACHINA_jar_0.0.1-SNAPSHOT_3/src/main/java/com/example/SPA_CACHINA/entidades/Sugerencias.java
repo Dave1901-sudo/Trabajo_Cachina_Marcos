@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "sugerencias")
 
-public class Sugerencias {
+public class Sugerencias { // Entidad de sugerencia
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idsugerencias")

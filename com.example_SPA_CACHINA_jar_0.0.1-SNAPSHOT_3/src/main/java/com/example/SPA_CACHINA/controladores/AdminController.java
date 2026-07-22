@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 @RequestMapping("/admin")
-public class AdminController {
+public class AdminController { // Controlador del panel de administración
 
     @Autowired
     private UsuarioService usuarioService;
@@ -48,7 +48,7 @@ public class AdminController {
     private Servicioplatos servicioplatos;
 
     @GetMapping("/roleForm")
-    public String showRoleUpdateForm(Model model) {
+    public String showRoleUpdateForm(Model model) { // Muestra formulario de actualización de rol
 
         model.addAttribute("users", usuarioService.getList());
 
@@ -57,14 +57,14 @@ public class AdminController {
     
     @GetMapping("/getUser")
     @ResponseBody
-    public Usuario getUser(@RequestParam String username) {
+    public Usuario getUser(@RequestParam String username) { // Obtiene datos del usuario como JSON
 
         return usuarioService.getByUsername(username);
 
     }
 
     @PostMapping("/updateRole")
-    public String updateRole(
+    public String updateRole( // Actualiza rol/credenciales del usuario
             @RequestParam String username,
             @RequestParam(required = false) String nuevoUsername,
             @RequestParam(required = false) String password,
@@ -99,7 +99,7 @@ public class AdminController {
     }
     
      @GetMapping("/resenas")
-    public String gestionarResenas(
+    public String gestionarResenas( // Gestiona reseñas con filtros
             @RequestParam(required = false) String estado,
             @RequestParam(required = false) Long platoId,
             @RequestParam(required = false) String search,
@@ -122,7 +122,7 @@ public class AdminController {
     }
 
     @GetMapping("/resenas/aprobar/{id}")
-    public String aprobarResena(@PathVariable Long id, Principal principal) {
+    public String aprobarResena(@PathVariable Long id, Principal principal) { // Aprueba una reseña
         resenaService.aprobarResena(id);
         String admin = (principal != null) ? principal.getName() : "desconocido";
         auditoriaService.registrar(admin, "Aprobar reseña", "Reseña ID: " + id);
@@ -130,7 +130,7 @@ public class AdminController {
     }
 
     @GetMapping("/resenas/eliminar/{id}")
-    public String eliminarResena(@PathVariable Long id, Principal principal) {
+    public String eliminarResena(@PathVariable Long id, Principal principal) { // Elimina una reseña
         resenaService.eliminarResena(id);
         String admin = (principal != null) ? principal.getName() : "desconocido";
         auditoriaService.registrar(admin, "Eliminar reseña", "Reseña ID: " + id);
@@ -138,13 +138,13 @@ public class AdminController {
     }
 
     @GetMapping("/printTemplate")
-    public String showPrintTemplate(Model model) {
+    public String showPrintTemplate(Model model) { // Muestra plantilla de impresión
         // Agregar lógica para pasar datos al modelo si es necesario
         return "printTemplate";
     }
 
     @GetMapping("/userList")
-    public String showUserList(
+    public String showUserList( // Muestra lista de usuarios con búsqueda/filtro
             @RequestParam(required = false) String search,
             @RequestParam(required = false) String role,
             Model model) {
@@ -156,7 +156,7 @@ public class AdminController {
     }
     
     @GetMapping("/editUser")
-    public String showEditUser(@RequestParam Long id, Model model) {
+    public String showEditUser(@RequestParam Long id, Model model) { // Muestra formulario de edición de usuario
 
         Usuario usuario = usuarioService.get(id);
 
@@ -170,7 +170,7 @@ public class AdminController {
     }
     
     @PostMapping("/updateUser")
-    public String updateUser(
+    public String updateUser( // Actualiza datos del perfil del usuario
             @RequestParam Long id,
             @RequestParam(required = false) String newUsername,
             @RequestParam String nombres,
@@ -216,13 +216,13 @@ public class AdminController {
     }
 
     @GetMapping("/confirmarEliminarUsuario")
-    public String confirmarEliminarUsuario(@RequestParam String username, Model model) {
+    public String confirmarEliminarUsuario(@RequestParam String username, Model model) { // Muestra confirmación de eliminación
         model.addAttribute("username", username);
         return "confirmarEliminarUsuario";
     }
 
     @PostMapping("/deleteUser")
-    public String deleteUser(@RequestParam String username, Principal principal) {
+    public String deleteUser(@RequestParam String username, Principal principal) { // Elimina cuenta de usuario
         try {
             usuarioService.deleteUserByUsername(username);
             String admin = (principal != null) ? principal.getName() : "desconocido";

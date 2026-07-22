@@ -17,13 +17,13 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/sugerencias")
-public class ApiSugerenciasController {
+public class ApiSugerenciasController { // API para sugerencias
 
     @Autowired
     private ServicioSugerencias servicioSugerencias;
 
     @PostMapping("/registrar")
-    public ResponseEntity<?> registrarSugerencia(@RequestBody Sugerencias sugerencias) {
+    public ResponseEntity<?> registrarSugerencia(@RequestBody Sugerencias sugerencias) { // Envía sugerencia vía API
         try {
             Sugerencias sugerenciaGuardada = servicioSugerencias.save(sugerencias);
 
@@ -41,7 +41,7 @@ public class ApiSugerenciasController {
     }
 
     @GetMapping("/listar")
-    public ResponseEntity<?> listarSugerencias() {
+    public ResponseEntity<?> listarSugerencias() { // Lista sugerencias vía API
         return ResponseEntity.ok(servicioSugerencias.getList());
     }
 }

@@ -11,11 +11,11 @@ import org.springframework.context.annotation.ComponentScan;
 public class SpaCachinaApplication {
 
 	@PostConstruct
-	public void init() {
+	public void init() { // Zona horaria por defecto: Perú/Lima
 		TimeZone.setDefault(TimeZone.getTimeZone("America/Lima"));
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) { // Punto de entrada de Spring Boot
 		SpringApplication.run(SpaCachinaApplication.class, args);
 	}
 

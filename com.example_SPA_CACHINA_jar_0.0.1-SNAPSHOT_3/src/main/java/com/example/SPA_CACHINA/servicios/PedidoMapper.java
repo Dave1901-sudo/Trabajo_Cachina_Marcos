@@ -10,11 +10,11 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
 @Component
-public class PedidoMapper {
+public class PedidoMapper { // Mapea entidad Pedido a PedidoDTO
 
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
-    public PedidoDTO toDTO(Pedido pedido) {
+    public PedidoDTO toDTO(Pedido pedido) { // Convierte Pedido a DTO
         PedidoDTO dto = new PedidoDTO();
         dto.setId(pedido.getId());
         dto.setFechaPedido(pedido.getFechaPedido() != null ? DATE_FORMAT.format(pedido.getFechaPedido()) : null);
@@ -33,11 +33,11 @@ public class PedidoMapper {
         return dto;
     }
 
-    public List<PedidoDTO> toDTOList(List<Pedido> pedidos) {
+    public List<PedidoDTO> toDTOList(List<Pedido> pedidos) { // Convierte lista de Pedidos a DTOs
         return pedidos.stream().map(this::toDTO).collect(Collectors.toList());
     }
 
-    private PedidoDetalleDTO toDetalleDTO(PedidoDetalle detalle) {
+    private PedidoDetalleDTO toDetalleDTO(PedidoDetalle detalle) { // Convierte PedidoDetalle a DTO
         PedidoDetalleDTO dto = new PedidoDetalleDTO();
         dto.setId(detalle.getId());
         dto.setNombre(detalle.getNombre());

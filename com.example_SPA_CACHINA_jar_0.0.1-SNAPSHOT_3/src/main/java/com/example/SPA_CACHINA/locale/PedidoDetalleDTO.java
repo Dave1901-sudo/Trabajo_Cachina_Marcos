@@ -1,6 +1,6 @@
 package com.example.SPA_CACHINA.locale;
 
-public class PedidoDetalleDTO {
+public class PedidoDetalleDTO { // DTO de detalle de pedido
 
     private Long id;
     private String nombre;

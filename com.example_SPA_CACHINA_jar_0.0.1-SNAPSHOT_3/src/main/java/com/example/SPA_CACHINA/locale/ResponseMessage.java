@@ -8,7 +8,7 @@ package com.example.SPA_CACHINA.locale;
  *
  * @author David
  */
-public class ResponseMessage {
+public class ResponseMessage { // DTO de mensaje de respuesta simple
     private String message;
 
     public ResponseMessage(String message) {

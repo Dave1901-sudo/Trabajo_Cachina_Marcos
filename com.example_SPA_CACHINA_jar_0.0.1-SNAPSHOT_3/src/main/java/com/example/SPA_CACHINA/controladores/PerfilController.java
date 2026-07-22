@@ -23,13 +23,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 @RequestMapping("/perfil")
-public class PerfilController {
+public class PerfilController { // Controlador para la página de perfil de usuario
 
     @Autowired
     private UsuarioService usuarioService;
     
     @GetMapping
-    public String verPerfil(Model model, Principal principal) {
+    public String verPerfil(Model model, Principal principal) { // Muestra perfil de usuario
 
         Usuario usuario = usuarioService.getByUsername(principal.getName());
 
@@ -40,7 +40,7 @@ public class PerfilController {
     
     @PostMapping("/actualizar")
     @ResponseBody
-    public ResponseEntity<String> actualizarCampo(
+    public ResponseEntity<String> actualizarCampo( // Actualiza un campo del perfil vía AJAX
             @RequestParam Long id,
             @RequestParam String campo,
             @RequestParam String valor,

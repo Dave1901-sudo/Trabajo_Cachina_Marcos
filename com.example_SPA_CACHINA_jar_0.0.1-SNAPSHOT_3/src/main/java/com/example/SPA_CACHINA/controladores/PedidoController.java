@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @Controller
 @RequestMapping("/pedidos")
-public class PedidoController {
+public class PedidoController { // Controlador admin para gestión de pedidos
     @Autowired
     private PedidoService pedidoService;
     
@@ -43,7 +43,7 @@ public class PedidoController {
     private UsuarioService usuarioService;
     
     @GetMapping
-    public String listarPedidos(
+    public String listarPedidos( // Lista pedidos con filtros y paginación
             @RequestParam(required = false) Integer mes,
             @RequestParam(required = false) Integer anio,
             @RequestParam(required = false) String search,
@@ -100,7 +100,7 @@ public class PedidoController {
     }
     
     @GetMapping("/editar/{id}")
-    public String editarPedido(@PathVariable("id") Long id, Model model) {
+    public String editarPedido(@PathVariable("id") Long id, Model model) { // Muestra formulario de edición de pedido
         Pedido pedido = pedidoService.obtenerPedidoPorId(id);
         model.addAttribute("pedido", pedido);
         model.addAttribute("usuarios", usuarioService.getList());
@@ -108,45 +108,45 @@ public class PedidoController {
     }
 
     @PostMapping("/editar/{id}")
-    public String actualizarPedido(@PathVariable("id") Long id, @ModelAttribute Pedido pedido, @RequestParam("usuarioId") Long usuarioId) {
+    public String actualizarPedido(@PathVariable("id") Long id, @ModelAttribute Pedido pedido, @RequestParam("usuarioId") Long usuarioId) { // Guarda edición de pedido
         pedidoService.actualizarPedido(id, pedido, usuarioId);
         return "redirect:/pedidos"; // Redirige a la lista de pedidos
     }
 
     @GetMapping("/eliminar/{id}")
-    public String eliminarPedido(@PathVariable("id") Long id, Model model) {
+    public String eliminarPedido(@PathVariable("id") Long id, Model model) { // Muestra confirmación de eliminación
         model.addAttribute("pedidoId", id); // Pasamos el ID del pedido a la vista
         return "confirmarEliminacion"; // Vista que preguntará por confirmación
     }
 
     @GetMapping("/eliminarPedido/{id}")
-    public String eliminarPedido(@PathVariable("id") Long id) {
+    public String eliminarPedido(@PathVariable("id") Long id) { // Elimina pedido permanentemente
         pedidoService.eliminarPedido(id);
         return "redirect:/pedidos"; // Redirige a la lista de pedidos
     }
 
     @PostMapping("/confirmar/{id}")
-    public String confirmarPedido(@PathVariable("id") Long id) {
+    public String confirmarPedido(@PathVariable("id") Long id) { // Alterna estado confirmado/pendiente del pedido
         pedidoService.confirmarPedido(id); // Marca el pedido como confirmado
         return "redirect:/pedidos"; // Redirige a la lista de pedidos
     }
 
     @GetMapping("/detalles/{id}")
-    public String mostrarDetallesPedido(@PathVariable("id") Long id, Model model) {
+    public String mostrarDetallesPedido(@PathVariable("id") Long id, Model model) { // Muestra detalles del pedido
         Pedido pedido = pedidoService.obtenerPedidoPorId(id);
         model.addAttribute("pedido", pedido);
         return "detallesPedido";  // Vista que muestra los detalles del pedido
     }
 
     @GetMapping("/editarDetalle/{id}")
-    public String editarDetalle(@PathVariable("id") Long id, Model model) {
+    public String editarDetalle(@PathVariable("id") Long id, Model model) { // Muestra formulario de edición de detalle
         PedidoDetalle detalle = pedidoService.obtenerDetallePorId(id);
         model.addAttribute("detalle", detalle);
         return "editarDetalle"; // Vista para editar el detalle
     }
 
     @PostMapping("/editarDetalle/{id}")
-    public String actualizarDetalle(@PathVariable("id") Long id, @ModelAttribute PedidoDetalle detalle) {
+    public String actualizarDetalle(@PathVariable("id") Long id, @ModelAttribute PedidoDetalle detalle) { // Guarda edición de detalle
         PedidoDetalle detalleExistente = pedidoService.obtenerDetallePorId(id); // Obtener el detalle actual
         Long pedidoId = detalleExistente.getPedido().getId(); // Obtener el ID del pedido relacionado
 
@@ -156,7 +156,7 @@ public class PedidoController {
 
     // Método para eliminar un detalle de pedido
     @GetMapping("/eliminarDetalle/{id}")
-    public String eliminarDetalle(@PathVariable("id") Long id) {
+    public String eliminarDetalle(@PathVariable("id") Long id) { // Elimina un detalle de pedido
         PedidoDetalle detalleExistente = pedidoService.obtenerDetallePorId(id); // Obtener el detalle existente
         Long pedidoId = detalleExistente.getPedido().getId(); // Obtener el ID del pedido asociado
 
@@ -165,8 +165,8 @@ public class PedidoController {
     }
     
      // Mostrar formulario para agregar detalle
-    @GetMapping("/agregarDetalle/{pedidoId}")
-    public String mostrarFormularioAgregarDetalle(@PathVariable("pedidoId") Long pedidoId, Model model) {
+     @GetMapping("/agregarDetalle/{pedidoId}")
+    public String mostrarFormularioAgregarDetalle(@PathVariable("pedidoId") Long pedidoId, Model model) { // Muestra formulario para agregar detalle
         model.addAttribute("pedidoId", pedidoId);
         model.addAttribute("platos", servicioplatos.getList());
         return "agregarDetalle"; // Vista del formulario
@@ -174,7 +174,7 @@ public class PedidoController {
 
     // Procesar formulario para agregar detalle
     @PostMapping("/agregarDetalle")
-    public String agregarDetalle(
+    public String agregarDetalle( // Agrega una nueva línea de detalle a un pedido
             @RequestParam("pedidoId") Long pedidoId,
             @RequestParam("platoId") Long platoId,
             @RequestParam("cantidad") int cantidad,

@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
  * @author David
  */
 @RestController
-public class ApiPruebasController {
+public class ApiPruebasController { // API básica de health check
 
     @GetMapping("/api/postman-test")
-    public String pruebaPostman() {
+    public String pruebaPostman() { // Endpoint simple de health check
         return "API funcionando correctamente para pruebas con Postman";
     }
 }

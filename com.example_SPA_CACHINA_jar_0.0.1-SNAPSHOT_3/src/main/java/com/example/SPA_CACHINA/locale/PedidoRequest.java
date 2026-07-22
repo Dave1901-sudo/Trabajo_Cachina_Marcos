@@ -10,7 +10,7 @@ import java.util.List;
  *
  * @author David
  */
-public class PedidoRequest {
+public class PedidoRequest { // Payload de solicitud de pedido desde frontend
     private List<CarritoItem> orderItems;
     private String email;
     private String phone;

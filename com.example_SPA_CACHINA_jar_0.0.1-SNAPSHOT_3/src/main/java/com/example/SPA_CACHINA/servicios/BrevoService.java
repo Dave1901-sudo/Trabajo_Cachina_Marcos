@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
-public class BrevoService {
+public class BrevoService { // Servicio de correo usando API Brevo
 
     @Autowired
     private RestTemplate restTemplate;
@@ -30,7 +30,7 @@ public class BrevoService {
     @Value("${brevo.api.key}")
     private String apiKey;
 
-    public void enviarCorreo(String destinatario,
+    public void enviarCorreo(String destinatario, // Envía correo vía API SMTP de Brevo
                              String asunto,
                              String contenidoHtml) {
 

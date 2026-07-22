@@ -15,25 +15,25 @@ import org.springframework.stereotype.Service;
  * @author David
  */
 @Service
-public class ServicioReclamaciones {
+public class ServicioReclamaciones { // Servicio CRUD de reclamaciones
         // Dave
 
     @Autowired
     private ReclamacionesDAO reclamacionesDAO;
 
-    public List<Reclamaciones> getList() {
+    public List<Reclamaciones> getList() { // Obtiene todas las reclamaciones
         return reclamacionesDAO.findAll();
     }
 
-    public Reclamaciones save(Reclamaciones reclamaciones) {
+    public Reclamaciones save(Reclamaciones reclamaciones) { // Guarda o actualiza una reclamación
         return reclamacionesDAO.save(reclamaciones);
     }
 
-    public Reclamaciones get(Long id) {
+    public Reclamaciones get(Long id) { // Obtiene reclamación por ID
         return reclamacionesDAO.findById(id).orElse(null);
     }
 
-    public void delete(Long id) {
+    public void delete(Long id) { // Elimina una reclamación
         reclamacionesDAO.deleteById(id);
     }
 }

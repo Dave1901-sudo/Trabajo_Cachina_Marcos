@@ -32,10 +32,10 @@ import org.springframework.stereotype.Service;
  * @author David
  */
 @Service
-public class PedidoService {
+public class PedidoService { // Servicio para lógica de negocio de pedidos
 
     @Autowired
-    private PedidoRepository pedidoRepository; // Repositorio para la entidad Pedido
+    private PedidoRepository pedidoRepository;
 
     @Autowired
     private BrevoService brevoService;
@@ -48,11 +48,11 @@ public class PedidoService {
     @Autowired
     private UserRepository userRepository;
     
-    public ResponseMessage guardarPedido(PedidoRequest orderData) {
+    public ResponseMessage guardarPedido(PedidoRequest orderData) { // Guarda pedido sin sesión de usuario
         return guardarPedido(orderData, null);
     }
 
-    public ResponseMessage guardarPedido(PedidoRequest orderData, Usuario usuario) {
+    public ResponseMessage guardarPedido(PedidoRequest orderData, Usuario usuario) { // Guarda pedido con usuario y envía correos
         try {
             // Crear un objeto Pedido
             Pedido pedido = new Pedido();
@@ -95,34 +95,34 @@ public class PedidoService {
     }
 
     // Nuevo método para obtener todos los pedidos
-    public List<Pedido> obtenerTodosLosPedidos() {
+    public List<Pedido> obtenerTodosLosPedidos() { // Obtiene todos los pedidos
         return pedidoRepository.findAll();
     }
 
-    public Page<Pedido> buscarPedidos(Date fechaInicio, Date fechaFin, String search, String estado, Pageable pageable) {
+    public Page<Pedido> buscarPedidos(Date fechaInicio, Date fechaFin, String search, String estado, Pageable pageable) { // Busca pedidos con filtros
         return pedidoRepository.buscarPedidos(fechaInicio, fechaFin, search, estado, pageable);
     }
 
-    public List<Pedido> obtenerPedidosPendientesPorUsuario(Long usuarioId) {
+    public List<Pedido> obtenerPedidosPendientesPorUsuario(Long usuarioId) { // Obtiene pedidos pendientes del usuario
         return pedidoRepository.findByUsuarioIdAndEstadoOrderByFechaPedidoAsc(usuarioId, "Pendiente");
     }
 
-    public List<Pedido> obtenerPedidosConfirmadosPorUsuario(Long usuarioId) {
+    public List<Pedido> obtenerPedidosConfirmadosPorUsuario(Long usuarioId) { // Obtiene pedidos confirmados del usuario
         return pedidoRepository.findByUsuarioIdAndEstadoOrderByFechaPedidoAsc(usuarioId, "Confirmado");
     }
 
-    public Pedido obtenerPedidoPendientePorIdYUsuario(Long id, Long usuarioId) {
+    public Pedido obtenerPedidoPendientePorIdYUsuario(Long id, Long usuarioId) { // Busca pedido pendiente por ID para usuario
         return pedidoRepository.findWithDetallesByIdAndUsuarioIdAndEstado(id, usuarioId, "Pendiente")
                 .orElseThrow(() -> new RuntimeException("Pedido no encontrado"));
     }
 
     // Método para obtener un pedido por su ID
-    public Pedido obtenerPedidoPorId(Long id) {
+    public Pedido obtenerPedidoPorId(Long id) { // Obtiene pedido por ID
         return pedidoRepository.findById(id).orElseThrow(() -> new RuntimeException("Pedido no encontrado"));
     }
 
     // Método para actualizar un pedido
-    public void actualizarPedido(Long id, Pedido pedidoActualizado, Long usuarioId) {
+    public void actualizarPedido(Long id, Pedido pedidoActualizado, Long usuarioId) { // Actualiza campos del pedido
         Pedido pedido = obtenerPedidoPorId(id);
         pedido.setFechaPedido(pedidoActualizado.getFechaPedido());
         pedido.setTotal(pedidoActualizado.getTotal());
@@ -137,13 +137,13 @@ public class PedidoService {
     }
 
     // Método para eliminar un pedido
-    public void eliminarPedido(Long id) {
+    public void eliminarPedido(Long id) { // Elimina un pedido
         Pedido pedido = obtenerPedidoPorId(id);
         pedidoRepository.delete(pedido);
     }
 
     // Método para confirmar un pedido
-    public void confirmarPedido(Long id) {
+    public void confirmarPedido(Long id) { // Alterna pedido entre pendiente y confirmado
         Pedido pedido = obtenerPedidoPorId(id);
         if ("Pendiente".equals(pedido.getEstado())) {
             pedido.setEstado("Confirmado");
@@ -154,13 +154,13 @@ public class PedidoService {
     }
 
     // Método para obtener un detalle de pedido por ID
-    public PedidoDetalle obtenerDetallePorId(Long id) {
+    public PedidoDetalle obtenerDetallePorId(Long id) { // Obtiene detalle de pedido por ID
         return pedidoDetalleRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Detalle no encontrado"));
     }
 
     // Método para actualizar un detalle de pedido
-    public void actualizarDetalle(Long id, PedidoDetalle detalleActualizado) {
+    public void actualizarDetalle(Long id, PedidoDetalle detalleActualizado) { // Actualiza detalle y recalcula total
         PedidoDetalle detalle = obtenerDetallePorId(id);
         detalle.setCantidad(detalleActualizado.getCantidad());
         detalle.setPrecio(detalleActualizado.getPrecio());
@@ -180,7 +180,7 @@ public class PedidoService {
         pedidoRepository.save(pedido); // Guardar el pedido actualizado
     }
 
-    public void eliminarDetalle(Long id) {
+    public void eliminarDetalle(Long id) { // Elimina detalle y recalcula total
     // Obtener el detalle a eliminar
     PedidoDetalle detalle = pedidoDetalleRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Detalle no encontrado"));
@@ -208,7 +208,7 @@ public class PedidoService {
 }
 
 
-   public void agregarDetalle(Long pedidoId, Long platoId, int cantidad, String comentario) {
+   public void agregarDetalle(Long pedidoId, Long platoId, int cantidad, String comentario) { // Agrega línea de detalle y recalcula total
     // Obtener el pedido
     Pedido pedido = pedidoRepository.findById(pedidoId)
             .orElseThrow(() -> new RuntimeException("Pedido no encontrado"));
@@ -244,7 +244,7 @@ public class PedidoService {
 }
 
     
-    private void enviarCorreo(String email, String nombres, String telefono, String direccion, String referencia, double total, List<PedidoDetalle> detallesPedido) {
+    private void enviarCorreo(String email, String nombres, String telefono, String direccion, String referencia, double total, List<PedidoDetalle> detallesPedido) { // Envía correo de confirmación de pedido
         try {
             String template = new String(Files.readAllBytes(Paths.get("src/main/resources/templates/pedido-confirmacion.html")));
 
@@ -279,7 +279,7 @@ public class PedidoService {
 
     }
     
-    public void cancelarPedido(Long id, Long usuarioId) {
+    public void cancelarPedido(Long id, Long usuarioId) { // Cancela pedido pendiente dentro de 5 min y notifica
         Pedido pedido = pedidoRepository.findWithDetallesByIdAndUsuarioIdAndEstado(id, usuarioId, "Pendiente")
                 .orElseThrow(() -> new RuntimeException("Pedido no encontrado o no se puede cancelar"));
 
@@ -330,7 +330,7 @@ public class PedidoService {
         pedidoRepository.delete(pedido);
     }
 
-    public void enviarNotificacionNuevoPedido(Usuario usuario, Pedido pedido) {
+    public void enviarNotificacionNuevoPedido(Usuario usuario, Pedido pedido) { // Envía notificación de nuevo pedido al admin
         String nombres = (usuario != null) ? usuario.getNombres() + " " + usuario.getApellidos() : "Usuario anónimo";
 
         String template;

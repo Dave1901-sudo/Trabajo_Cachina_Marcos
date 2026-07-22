@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/resenas")
-public class ApiResenasController {
+public class ApiResenasController { // API para reseñas
 
     @Autowired
     private ResenaService resenaService;
@@ -22,7 +22,7 @@ public class ApiResenasController {
     private UsuarioService usuarioService;
 
     @GetMapping("/{platoId}")
-    public ResponseEntity<?> obtenerResenas(@PathVariable Long platoId, Principal principal) {
+    public ResponseEntity<?> obtenerResenas(@PathVariable Long platoId, Principal principal) { // Obtiene reseñas de un plato
         Long usuarioId = null;
         if (principal != null) {
             Usuario usuario = usuarioService.getByUsername(principal.getName());
@@ -34,7 +34,7 @@ public class ApiResenasController {
     }
 
     @PostMapping
-    public ResponseEntity<?> crearResena(@RequestBody Map<String, Object> body, Principal principal) {
+    public ResponseEntity<?> crearResena(@RequestBody Map<String, Object> body, Principal principal) { // Crea una nueva reseña
         try {
             Long platoId = Long.valueOf(body.get("platoId").toString());
             int puntuacion = Integer.parseInt(body.get("puntuacion").toString());
@@ -58,7 +58,7 @@ public class ApiResenasController {
     }
 
     @PostMapping("/{id}/like")
-    public ResponseEntity<?> darLike(@PathVariable Long id, Principal principal) {
+    public ResponseEntity<?> darLike(@PathVariable Long id, Principal principal) { // Alterna like en una reseña
         try {
             Long usuarioId = null;
             if (principal != null) {
@@ -75,7 +75,7 @@ public class ApiResenasController {
     }
 
     @PostMapping("/{id}/aprobar")
-    public ResponseEntity<?> aprobarResena(@PathVariable Long id) {
+    public ResponseEntity<?> aprobarResena(@PathVariable Long id) { // Aprueba una reseña vía API
         try {
             resenaService.aprobarResena(id);
             return ResponseEntity.ok(Map.of("mensaje", "Resena aprobada"));
@@ -85,7 +85,7 @@ public class ApiResenasController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> eliminarResena(@PathVariable Long id) {
+    public ResponseEntity<?> eliminarResena(@PathVariable Long id) { // Elimina una reseña vía API
         try {
             resenaService.eliminarResena(id);
             return ResponseEntity.ok(Map.of("mensaje", "Resena eliminada"));
@@ -95,7 +95,7 @@ public class ApiResenasController {
     }
 
     @GetMapping("/pendientes")
-    public ResponseEntity<?> obtenerPendientes() {
+    public ResponseEntity<?> obtenerPendientes() { // Obtiene reseñas pendientes vía API
         return ResponseEntity.ok(resenaService.obtenerResenasPendientes());
     }
 }

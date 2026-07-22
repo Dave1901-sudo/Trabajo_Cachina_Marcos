@@ -18,13 +18,13 @@ import org.springframework.stereotype.Service;
  * @author David
  */
 @Service
-public class UserDetailsServiceImpl implements UserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService { // Carga usuario por username para auth
 
     @Autowired
     private UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username)
+    public UserDetails loadUserByUsername(String username) // Carga usuario para autenticación Spring Security
             throws UsernameNotFoundException {
         Usuario user = userRepository.findByUsername(username);
         if (user == null) {

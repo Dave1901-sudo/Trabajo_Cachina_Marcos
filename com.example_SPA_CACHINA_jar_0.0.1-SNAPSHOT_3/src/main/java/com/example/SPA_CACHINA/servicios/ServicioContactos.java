@@ -15,25 +15,25 @@ import org.springframework.stereotype.Service;
  * @author David
  */
 @Service
-public class ServicioContactos {
+public class ServicioContactos { // Servicio CRUD de contactos
     // Dave
 
     @Autowired
     private ContactosDAO contactosDAO;
 
-    public List<Contactos> getList() {
+    public List<Contactos> getList() { // Obtiene todos los contactos
         return contactosDAO.findAll();
     }
 
-    public Contactos save(Contactos contactos) {
+    public Contactos save(Contactos contactos) { // Guarda o actualiza un contacto
         return contactosDAO.save(contactos);
     }
 
-    public Contactos get(Long id) {
+    public Contactos get(Long id) { // Obtiene contacto por ID
         return contactosDAO.findById(id).orElse(null);
     }
 
-    public void delete(Long id) {
+    public void delete(Long id) { // Elimina un contacto
         contactosDAO.deleteById(id);
     }
 

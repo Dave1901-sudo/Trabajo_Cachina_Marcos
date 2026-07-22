@@ -15,25 +15,25 @@ import org.springframework.stereotype.Service;
  * @author David
  */
 @Service
-public class ServicioSugerencias {
+public class ServicioSugerencias { // Servicio CRUD de sugerencias
     // Dave
 
     @Autowired
     private SugerenciasDAO sugerenciasDAO;
 
-    public List<Sugerencias> getList() {
+    public List<Sugerencias> getList() { // Obtiene todas las sugerencias
         return sugerenciasDAO.findAll();
     }
 
-    public Sugerencias save(Sugerencias sugerencias) {
+    public Sugerencias save(Sugerencias sugerencias) { // Guarda o actualiza una sugerencia
         return sugerenciasDAO.save(sugerencias);
     }
 
-    public Sugerencias get(Long id) {
+    public Sugerencias get(Long id) { // Obtiene sugerencia por ID
         return sugerenciasDAO.findById(id).orElse(null);
     }
 
-    public void delete(Long id) {
+    public void delete(Long id) { // Elimina una sugerencia
         sugerenciasDAO.deleteById(id);
     }
 }

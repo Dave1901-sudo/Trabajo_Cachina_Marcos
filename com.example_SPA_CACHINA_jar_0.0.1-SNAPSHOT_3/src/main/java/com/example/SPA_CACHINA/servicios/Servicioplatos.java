@@ -17,33 +17,33 @@ import org.springframework.stereotype.Service;
  * @author David
  */
 @Service
-public class Servicioplatos {
+public class Servicioplatos { // Servicio CRUD de platos
     // Dave
 
     @Autowired
     private PlatosDAO platosDAO;
 
-    public List<platos> getList() {
+    public List<platos> getList() { // Obtiene todos los platos
         return platosDAO.findAll();
     }
 
-    public platos save(platos platos) {
+    public platos save(platos platos) { // Guarda o actualiza un plato
         return platosDAO.save(platos);
     }
 
-    public platos get(Long id) {
+    public platos get(Long id) { // Obtiene plato por ID
         return platosDAO.findById(id).orElse(null);
     }
 
-    public void delete(Long id) {
+    public void delete(Long id) { // Elimina un plato
         platosDAO.deleteById(id);
     }
 
-    public List<String> getCategoriasDistinct() {
+    public List<String> getCategoriasDistinct() { // Obtiene categorías de platos distintas
         return platosDAO.findCategoriasDistinct();
     }
 
-    public platos toggleHabilitado(Long id) {
+    public platos toggleHabilitado(Long id) { // Alterna estado habilitado/deshabilitado del plato
         platos plato = platosDAO.findById(id).orElse(null);
         if (plato != null) {
             plato.setHabilitado(!plato.isHabilitado());

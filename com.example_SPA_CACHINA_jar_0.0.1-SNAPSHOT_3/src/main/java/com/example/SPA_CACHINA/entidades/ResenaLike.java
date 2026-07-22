@@ -7,7 +7,7 @@ import java.util.Objects;
 @Table(name = "resena_likes", uniqueConstraints = {
     @UniqueConstraint(columnNames = {"resena_id", "usuario_id"})
 })
-public class ResenaLike {
+public class ResenaLike { // Entidad de like de reseña (muchos a muchos)
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -14,10 +14,10 @@ import org.springframework.data.jpa.repository.Query;
  * @author David
  */
 public interface ReservasDAO
-                extends JpaRepository<Reservas, Long> {
+                extends JpaRepository<Reservas, Long> { // Repositorio para entidad Reservas
 
     @Query("SELECT COUNT(r) FROM Reservas r WHERE r.fecha = ?1 AND r.hora >= ?2 AND r.hora < ?3")
-    long countByFechaAndHoraBetween(String fecha, String horaInicio, String horaFin);
+    long countByFechaAndHoraBetween(String fecha, String horaInicio, String horaFin); // Cuenta reservas por hora
 
-    List<Reservas> findByCorreoOrderByFechaAscHoraAsc(String correo);
+    List<Reservas> findByCorreoOrderByFechaAscHoraAsc(String correo); // Busca reservas por correo
 }

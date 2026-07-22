@@ -17,18 +17,18 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @author David
  */
 @Controller
-public class LoginController {
+public class LoginController { // Controlador para autenticación
 
     @Autowired
     private UsuarioService usuarioService;
 
     @GetMapping("/register")
-    public String showRegisterForm() {
+    public String showRegisterForm() { // Muestra formulario de registro
         return "register"; // Nombre del archivo Thymeleaf (register.html)
     }
 
     @GetMapping("/login")
-    public String login(@RequestParam(value = "error", required = false) String error,
+    public String login(@RequestParam(value = "error", required = false) String error, // Muestra login con mensajes de error/logout
             @RequestParam(value = "logout", required = false) String logout,
             Model model) {
         if (error != null && "true".equals(error)) {
@@ -49,7 +49,7 @@ public class LoginController {
     }*/
 
     @PostMapping("/register")
-    public String registerUser(
+    public String registerUser( // Registra un nuevo usuario
             @RequestParam String username,
             @RequestParam String nombres,
             @RequestParam String apellidos,
