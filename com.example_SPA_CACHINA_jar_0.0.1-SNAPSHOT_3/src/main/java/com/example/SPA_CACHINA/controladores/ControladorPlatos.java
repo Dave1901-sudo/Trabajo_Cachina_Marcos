@@ -66,12 +66,14 @@ public class ControladorPlatos {
     }*/
     @GetMapping("/")
     public String listarPlatosVerticales(Model model) {
-        List<platos> lista = servicioplatos.getList(); // Obtener la lista de platos
+        List<platos> lista = servicioplatos.getList().stream()
+                .filter(platos::isHabilitado)
+                .collect(Collectors.toList());
         Map<String, List<platos>> platosPorCategoria = lista.stream()
-                .collect(Collectors.groupingBy(platos::getCategoria)); // Agrupar por categoría
-        model.addAttribute("platosPorCategoria", platosPorCategoria); // Agregar al modelo
+                .collect(Collectors.groupingBy(platos::getCategoria));
+        model.addAttribute("platosPorCategoria", platosPorCategoria);
         model.addAttribute("reservas", new Reservas());
-        return "index"; // Retorna la vista index
+        return "index";
     }
 
     /*@ModelAttribute("currentUser")
@@ -143,6 +145,12 @@ public class ControladorPlatos {
     public String deleteFormPlatos(Model model,
             @RequestParam("id") Long id) {
         servicioplatos.delete(id);
+        return "redirect:/formResultadoPlatos";
+    }
+
+    @GetMapping("/toggleHabilitado")
+    public String toggleHabilitado(@RequestParam("id") Long id) {
+        servicioplatos.toggleHabilitado(id);
         return "redirect:/formResultadoPlatos";
     }
 

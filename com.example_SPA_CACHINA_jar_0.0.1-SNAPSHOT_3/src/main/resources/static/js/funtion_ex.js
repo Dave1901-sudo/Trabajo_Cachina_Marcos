@@ -618,7 +618,7 @@ function cancelarPedidoNotificacion(pedidoId) {
     }).then(function(result) {
         if (!result.isConfirmed) return;
         cancelarPedidoFetch(pedidoId, function() {
-            refreshOrderNotifications();
+            loadOrderNotifications(true);
         });
     });
 }

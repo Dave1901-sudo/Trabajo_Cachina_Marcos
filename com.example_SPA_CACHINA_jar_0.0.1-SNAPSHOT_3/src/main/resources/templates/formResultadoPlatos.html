@@ -58,7 +58,15 @@
                                 <span class="sugerencia-info-label">Categoría:</span>
                                 <span class="sugerencia-info-value" th:text="${platos.categoria}"></span>
                             </div>
+                            <div class="mb-3">
+                                <span class="sugerencia-info-label">Estado:</span>
+                                <span th:if="${platos.habilitado}" class="badge bg-success">Habilitado</span>
+                                <span th:unless="${platos.habilitado}" class="badge bg-secondary">Deshabilitado</span>
+                            </div>
                             <div class="card-footer container-all d-flex justify-content-between mt-auto">
+                                <a th:href="@{/toggleHabilitado(id=${platos.idplato})}" 
+                                   th:class="${platos.habilitado} ? 'btn btn-warning btn-sm' : 'btn btn-success btn-sm'"
+                                   th:text="${platos.habilitado} ? 'Deshabilitar' : 'Habilitar'"></a>
                                 <a th:href="@{/getEditPlatos/{id}(id=${platos.idplato})}" class="btn btn-outline-primary btn-sm cevicheria-btn-edit">Editar</a>
                                 <a th:href="@{/deletePlatos(id=${platos.idplato})}" class="btn btn-outline-danger btn-sm cevicheria-btn-delete">Eliminar</a>
                             </div>

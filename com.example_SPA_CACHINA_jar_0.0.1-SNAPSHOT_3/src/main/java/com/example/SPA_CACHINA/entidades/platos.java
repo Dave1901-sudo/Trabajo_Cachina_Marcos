@@ -33,4 +33,5 @@ public class platos {
     @Lob
     private byte[] imagen;
     private String categoria;
+    private boolean habilitado = true;
 }

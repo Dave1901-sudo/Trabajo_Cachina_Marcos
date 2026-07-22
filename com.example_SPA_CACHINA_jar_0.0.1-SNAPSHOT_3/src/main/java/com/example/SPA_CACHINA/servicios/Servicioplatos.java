@@ -42,4 +42,13 @@ public class Servicioplatos {
     public List<String> getCategoriasDistinct() {
         return platosDAO.findCategoriasDistinct();
     }
+
+    public platos toggleHabilitado(Long id) {
+        platos plato = platosDAO.findById(id).orElse(null);
+        if (plato != null) {
+            plato.setHabilitado(!plato.isHabilitado());
+            return platosDAO.save(plato);
+        }
+        return null;
+    }
 }
