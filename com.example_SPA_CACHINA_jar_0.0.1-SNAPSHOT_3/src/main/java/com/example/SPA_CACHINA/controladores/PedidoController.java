@@ -142,7 +142,7 @@ public class PedidoController { // Controlador admin para gestión de pedidos
     public String editarDetalle(@PathVariable("id") Long id, Model model) { // Muestra formulario de edición de detalle
         PedidoDetalle detalle = pedidoService.obtenerDetallePorId(id);
         model.addAttribute("detalle", detalle);
-        return "editarDetalle"; // Vista para editar el detalle
+        return "editardetalle"; // Vista para editar el detalle
     }
 
     @PostMapping("/editarDetalle/{id}")
